@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* Indica explícitamente a Tailwind dónde buscar clases en este proyecto */
+@source "../public/**/*.html";
+@source "../public/**/*.js";
+
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeInUp 0.22s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+:root {
+  --color-primary: #16a34a;
+}
+
+@layer utilities {
+  .text-primary {
+    color: var(--color-primary);
+  }
+
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+
+  .border-primary {
+    border-color: var(--color-primary);
+  }
+
+  .hover\:text-primary:hover {
+    color: var(--color-primary);
+  }
+
+  .hover\:bg-primary:hover {
+    background-color: var(--color-primary);
+  }
+
+  .focus\:border-primary:focus {
+    border-color: var(--color-primary);
+  }
+
+  .focus\:ring-primary:focus {
+    --tw-ring-color: var(--color-primary);
+  }
+
+  .bg-brand-gradient {
+    background-image: linear-gradient(
+      to right,
+      rgba(22, 163, 74, 0.08),
+      #ffffff,
+      rgba(22, 163, 74, 0.06)
+    );
+  }
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Solicitud de Presupuesto | Textil María Luisa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="stylesheet" href="/css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+  <!-- Franja institucional -->
+  <div class="bg-gray-900 text-white text-xs py-2 text-center tracking-wide">
+    Fábrica Textil Mayorista · Desde 1994 · Entre Ríos, Argentina
+  </div>
+
+  <!-- Header -->
+  <header class="border-b bg-white/95 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+      <a href="/index.html" class="flex items-center gap-3">
+        <img src="/images/logo.png" class="h-10 w-auto" alt="Textil María Luisa">
+        <span class="text-lg font-bold uppercase tracking-wider">
+          Textil María Luisa
+        </span>
+      </a>
+      <nav class="flex items-center gap-6 text-sm font-semibold">
+        <a href="/catalogo.html"
+           class="text-gray-700 hover:text-primary transition">
+          Catálogo
+        </a>
+        <span class="hidden md:inline-block text-gray-300">/</span>
+        <span class="hidden md:inline-block text-gray-500">
+          Solicitud de presupuesto
+        </span>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-6xl mx-auto px-6 py-14 md:py-20">
+    <div class="mb-10 md:mb-14">
+      <p class="text-xs tracking-[0.35em] text-gray-400 uppercase mb-3">
+        Paso final
+      </p>
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+        Solicitud de Presupuesto Mayorista
+      </h1>
+      <p class="text-sm md:text-base text-gray-600 max-w-2xl leading-relaxed">
+        Revise los productos seleccionados y complete sus datos comerciales.
+        Nuestro equipo responderá con una propuesta personalizada según volumen,
+        destino y frecuencia de compra.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-10 items-start">
+      <!-- Resumen -->
+      <section class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-8">
+        <div class="flex items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-base md:text-lg font-bold">
+              Resumen del pedido
+            </h2>
+            <p class="text-xs text-gray-500 mt-1">
+              Ajuste cantidades o unidades antes de enviar.
+            </p>
+          </div>
+          <div class="hidden md:flex items-center gap-2 text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
+            <span class="w-2 h-2 rounded-full bg-green-600"></span>
+            Carrito listo para cotizar
+          </div>
+        </div>
+
+        <div id="lista-carrito" class="space-y-3 text-sm text-gray-700"></div>
+
+        <div class="mt-8 pt-5 border-t border-gray-100">
+          <p class="text-sm font-semibold text-gray-900 flex items-center justify-between">
+            <span>Total del pedido estimado</span>
+            <span id="total-unidades" class="text-primary"></span>
+          </p>
+          <p class="text-xs text-gray-500 mt-2 leading-relaxed">
+            La cotización final puede variar según volumen, condiciones logísticas
+            y acuerdos comerciales vigentes.
+          </p>
+        </div>
+      </section>
+
+      <!-- Formulario -->
+      <section class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-8">
+        <div class="mb-6">
+          <h2 class="text-base md:text-lg font-bold">
+            Datos de contacto comercial
+          </h2>
+          <p class="text-xs text-gray-500 mt-1">
+            Campos marcados con * son obligatorios.
+          </p>
+        </div>
+
+        <form id="form-cotizacion" autocomplete="off" class="space-y-6 md:space-y-7">
+          <!-- Honeypot -->
+          <input type="text" name="empresa" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
+
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold text-gray-700 tracking-wide">
+              Razón social *
+            </label>
+            <input
+              type="text"
+              name="nombre"
+              placeholder="Ej: Distribuidora Pérez SRL"
+              required
+              minlength="2"
+              maxlength="60"
+              class="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none bg-gray-50/40"
+            >
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold text-gray-700 tracking-wide">
+              Email de contacto *
+            </label>
+            <input
+              type="email"
+              name="email"
+              placeholder="compras@suempresa.com"
+              required
+              class="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none bg-gray-50/40"
+            >
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-gray-700 tracking-wide">
+                Localidad *
+              </label>
+              <input
+                type="text"
+                name="localidad"
+                placeholder="Ej: Paraná"
+                required
+                minlength="3"
+                maxlength="30"
+                class="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none bg-gray-50/40"
+              >
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-gray-700 tracking-wide">
+                Provincia *
+              </label>
+              <input
+                type="text"
+                name="provincia"
+                placeholder="Ej: Entre Ríos"
+                required
+                minlength="3"
+                maxlength="30"
+                class="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none bg-gray-50/40"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold text-gray-700 tracking-wide">
+              Comentarios adicionales
+              <span class="text-gray-400 font-normal">(opcional)</span>
+            </label>
+            <textarea
+              name="mensaje"
+              rows="4"
+              placeholder="Por ejemplo: frecuencia estimada de compra, plazos de entrega preferidos, condiciones especiales…"
+              class="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none bg-gray-50/40 resize-y"
+            ></textarea>
+          </div>
+
+          <div class="pt-4 md:pt-5 space-y-3">
+            <button
+              type="submit"
+              class="w-full bg-gray-900 text-white py-4 md:py-4.5 rounded-lg text-sm md:text-base font-semibold tracking-wide hover:bg-primary transition shadow-md hover:shadow-lg"
+            >
+              Enviar solicitud de presupuesto
+            </button>
+            <p class="text-[11px] leading-relaxed text-gray-500">
+              Al enviar esta solicitud no se genera una compra automática.
+              Recibirá una propuesta comercial con precios mayoristas y condiciones
+              de entrega para su revisión.
+            </p>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="border-t py-8 bg-white">
+    <div class="max-w-6xl mx-auto px-6 text-[11px] md:text-xs text-gray-500 flex flex-col md:flex-row gap-2 md:gap-0 justify-between">
+      <span>© 1994 - 2026 Textil María Luisa SRL</span>
+      <span>Fábrica Mayorista</span>
+    </div>
+  </footer>
+
+<script src="/js/notificaciones.js"></script>
+<script src="/js/carrito.js"></script>
+<script src="/js/cotizacion.js"></script>
+
+
+
+</body>
+</html>
