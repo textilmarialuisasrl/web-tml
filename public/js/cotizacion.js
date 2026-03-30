@@ -220,6 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]');
 
       const carrito = obtenerCarrito();
       if (!carrito.length) {
@@ -255,6 +256,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add("opacity-80");
+        }
+
         const res = await fetch("/api/cotizacion", {
           method: "POST",
           headers: {
@@ -285,7 +291,15 @@ document.addEventListener("DOMContentLoaded", () => {
         form.reset();
       } catch (error) {
         console.error("Error enviando cotización:", error);
-        notificar("No se pudo enviar la cotización. Intente nuevamente.", "error");
+        notificar(
+          error?.message || "No se pudo enviar la cotización. Intente nuevamente.",
+          "error"
+        );
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove("opacity-80");
+        }
       }
     });
   }
