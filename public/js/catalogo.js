@@ -243,10 +243,7 @@ window.cambiarImagen = function(id, direccion) {
 
   const producto = window.productosGlobal.find(p => p.id === id);
 
-  if(!producto){
-    notificar("No se encontró el producto seleccionado", "error");
-    return;
-  }
+  if(!producto) return;
 
   if (!window.indiceImagenes[id]) {
     window.indiceImagenes[id] = 0;
@@ -263,29 +260,31 @@ window.cambiarImagen = function(id, direccion) {
   }
 
   const img = document.getElementById(`img-${id}`);
-
   if (!img) return;
 
-  img.classList.add("opacity-0");
+  const cache = window.cacheImagenes[id];
   const indiceActual = window.indiceImagenes[id];
-  const urls = Array.isArray(producto.imagenes) ? producto.imagenes : [];
-  const siguienteUrl = urls[indiceActual] || "/images/placeholder.png";
 
-  const preload = new Image();
-  preload.loading = "eager";
-  preload.decoding = "async";
+  // 🔥 USAR CACHE (ESTO ES LA CLAVE)
+  if (cache && cache[indiceActual]) {
 
-  preload.onload = () => {
-    img.src = preload.src;
-    img.classList.remove("opacity-0");
-  };
+    img.classList.add("opacity-0");
 
-  preload.onerror = () => {
-    img.src = "/images/placeholder.png";
-    img.classList.remove("opacity-0");
-  };
+    setTimeout(() => {
+      img.src = cache[indiceActual].src;
+      img.classList.remove("opacity-0");
+    }, 80);
 
-  preload.src = siguienteUrl;
+  } else {
+    // fallback por si algo falla
+    const nueva = new Image();
+    nueva.src = producto.imagenes[indiceActual];
+
+    nueva.onload = () => {
+      img.src = nueva.src;
+      img.classList.remove("opacity-0");
+    };
+  }
 
 };
 function animarProductoAlCarrito(boton){
