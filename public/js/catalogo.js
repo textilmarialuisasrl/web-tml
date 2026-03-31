@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         <div class="h-full ${esOferta ? "bg-gray-900 text-white" : "bg-white"} rounded-2xl overflow-hidden">
                 
-          <div class="relative overflow-hidden h-72 bg-gradient-to-b from-gray-100 to-gray-50">
+          <div class="relative overflow-hidden h-56 md:h-64 bg-gradient-to-b from-gray-100 to-gray-50 flex items-center justify-center">
         
             ${badge}
         
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               alt="${producto.nombre}"
               loading="lazy"
               decoding="async"
-              class="w-full h-72 object-contain p-4"
+              class="w-full h-48 md:h-56 object-cover transition-opacity duration-300 ease-in-out"
               id="img-${producto.id}"
             >
 
@@ -128,6 +128,37 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
 
       const img = card.querySelector(`#img-${producto.id}`);
+
+      // fallback de imagen rota
+      if (img) {
+        img.addEventListener("error", () => {
+          if (!img.dataset.fallbackApplied) {
+            img.dataset.fallbackApplied = "true";
+            img.src = "/images/placeholder.png";
+          }
+        });
+      }
+
+      // preload de todas las imágenes del producto
+      if (!window.cacheImagenes) {
+        window.cacheImagenes = {};
+      }
+      if (!window.cacheImagenes[producto.id]) {
+        window.cacheImagenes[producto.id] = [];
+        if (Array.isArray(producto.imagenes)) {
+          producto.imagenes.forEach((url) => {
+            if (!url) return;
+            const preload = new Image();
+            preload.loading = "eager";
+            preload.decoding = "async";
+            preload.onerror = () => {
+              preload.src = "/images/placeholder.png";
+            };
+            preload.src = url;
+            window.cacheImagenes[producto.id].push(preload);
+          });
+        }
+      }
 
       if (contenedores[producto.categoria]) {
 
@@ -236,11 +267,25 @@ window.cambiarImagen = function(id, direccion) {
   if (!img) return;
 
   img.classList.add("opacity-0");
+  const indiceActual = window.indiceImagenes[id];
+  const urls = Array.isArray(producto.imagenes) ? producto.imagenes : [];
+  const siguienteUrl = urls[indiceActual] || "/images/placeholder.png";
 
-  setTimeout(() => {
-    img.src = producto.imagenes[window.indiceImagenes[id]];
+  const preload = new Image();
+  preload.loading = "eager";
+  preload.decoding = "async";
+
+  preload.onload = () => {
+    img.src = preload.src;
     img.classList.remove("opacity-0");
-  }, 180);
+  };
+
+  preload.onerror = () => {
+    img.src = "/images/placeholder.png";
+    img.classList.remove("opacity-0");
+  };
+
+  preload.src = siguienteUrl;
 
 };
 function animarProductoAlCarrito(boton){
