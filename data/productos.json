@@ -185,7 +185,7 @@
   {
     "id": 12,
     "nombre": "Rejilla Tubular",
-    "descripcion": "Tejido de doble punto tubular. Alta absorción y resistencia.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "descripcion": "Tejido de doble punto tubular. Alta absorción y resistencia.",
     "categoria": "Rejillas",
     "medida": "40x45 cm",
     "colores": "Natural 100% algodón",
@@ -313,34 +313,22 @@
   },
   {
     "id": 20,
-    "nombre": "Pack Inicial Comercios",
-    "descripcion": "Combo armado para primeros pedidos: incluye trapos de piso, rejillas y paños absorbentes seleccionados para puntos de venta minoristas.",
+    "nombre": "Oferta Trapo Económico 10+1",
+    "descripcion": "Aprovechá esta promo mayorista: llevás 10 fardos y te regalamos 1 sin costo.",
     "categoria": "Ofertas",
-    "medida": "Pack combinado",
-    "colores": "Surtidos según línea",
-    "unidadesPorFardo": 1,
+    "medida": "45x60 cm aprox.",
+    "colores": "Colores surtidos",
+    "unidadesPorFardo": 60,
     "permiteUnidad": true,
-    "presentacion": "Pack cerrado x 1 combo (venta solo por combo)",
-    "uso": "Comercios que inician con la línea Textil María Luisa.",
+    "presentacion": "Fardo x 60 unidades (5 docenas)",
+    "uso": "Producto multiuso de alta rotación para comercios.",
+    "detalle": "Tejido 100% algodón. Peso aproximado 95g por unidad.",
+    "promocion": "Llevando 10 fardos, te regalamos 1 adicional sin cargo.",
+    "destacado": true,
     "imagenes": [
-      "/images/productos/oferta-pack-comercios-1.jpg",
-      "/images/productos/oferta-pack-comercios-2.jpg"
-    ]
-  },
-  {
-    "id": 21,
-    "nombre": "Combo Limpieza Profesional",
-    "descripcion": "Pack especial para empresas de limpieza: combinación de trapos de alto rendimiento, rejillas profesionales y franelas para superficies delicadas.",
-    "categoria": "Ofertas",
-    "medida": "Pack combinado",
-    "colores": "Surtidos según línea",
-    "unidadesPorFardo": 1,
-    "permiteUnidad": true,
-    "presentacion": "Pack cerrado x 1 combo (venta solo por combo)",
-    "uso": "Empresas de limpieza y servicios tercerizados.",
-    "imagenes": [
-      "/images/productos/oferta-pack-limpieza-1.jpg",
-      "/images/productos/oferta-pack-limpieza-2.jpg"
+      "/images/productos/oferta-trapo-para-piso-10x1.png",
+      "/images/productos/trapo-para-piso-fardo.jpg",
+      "/images/productos/trapo-para-piso-detalle.jpg"
     ]
   }
 ]
