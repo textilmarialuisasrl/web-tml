@@ -222,7 +222,7 @@ window.agregarAlCarritoConAnimacion = function(id, boton) {
 window.cambiarImagen = function(id, direccion) {
 
   const producto = window.productosGlobal.find(p => p.id === id);
-  if(!producto) return;
+  if (!producto) return;
 
   if (!window.indiceImagenes[id]) {
     window.indiceImagenes[id] = 0;
@@ -241,7 +241,8 @@ window.cambiarImagen = function(id, direccion) {
   const img = document.getElementById(`img-${id}`);
   if (!img) return;
 
-  const nuevaUrl = producto.imagenes[window.indiceImagenes[id]];
+  const indiceActual = window.indiceImagenes[id];
+  const nuevaUrl = producto.imagenes[indiceActual];
 
   img.classList.add("opacity-0");
 
@@ -251,13 +252,19 @@ window.cambiarImagen = function(id, direccion) {
   nueva.onload = () => {
     img.src = nuevaUrl;
     img.classList.remove("opacity-0");
+
+    // 🔥 PRELOAD SOLO DE LA SIGUIENTE
+    const siguienteIndex = (indiceActual + 1) % producto.imagenes.length;
+    const siguienteUrl = producto.imagenes[siguienteIndex];
+
+    const preload = new Image();
+    preload.src = siguienteUrl;
   };
 
   nueva.onerror = () => {
     img.src = "/images/placeholder.png";
     img.classList.remove("opacity-0");
   };
-
 };
 function animarProductoAlCarrito(boton){
 
