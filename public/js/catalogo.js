@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               alt="${producto.nombre}"
               loading="lazy"
               decoding="async"
+              style="will-change: opacity;"
               class="w-full h-48 md:h-56 object-cover transition-opacity duration-300 ease-in-out"
               id="img-${producto.id}"
             >
@@ -137,27 +138,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             img.src = "/images/placeholder.png";
           }
         });
-      }
-
-      // preload de todas las imágenes del producto
-      if (!window.cacheImagenes) {
-        window.cacheImagenes = {};
-      }
-      if (!window.cacheImagenes[producto.id]) {
-        window.cacheImagenes[producto.id] = [];
-        if (Array.isArray(producto.imagenes)) {
-          producto.imagenes.forEach((url) => {
-            if (!url) return;
-            const preload = new Image();
-            preload.loading = "eager";
-            preload.decoding = "async";
-            preload.onerror = () => {
-              preload.src = "/images/placeholder.png";
-            };
-            preload.src = url;
-            window.cacheImagenes[producto.id].push(preload);
-          });
-        }
       }
 
       if (contenedores[producto.categoria]) {
@@ -242,7 +222,6 @@ window.agregarAlCarritoConAnimacion = function(id, boton) {
 window.cambiarImagen = function(id, direccion) {
 
   const producto = window.productosGlobal.find(p => p.id === id);
-
   if(!producto) return;
 
   if (!window.indiceImagenes[id]) {
@@ -262,29 +241,22 @@ window.cambiarImagen = function(id, direccion) {
   const img = document.getElementById(`img-${id}`);
   if (!img) return;
 
-  const cache = window.cacheImagenes[id];
-  const indiceActual = window.indiceImagenes[id];
+  const nuevaUrl = producto.imagenes[window.indiceImagenes[id]];
 
-  // 🔥 USAR CACHE (ESTO ES LA CLAVE)
-  if (cache && cache[indiceActual]) {
+  img.classList.add("opacity-0");
 
-    img.classList.add("opacity-0");
+  const nueva = new Image();
+  nueva.src = nuevaUrl;
 
-    setTimeout(() => {
-      img.src = cache[indiceActual].src;
-      img.classList.remove("opacity-0");
-    }, 80);
+  nueva.onload = () => {
+    img.src = nuevaUrl;
+    img.classList.remove("opacity-0");
+  };
 
-  } else {
-    // fallback por si algo falla
-    const nueva = new Image();
-    nueva.src = producto.imagenes[indiceActual];
-
-    nueva.onload = () => {
-      img.src = nueva.src;
-      img.classList.remove("opacity-0");
-    };
-  }
+  nueva.onerror = () => {
+    img.src = "/images/placeholder.png";
+    img.classList.remove("opacity-0");
+  };
 
 };
 function animarProductoAlCarrito(boton){
