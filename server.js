@@ -67,13 +67,14 @@ app.get("/api/productos", (req, res) => {
 // =========================
 app.post("/api/cotizacion", async (req, res) => {
   try {
-    const { nombre, email, mensaje, provincia, localidad, items } = req.body;
+    const { nombre, email, telefono, mensaje, provincia, localidad, items } = req.body;
     const fecha = new Date().toLocaleString("es-AR");
     const ipCliente = req.ip;
 
     if (
       !nombre ||
       !email ||
+      !telefono ||
       !provincia ||
       !localidad ||
       !Array.isArray(items) ||
@@ -93,13 +94,14 @@ app.post("/api/cotizacion", async (req, res) => {
 
     const nombreSanitizado = sanitizeText(nombre, 80);
     const emailSanitizado = sanitizeText(email, 120);
+    const telefonoSanitizado = sanitizeText(telefono, 50);
     const provinciaSanitizada = sanitizeText(provincia, 60);
     const localidadSanitizada = sanitizeText(localidad, 60);
     const mensajeSanitizado = mensaje
       ? sanitizeText(mensaje, 1000)
       : "Sin mensaje adicional";
 
-    if (!nombreSanitizado || !provinciaSanitizada || !localidadSanitizada) {
+    if (!nombreSanitizado || !telefonoSanitizado || !provinciaSanitizada || !localidadSanitizada) {
       return res.status(400).json({ mensaje: "Datos incompletos" });
     }
 
@@ -160,6 +162,7 @@ app.post("/api/cotizacion", async (req, res) => {
 
       <p><strong>Razón Social:</strong> ${nombreSanitizado}</p>
       <p><strong>Email:</strong> ${emailSanitizado}</p>
+      <p><strong>Teléfono:</strong> ${telefonoSanitizado}</p>
       <p><strong>Provincia:</strong> ${provinciaSanitizada}</p>
       <p><strong>Localidad:</strong> ${localidadSanitizada}</p>
       <p><strong>IP cliente:</strong> ${sanitizeText(ipCliente || "N/D", 80)}</p>

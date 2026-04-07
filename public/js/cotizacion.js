@@ -232,6 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const payload = {
         nombre: (formData.get("nombre") || "").toString().trim(),
         email: (formData.get("email") || "").toString().trim(),
+        telefono: (formData.get("telefono") || "").toString().trim(),
         provincia: (formData.get("provincia") || "").toString().trim(),
         localidad: (formData.get("localidad") || "").toString().trim(),
         mensaje: (formData.get("mensaje") || "").toString().trim(),
@@ -248,6 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         !payload.nombre ||
         !payload.email ||
+        !payload.telefono ||
         !payload.provincia ||
         !payload.localidad
       ) {
