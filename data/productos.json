@@ -117,7 +117,6 @@
       "/images/productos/trapo-alfombra-piso-8.webp"
     ]
   },
-
   {
     "id": 8,
     "nombre": "Rejilla Pabilo",
@@ -230,7 +229,6 @@
       "/images/productos/rejilla-profesional-2.webp"
     ]
   },
-
   {
     "id": 15,
     "nombre": "Paño Absorbente",
@@ -329,6 +327,31 @@
       "/images/productos/oferta-trapo-para-piso-10x1.webp",
       "/images/productos/trapo-para-piso-fardo.webp",
       "/images/productos/trapo-para-piso-detalle.webp"
+    ]
+  },
+  {
+    "id": 21,
+    "nombre": "Oferta Alfombra Estampada 10+1",
+    "descripcion": "Aprovechá esta promo mayorista: llevás 10 fardos y te regalamos 1 sin costo.",
+    "categoria": "Ofertas",
+    "medida": "50x60 cm aprox.",
+    "colores": "Variedad de estampados",
+    "unidadesPorFardo": 36,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 36 unidades (3 docenas)",
+    "uso": "Producto multiuso de alta rotación para comercios.",
+    "detalle": "Tejido 100% algodón.",
+    "promocion": "Llevando 10 fardos, te regalamos 1 adicional sin cargo.",
+    "destacado": true,
+    "imagenes": [
+      "/images/productos/oferta-alfombra-10x1.webp",
+      "/images/productos/trapo-alfombra-piso-2.webp",
+      "/images/productos/trapo-alfombra-piso-3.webp",
+      "/images/productos/trapo-alfombra-piso-4.webp",
+      "/images/productos/trapo-alfombra-piso-5.webp",
+      "/images/productos/trapo-alfombra-piso-6.webp",
+      "/images/productos/trapo-alfombra-piso-7.webp",
+      "/images/productos/trapo-alfombra-piso-8.webp"
     ]
   }
 ]
