@@ -107,7 +107,7 @@
 
     <div class="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-8 md:px-8 md:py-10">
       <div id="contenedor-productos-ofertas"
-           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-14 items-stretch">
+           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 items-stretch">
       </div>
     </div>
   </section>
@@ -125,7 +125,7 @@
     </div>
 
     <div id="contenedor-productos-trapos"
-         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 items-stretch">
+         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 items-stretch">
     </div>
   </section>
 
@@ -142,7 +142,7 @@
     </div>
 
     <div id="contenedor-productos-rejillas"
-         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 items-stretch">
+         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 items-stretch">
     </div>
   </section>
 
@@ -159,7 +159,7 @@
     </div>
 
     <div id="contenedor-productos-limpieza"
-         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 items-stretch">
+         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 items-stretch">
     </div>
   </section>
 
@@ -199,6 +199,74 @@
   "description": "Fábrica textil mayorista especializada en trapos de piso y rejillas de algodón 100%. Producción industrial con más de 30 años de trayectoria."
   }
 </script>
+
+<!-- MODAL DE PRODUCTO PREMIUM -->
+<div id="modal-producto" class="tml-modal-overlay hidden">
+  <div class="tml-modal-container">
+    
+    <!-- Cerrar (Desktop Float / Mobile Inside) -->
+    <button id="modal-close" class="absolute top-6 right-6 z-50 text-gray-400 hover:text-gray-900 transition p-2 bg-white/80 backdrop-blur hover:bg-white rounded-full shadow-sm border border-gray-100">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+
+    <!-- Galería -->
+    <div class="tml-modal-gallery">
+      <div class="tml-modal-main-img-container">
+        <div id="modal-skeleton" class="absolute inset-0 tml-skeleton z-10 transition-opacity duration-300"></div>
+        <img id="modal-img" src="" alt="" class="tml-modal-main-img z-20 opacity-0">
+        
+        <button id="modal-prev" class="tml-modal-arrow tml-modal-arrow-prev hidden">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <button id="modal-next" class="tml-modal-arrow tml-modal-arrow-next hidden">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+      
+      <!-- Thumbnails Track -->
+      <div id="modal-thumb-track" class="tml-modal-thumb-container">
+        <!-- Dinámico -->
+      </div>
+    </div>
+    
+    <!-- Información -->
+    <div class="tml-modal-info">
+      <div id="modal-badge-container" class="mb-4"></div>
+      
+      <h2 id="modal-nombre" class="text-3xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
+        Nombre del producto
+      </h2>
+      
+      <p id="modal-desc" class="text-gray-600 leading-relaxed mb-8 text-base">
+        Descripción detallada...
+      </p>
+      
+      <div class="grid grid-cols-2 gap-4 mb-8 bg-gray-50 p-5 rounded-xl border border-gray-100">
+        <div>
+          <p class="text-gray-400 uppercase text-[10px] tracking-widest font-bold mb-1">Medida</p>
+          <p id="modal-medida" class="font-semibold text-gray-900 text-sm">...</p>
+        </div>
+        <div>
+          <p class="text-gray-400 uppercase text-[10px] tracking-widest font-bold mb-1">Presentación</p>
+          <p id="modal-presentacion" class="font-semibold text-gray-900 text-sm">...</p>
+        </div>
+      </div>
+      
+      <div class="mt-auto">
+         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3">Unidad de cotización</label>
+         <div class="flex flex-wrap gap-2 mb-6" id="modal-unidad-selector">
+           <!-- Dinámico -->
+         </div>
+         
+         <button id="modal-agregar" class="tml-btn-primary">
+           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+           Agregar al presupuesto
+         </button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <script src="/js/notificaciones.js"></script>
 <script src="/js/carrito.js"></script>

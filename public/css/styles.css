@@ -1573,3 +1573,377 @@
     }
   }
 }
+
+/* TML Custom Design System - Senior Polish Phase */
+:root {
+    --tml-primary: #065f46;
+    --tml-primary-hover: #064e3b;
+    --tml-bg-soft: #f9fafb;
+    --tml-border: #e5e7eb;
+    
+    /* Strict Spacing System */
+    --tml-s-1: 4px;
+    --tml-s-2: 8px;
+    --tml-s-3: 12px;
+    --tml-s-4: 16px;
+    --tml-s-6: 24px;
+    --tml-s-8: 32px;
+    --tml-s-12: 48px;
+    
+    /* Modern Radii */
+    --tml-r-md: 8px;
+    --tml-r-lg: 14px;
+    --tml-r-xl: 18px;
+    --tml-r-2xl: 24px;
+    
+    /* Layered Premium Shadows (Apple Style) */
+    --tml-shadow-sm: 0 1px 3px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.04);
+    --tml-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --tml-shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
+    --tml-shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.1);
+}
+
+.tml-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: white;
+    border: 1px solid var(--tml-border);
+    border-radius: var(--tml-r-lg);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+    padding: var(--tml-s-3);
+    position: relative;
+    user-select: none;
+}
+
+.tml-card:hover {
+    border-color: #d1d5db;
+    box-shadow: var(--tml-shadow-lg);
+    transform: translateY(-6px);
+}
+
+.tml-card:active {
+    transform: translateY(-2px) scale(0.99);
+}
+
+.tml-card-img-container {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    border-radius: var(--tml-r-md);
+    overflow: hidden;
+    background: var(--tml-bg-soft);
+    margin-bottom: var(--tml-s-3);
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.tml-card-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--tml-s-3);
+    margin-bottom: var(--tml-s-3);
+    height: 14px;
+}
+
+.tml-card-nav.placeholder {
+    height: 14px;
+}
+
+.tml-card-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.tml-card-arrow {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.tml-card-arrow svg {
+    width: 100%;
+    height: 100%;
+}
+
+.tml-card-arrow:hover {
+    color: var(--tml-primary);
+    transform: scale(1.2);
+}
+
+.tml-card-arrow:active {
+    transform: scale(0.9);
+}
+
+.tml-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tml-dot.active {
+    background: var(--tml-primary);
+    transform: scale(1.3);
+}
+
+.tml-dot:hover {
+    background: #9ca3af;
+}
+
+.tml-card-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-inline: var(--tml-s-1);
+}
+
+.tml-card-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #111827;
+    margin-bottom: var(--tml-s-1);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.5rem; 
+}
+
+.tml-card-info {
+    font-size: 0.7rem;
+    color: #6b7280;
+    margin-bottom: var(--tml-s-3);
+    font-weight: 500;
+}
+
+.tml-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: var(--tml-s-3);
+    border-top: 1px solid rgba(0,0,0,0.03);
+}
+
+.tml-btn-quick-add {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #374151;
+    cursor: pointer;
+}
+
+.tml-btn-quick-add:hover {
+    background: var(--tml-primary);
+    color: white;
+    transform: rotate(90deg) scale(1.1);
+}
+
+.tml-btn-quick-add:active {
+    transform: scale(0.9);
+}
+
+/* Modal Polish */
+.tml-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--tml-s-8);
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.tml-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.tml-modal-container {
+    max-width: 1040px;
+    width: 100%;
+    max-height: calc(100vh - 80px);
+    background: white;
+    border-radius: var(--tml-r-2xl);
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    box-shadow: var(--tml-shadow-xl);
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tml-modal-overlay.active .tml-modal-container {
+    transform: scale(1) translateY(0);
+}
+
+@media (max-width: 768px) {
+    .tml-modal-overlay { padding: 0; align-items: flex-end; }
+    .tml-modal-container { 
+        flex-direction: column; 
+        max-height: 92vh; 
+        border-radius: var(--tml-r-2xl) var(--tml-r-2xl) 0 0;
+        transform: translateY(100%);
+    }
+    .tml-modal-overlay.active .tml-modal-container { transform: translateY(0); }
+    .tml-modal-gallery { height: 380px; flex: none !important; }
+}
+
+.tml-modal-gallery {
+    flex: 1.1;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+}
+
+.tml-modal-main-img-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--tml-s-12);
+    position: relative;
+}
+
+.tml-modal-main-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05));
+}
+
+.tml-modal-info {
+    flex: 0.9;
+    padding: var(--tml-s-12) var(--tml-s-8);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background: white;
+}
+
+.tml-modal-thumb-container {
+    display: flex;
+    gap: var(--tml-s-3);
+    padding: var(--tml-s-6) var(--tml-s-8);
+    background: white;
+    border-top: 1px solid var(--tml-border);
+    overflow-x: auto;
+    scrollbar-width: none;
+    justify-content: center;
+}
+
+.tml-modal-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--tml-r-md);
+    border: 2px solid transparent;
+    cursor: pointer;
+    object-fit: cover;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.5;
+}
+
+.tml-modal-thumb.active {
+    border-color: var(--tml-primary);
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: var(--tml-shadow);
+}
+
+.tml-modal-arrow {
+    width: 48px;
+    height: 48px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--tml-shadow);
+    transition: all 0.3s ease;
+    border: 1px solid var(--tml-border);
+}
+
+.tml-modal-arrow:hover {
+    transform: translateY(-50%) scale(1.15);
+    background: white;
+    color: var(--tml-primary);
+}
+
+.tml-btn-primary {
+    background: var(--tml-primary);
+    color: white !important;
+    height: 52px;
+    padding-inline: var(--tml-s-12);
+    border-radius: var(--tml-r-lg);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--tml-s-3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: none;
+}
+
+.tml-btn-primary:hover {
+    background: var(--tml-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--tml-shadow-lg);
+}
+
+.tml-btn-primary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.tml-badge {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.tml-badge-primary {
+    background: #f0fdf4;
+    color: #166534;
+    border-color: #bbf7d0;
+}
+
+/* Skeleton loader */
+.tml-skeleton {
+    background: #f1f5f9;
+    overflow: hidden;
+}
+
+.tml-skeleton::after {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+}
