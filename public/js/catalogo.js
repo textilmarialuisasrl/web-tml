@@ -74,13 +74,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const card = document.createElement("div");
       card.className = "tml-card opacity-0 translate-y-6";
-      if (esOferta) card.style.borderColor = "var(--tml-primary)";
+      if (esOferta) card.classList.add("tml-card-oferta");
 
       observer.observe(card);
 
       let badge = "";
       if (esOferta) {
-        badge = `<span class="absolute top-3 left-3 tml-badge tml-badge-primary z-10">Oferta</span>`;
+        badge = `<span class="absolute top-3 left-3 tml-badge tml-badge-oferta z-10">Oferta Especial</span>`;
       } else if (esMasVendido) {
         badge = `<span class="absolute top-3 left-3 tml-badge z-10">Más Vendido</span>`;
       }
