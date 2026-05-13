@@ -1947,3 +1947,18 @@
 .tml-skeleton::after {
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
 }
+
+/* Mobile Polish - Quick Add Visibility */
+@media (max-width: 768px) {
+    .tml-btn-quick-add {
+        background: var(--tml-primary);
+        color: white;
+        width: 40px;
+        height: 40px;
+        box-shadow: var(--tml-shadow-sm);
+    }
+    
+    .tml-card-footer {
+        padding-top: var(--tml-s-4);
+    }
+}
