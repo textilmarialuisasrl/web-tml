@@ -1,0 +1,589 @@
+MASTER DATA - TEXTIL MARÍA LUISA
+1. DEPÓSITOS
+Depósito 1
+Nombre: GALPÓN CENTRALDescripción: Este es el galpón más grande que existe en la fábrica.¿Qué se guarda aquí? TODO MENOS LO QUE SE GUARDA EN LA CASA.Activo: SI
+Depósito 2
+Nombre: CASADescripción: Este depósito se basa en una casa dentro del complejo de la fábrica donde sus habitaciones se usan para guardar productos e insumos.¿Qué se guarda aquí? SE GUARDA FRANELA, PABILO, AMERICANA, ALFOMBRA, TUBULAR, SARGA, TOALLA, HILO, BOLSA, ETIQUETAActivo: SI
+Depósito 3
+Nombre: CONTENEDORDescripción: este contenedor se encuentra en el complejo de la fabrica también.¿Qué se guarda aquí? SE GUARDA TRAPOS EMME (50x60,70x60,80x60), SURTIDO DEL TRAPO 60X60, ALFOMBRAS SIN ETIQUETA, TRAPOS POR UNIDAD SIN EMBOLSAR (RAYADO 50X60, BCO. 60X60, BCO 70X70), DOBLE LIVIANA SIN ETIQ, DOBLE PESADA SIN ETIQ.Activo: SI
+Depósito 4
+Nombre: GALPON SECUNDARIODescripción: este se encuentra también dentro del complejo.¿Qué se guarda aquí? PABILO, AMERICANA, FRANELA, TUBULAR, SARGA, TOALLA – TODO SIN ETIQUETAR, SE BAJA DEL CAMION DEL PROVEEDOR Y SE ACOMODA AQUÍActivo: SI
+Depósito 5
+Nombre: ZONA DE CORTEDescripción: esta es una parte de la fábrica donde se realizan los cortes de las telas y también donde se produce la venta minorista de productos.¿Qué se guarda aquí? TODAS LAS TELAS SIN COSER, RETAZOS, PRODUCTOS VARIOS MINORISTAS.Activo: SI
+Depósito 6
+Nombre: DEPOSITO EVEDescripción: es un pequeño galpón donde se implementa el taller de evelina, en este se guardan productos también.¿Qué se guarda aquí? DEPOSITO COMPLEMENTARIO.Activo: SI
+Depósito 7
+Nombre: DEPOSITO VANESADescripción: es un pequeño galpón donde se implementa el taller de evelina, en este se guardan productos también.¿Qué se guarda aquí? DEPÓSITO COMPLEMENTARIO TML.Activo: SI
+2. TALLERES
+Taller 1
+Nombre: EVELINAActivo: SI
+Taller 2
+Nombre: VANESAActivo: SI
+HACE REJILLAS TAMB.
+Taller 3
+Nombre: MARYActivo: SI
+Taller 4
+Nombre: FERNANADAActivo: SI
+Taller 5
+Nombre: SILVIAActivo: SI
+Taller 6
+Observacion: ESTE TALLER SE IMPLEMENTA POR EMPLEADO DE LA FABRICA, NO TIENE UN PAGO, EL PRODUCTO A COSER SE ENFARDA Y VA DERECHO AL STOCK. NO SE REALIZAN PAGOS COMO LOS DEMAS TALLERES.
+Nombre: FABRICAActivo: SI
+3. USUARIOS
+Por el momento haremos usuarios genéricos pero basados en los trabajos que realiza cada operario que vaya a utilizar el sistema. Por un lado están los encargados del stock y de los talleres, estos usuarios tendrán permisos de cargar entregas y devoluciones, ver el stock actual y los movimientos del stock en general. Por otro lado los encargados de la zona de corte tendrán permisos de cargar las telas que van cortando y dejando en stock, y ver sus movimientos. Luego tenemos a los talleres, a los cuales se les va a realizar un usuario para que puedan visualizar lo que van produciendo, y no tener que depender de las anotaciones, solamente podrán ver en el sistema, no podrán realizar acciones, es decir entran para ver únicamente un informe histórico. Luego se encuentran los dueños los cuales tendrán permisos para realizar cualquier acción disponible en el sistema y finalmente el usuario de administrador para modificar cosas del sistema y realizar funcionalidades (soy actualmente administrador y creador del sistema mientras trabajo en la administración de la empresa)
+4. PRODUCTOS
+Tipo Producción
+Categoría
+Medida
+Color
+Etiqueta/Marca
+Observaciones
+Producción Propia
+Trapo de piso
+45x60
+Blanco
+Millenian
+Este producto contiene 60 unidades por fardo. Solamente se vende por fardo.
+Producción Propia
+Trapo de piso
+45x60
+Gris
+Millenian
+Este producto contiene 60 unidades por fardo. Solamente se vende por fardo.
+Producción Propia
+Trapo de piso
+45x60
+Rayado
+Millenian
+Este producto contiene 60 unidades por fardo. Solamente se vende por fardo.
+Producción Propia
+Trapo de piso
+45x60
+Nido
+Millenian
+Este producto contiene 60 unidades por fardo. Solamente se vende por fardo.
+Producción Propia
+Trapo de piso
+45x60
+Blanco
+Uso Diario
+Este producto contiene 60 unidades por fardo. Solamente se vende por fardo.
+Producción Propia
+Trapo de piso
+45x60
+Gris
+Uso Diario
+Este producto contiene 60 unidades por fardo. Solamente se vende por fardo.
+Producción Propia
+Trapo de piso
+45x60
+Rayado
+Uso Diario
+Este producto contiene 60 unidades por fardo. Solamente se vende por fardo.
+Producción Propia
+Trapo de piso
+45x60
+Nido
+Uso Diario
+Este producto contiene 60 unidades por fardo. Solamente se vende por fardo.
+Producción Propia
+Trapo de piso
+45x60
+Blanco
+TML
+Este producto solamente se vende por docena o unidad simple.
+Producción Propia
+Trapo de piso
+45x60
+Gris
+TML
+Este producto solamente se vende por docena o unidad simple.
+Producción Propia
+Trapo de piso
+45x60
+Rayado
+TML
+Este producto solamente se vende por docena o unidad simple.
+Producción Propia
+Trapo de piso
+45x60
+Azul
+TML
+Este producto solamente se vende por docena o unidad simple.
+Producción Propia
+Trapo de piso
+45x60
+Rojo
+TML
+Este producto solamente se vende por docena o unidad simple.
+Producción Propia
+Trapo de piso
+45x60
+Surtido
+TML
+Este producto solamente se vende por docena o por fardo. Está compuesto por 60 unidades el fardo.
+Producción Propia
+Trapo de piso
+50x60
+Blanco
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Gris
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Rayado Surtido
+TML
+Este producto se vende por docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Rayado
+TML P/U
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Blanco
+Dura Más
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Gris
+Dura Más
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Rayado Turquesa
+Dura Más
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Rayado Gris
+Dura Más
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Blanco
+Emme
+Este producto se vende por docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Gris
+Emme
+Este producto se vende por docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Blanco
+FX
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Gris
+FX
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Rayado Tradicional
+FX
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+50x60
+Rayado Color
+FX
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+60x50
+Nido
+FX
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+60x50
+Nido
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+60x60
+Blanco
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+60x60
+Gris
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+60x60
+Rayado
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+60x60
+Blanco
+TML P/U
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+60x60
+Surtido
+TML
+Este producto se vende por docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+70x60
+Blanco
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+70x60
+Gris
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+70x60
+Blanco
+TML P/U
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+70x60
+Blanco
+Emme
+Este producto se vende docena y fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+70x60
+Blanco
+Consorcio FX
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+70x60
+Gris
+Consorcio FX
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+70x60
+Rayado
+Consorcio FX
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+70x60
+Nido
+Consorcio FX
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+70x60
+Blanco
+Portero
+Este producto se vende por fardo (60 unidades por fardo).
+Producción Propia
+Trapo de piso
+80x60
+Blanco
+Emme
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Rejilla
+45x50
+TML Triple
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Rejilla
+40x45
+TML Doble Pesada
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Rejilla
+38x40
+TML Doble Liviana
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Producción Propia
+Rejilla
+40x45
+TML Profesional
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Productos Tercerizados
+Rejilla
+38x40
+TML Americana
+Este producto se vende por unidad, docena y fardo (120 unidades por fardo). unidades.
+Productos Tercerizados
+Rejilla
+38x40
+Americana
+Este producto es el bulto llegado del proveedor con las rejillas sin etiquetar, cuenta con 1200 unidades totales.
+Productos Tercerizados
+Rejilla
+38x40
+TML Pabilo
+Este producto se vende por unidad, docena y fardo (120 unidades por fardo).
+Productos Tercerizados
+Rejilla
+38x40
+Pabilo
+Este producto es el bulto llegado del proveedor con las rejillas sin etiquetar, cuenta con 1200 unidades totales.
+Productos Tercerizados
+Rejilla
+40x45
+TML Tubular
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Productos Tercerizados
+Rejilla
+40x45
+Tubular
+Este producto es el bulto llegado del proveedor con las rejillas sin etiquetar, cuenta con 480 unidades totales.
+Productos Tercerizados
+Repasador
+42x60
+TML Toalla
+Este producto se vende por unidad, docena y fardo (36 unidades por fardo).
+Productos Tercerizados
+Repasador
+42x60
+Toalla
+Este producto es el bulto llegado del proveedor sin etiquetar, cuenta con 192 unidades totales.
+Productos Tercerizados
+Repasador
+40x60
+TML Sarga
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Productos Tercerizados
+Repasador
+40x60
+Sarga
+Este producto es el bulto llegado del proveedor sin etiquetar, cuenta con 300 unidades totales.
+Productos Tercerizados
+Franela
+45x60
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Productos Tercerizados
+Franela
+45x60
+Cruda
+Este producto es el bulto llegado del proveedor sin etiquetar, cuenta con 600 unidades totales.
+Productos Tercerizados
+Franela
+50x50
+TML
+Este producto se vende por unidad, docena y fardo (60 unidades por fardo).
+Productos Tercerizados
+Franela
+50x50
+Cruda
+Este producto es el bulto llegado del proveedor sin etiquetar, cuenta con 300 unidades totales.
+Productos Tercerizados
+Paño
+38x40
+TML
+Este producto se vende por unidad, docena y fardo (120 unidades por fardo).
+Productos Tercerizados
+Paño
+38x40
+Crudo
+Este producto es el bulto llegado del proveedor sin etiquetar, cuenta con 250 unidades totales.
+Productos Tercerizados
+Alfombra de Piso
+50x60
+TML
+Este producto se vende por unidad, docena y fardo (36 unidades por fardo).
+Productos Tercerizados
+Alfombra de Piso
+50x60
+Sin terminar
+Este producto es el bulto llegado del proveedor sin etiquetar, cuenta con 60 unidades totales.
+Insumos
+Cono de hilo
+Blanco
+Por unidad
+Insumos
+Cono de hilo
+Rojo
+Por unidad
+Insumos
+Cono de hilo
+Negro
+Por unidad
+Insumos
+Cono de hilo
+Azul
+Por unidad
+Insumos
+Cono de hilo
+Verde
+Por unidad
+Insumos
+Hilo de Enfardar
+Negro
+Por unidad
+Insumos
+Bolsa
+P/Rejilla
+Por unidad
+Insumos
+Bolsa
+Naranja
+Por unidad
+Insumos
+Bolsa
+Azul
+Por unidad
+Insumos
+Bolsa
+Negra
+Por unidad
+Insumos
+Bolsa
+Tradicional
+Por unidad
+Insumos
+Bolsa
+Roja
+Por unidad
+Insumos
+Bolsa
+Verde
+Por unidad
+Insumos
+Bolsa
+Consorcio
+Por unidad
+Insumos
+Bolsa
+Extra Consorcio
+Por unidad
+Insumos
+Bolsa
+Negra P/U
+Por unidad
+Insumos
+Bolsa
+Roja P/U
+Por unidad
+Insumos
+Bolsa
+Verde P/U
+Por unidad
+Productos Especiales
+Trapo de piso fallado
+45x60
+Varios
+Sin Etiqueta
+Productos Especiales
+Trapo de piso fallado
+50x60
+Varios
+Sin Etiqueta
+Productos Especiales
+Trapo de piso fallado
+60x60
+Varios
+Sin Etiqueta
+Productos Especiales
+Trapo de piso fallado
+70x60
+Varios
+Sin Etiqueta
+Productos Especiales
+Trapo de piso fallado
+80x60
+Varios
+Sin Etiqueta
+Productos Especiales
+Trapo de piso
+50x60
+Varios
+Productos Especiales
+Trapo de piso
+60x60
+Varios
+Productos Especiales
+Trapo de piso
+70x60
+Varios
+Productos Especiales
+Trapo de piso
+80x60
+Varios
+Productos Especiales
+Retazo
+45
+Productos Especiales
+Retazo
+50
+Productos Especiales
+Retazo
+60
+Productos Especiales
+Retazo
+70
+Productos Especiales
+Retazo
+80
+Productos Especiales
+Rejillas
+45x50
+Triple S/E
+Productos Especiales
+Rejillas
+40x45
+Doble Pesada S/E
+Productos Especiales
+Rejillas
+38x40
+Doble Liviana S/E
+Productos Especiales
+Rejillas
+40x45
+Profesional S/E
+Aclaraciones generales sobre los productos relevados:
+Los productos detallados en el presente relevamiento representan las configuraciones comerciales identificadas al momento de la visita, diferenciándose por tipo de producción, categoría, medida, color y etiqueta o marca correspondiente.
+En el caso de los productos tercerizados, las cantidades indicadas por bulto corresponden a las presentaciones habitualmente recibidas de los proveedores. No obstante, dichas cantidades pueden variar entre entregas, por lo que el sistema deberá permitir modificar la cantidad real de unidades contenidas en cada bulto al momento de registrar el ingreso de mercadería.
+Respecto de los insumos, los conos de hilo se diferencian únicamente por su color y serán gestionados por unidad. Del mismo modo, las bolsas utilizadas para el empaquetado serán controladas individualmente según su tipo o presentación
+Se debe tener en cuenta que se deberían agregar las correspondientes telas que se cortan en la Zona de Corte las cuales son:-&gt; Tela 45x60 blanco, gris, rayado, azul, rojo, nido
+-&gt; Tela 50x60 blanco, gris, rayado (turquesa/blanco y gris/blanco), nido-&gt; Tela 60x60 blanco, gris, rayado, azul, rojo
+-&gt; Tela 70x60 blanco, gris, rayado, nido
+-&gt; Tela 80x60 blancoAlgo que se agrega como producto especial son los retazos de los que ya se hablo en un pasado, los cuales son obtenidos de finales de tela que deben ser cortados y se pueden reutilizar para hacer un trapo de alguna medida.
+5. STOCK INICIAL
+Por el momento dejaremos esto para un próximo paso, primero comencemos con la estructura de los productos
+6. FLUJO REAL DE OPERACIÓN
+Ejemplos varios
+Movimiento 1
+Ejemplo: se quiere llevar a la Zona de Corte (venta minorista) trapos de 60x60 para reponer porque se vendió todo. Por lo tanto se saca un fardo de un depósito X y se deja en la zona de corteDepósito X → Zona de CorteQuién lo realiza: Cualquier persona con acceso al stock y al depósitoFrecuencia: Media
+Movimiento 2
+Ejemplo: se lleva al taller 270 unidades de tela 45x60 al taller y cuando vuelven traen 5 fardos pendientes del taller al que fueron.
+Zona de Corte  Taller XTaller X → Deposito X
+Quién lo realiza: Cualquier persona con acceso al stock, al depósito y a la administración de los talleresFrecuencia: Alta
+Movimiento 3
+Ejemplo: se quiere etiquetar rejilla pabilo, por lo tanto se descuentan las unidades sin etiquetar del bulto llegado desde el proveedor y se sumaría en un deposito x la unidad/docena/fardo fardo terminado.Depósito X → Deposito X
+Descripción:Quién lo realiza: Cualquier persona con acceso al stock y al depósitoFrecuencia: Media
+Movimiento 4
+Ejemplo: se venden unidades de rejillas sin etiquetas pero se debe tener cuidado: en el caso que esa rejilla tenga un bulto de proveedor se resta del bulto. Caso contrario si es una rejilla de producción propia se resta del producto especial de esa rejilla especifica.Quién lo realiza: Cualquier persona con acceso al stock y al depósitoFrecuencia: Media
+Movimiento 5
+Ejemplo: se está cortando una tela y se obtiene un retazo que mide 60cm, por lo tanto se suma al stock de retazo 60.Quién lo realiza: Cualquier persona con acceso al stock y al depósitoFrecuencia: Alta

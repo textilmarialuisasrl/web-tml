@@ -5,21 +5,56 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "build:css": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/styles.css --watch"
+    "build": "vite build",
+    "build:css": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/styles.css --watch",
+    "dev:api": "tsx src/backend/server.ts",
+    "setup:demo": "npx prisma migrate deploy && tsx src/backend/scripts/seed-demo.ts",
+    "db:backup": "tsx src/backend/scripts/backup.ts",
+    "db:restore": "tsx src/backend/scripts/restore.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@prisma/client": "^6.14.0",
+    "@tanstack/react-query": "^5.100.11",
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
-    "dotenv": "^17.2.4",
+    "dexie": "^4.4.2",
+    "dexie-react-hooks": "^4.4.0",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-rate-limit": "^8.3.0",
-    "helmet": "^8.1.0"
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "lucide-react": "^1.16.0",
+    "pdfkit": "^0.18.0",
+    "prisma": "^6.14.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router-dom": "^7.15.1",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.1",
-    "tailwindcss": "^4.2.1"
+    "@types/bcrypt": "^6.0.0",
+    "@types/compression": "^1.8.1",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pdfkit": "^0.17.6",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "tailwindcss": "^4.2.1",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.14",
+    "vite-plugin-pwa": "^1.3.0"
   }
 }

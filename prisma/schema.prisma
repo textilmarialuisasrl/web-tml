@@ -1,0 +1,403 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Familia {
+  id        String     @id @default(cuid())
+  codigo    String     @unique // e.g. FAM001 to FAM007
+  nombre    String     @unique // e.g. "Trapos", "Rejillas", etc.
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+  productos Producto[]
+}
+
+model Producto {
+  id                    String               @id @default(cuid())
+  codigo                String               @unique // e.g. PB001, PF001, FL001, INS001, RET001
+  nombre                String
+  tipoProducto          TipoProducto         // Enum: BASE, COMERCIAL, FALLADO, INSUMO, RETAZO
+  activo                Boolean              @default(true)
+  familiaId             String?              // Relation to Familia
+  tipoTrabajo           TipoTrabajoTaller?   // Enum: TRAPOS, REJILLAS
+
+  // Attributes
+  medida                String?              // base, commercial, fallado
+  color                 String?              // base
+  marca                 String?              // commercial (e.g. TML, MILLENIAN, etc.)
+  unidadesPorFardo      Int?                 // commercial (e.g. 60, 120, etc.)
+  vendeUnidad           Boolean              @default(false) // commercial
+  vendeDocena           Boolean              @default(false) // commercial
+  vendeFardo            Boolean              @default(false) // commercial
+  requiereTaller        Boolean              @default(false) // commercial
+  requiereEtiqueta      Boolean              @default(false) // commercial
+  estadoActual          String?              // base (e.g. Cortado, En Rollo, Sin Etiqueta, Recepcionado)
+  procesoSiguiente      String?              // base (e.g. Taller Trapos, Taller Rejillas, Producto terminado)
+  origen                String?              // base (e.g. Producto final, Compra)
+  categoriaInsumo       String?              // insumo (e.g. Conos de Hilo, Enfardado, Bolsas)
+  unidadMedida          String?              // base, commercial, fallado, insumo, retazo (e.g. Unidad, Kg, Cono, Rollo)
+  stockMinimo           Int                  @default(0)     // commercial, insumo
+
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @default(now()) @updatedAt
+  deletedAt             DateTime?
+
+  // Relations
+  familia               Familia?             @relation(fields: [familiaId], references: [id])
+  alertasStock          AlertaStock[]
+  movimientoItems       MovimientoItem[]
+  stockActual           StockActual[]
+
+  @@index([nombre])
+  @@index([activo, deletedAt])
+  @@index([tipoProducto])
+}
+
+model Deposito {
+  id             String           @id @default(cuid())
+  nombre         String           @unique
+  descripcion    String?
+  tipo           TipoDeposito
+  activo         Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now()) @updatedAt
+  deletedAt      DateTime?
+  alertasStock   AlertaStock[]
+  itemsDestino   MovimientoItem[] @relation("DepositoDestino")
+  itemsOrigen    MovimientoItem[] @relation("DepositoOrigen")
+  stockActual    StockActual[]
+  tallerAsociado Taller?          @relation("TallerDepositoAsociado")
+
+  @@index([activo, deletedAt])
+}
+
+model Taller {
+  id                 String           @id @default(cuid())
+  nombre             String           @unique
+  observaciones      String?
+  depositoAsociadoId String?          @unique
+  activo             Boolean          @default(true)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @default(now()) @updatedAt
+  deletedAt          DateTime?
+  depositoAsociado   Deposito?        @relation("TallerDepositoAsociado", fields: [depositoAsociadoId], references: [id])
+  alertasStock       AlertaStock[]
+  movimientos        Movimiento[]
+  itemsTallerDest    MovimientoItem[] @relation("TallerDestino")
+  itemsTallerOrig    MovimientoItem[] @relation("TallerOrigen")
+  stockActual        StockActual[]
+  tarifas            TallerTarifa[]
+  pagos              TallerPago[]
+  usuarios           Usuario[]
+
+  @@index([activo, deletedAt])
+}
+
+model Movimiento {
+  id                    String             @id @default(cuid())
+  tipo                  TipoMovimiento
+  usuarioId             String
+  tallerId              String?
+  observaciones         String?
+  numeroSecuencial      Int                @unique @default(autoincrement())
+  estado                EstadoMovimiento   @default(CONFIRMADO)
+  requestId             String?
+  usuarioNombreSnapshot String
+  syncStatus            SyncStatus         @default(SYNCED)
+  deviceId              String             @default("SYSTEM")
+  clientGeneratedId     String?
+  payloadHash           String?
+  schemaVersion         Int                @default(1)
+  syncErrorMessage      String?
+  syncResolvedAt        DateTime?
+  lastSyncedAt          DateTime?
+  syncBatchId           String?
+  offlineCreatedAt      DateTime?
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @default(now()) @updatedAt
+  taller                Taller?            @relation(fields: [tallerId], references: [id])
+  usuario               Usuario            @relation(fields: [usuarioId], references: [id])
+  insumos               MovimientoInsumo[]
+  items                 MovimientoItem[]
+
+  @@unique([deviceId, clientGeneratedId])
+  @@index([numeroSecuencial])
+  @@index([createdAt, estado])
+  @@index([tipo, createdAt])
+  @@index([syncStatus, createdAt])
+}
+
+model MovimientoItem {
+  id                     String               @id @default(cuid())
+  movimientoId           String
+  productoId             String
+  cantidadUnidades       Int
+  depositoOrigenId       String?
+  tallerOrigenId         String?
+  depositoDestinoId      String?
+  tallerDestinoId        String?
+  calidad                CalidadProducto
+  presentacion           PresentacionProducto
+  canal                  CanalStock
+  direccion              DireccionItem
+  observaciones          String?
+  productoNombreSnapshot String
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @default(now()) @updatedAt
+  depositoDestino        Deposito?            @relation("DepositoDestino", fields: [depositoDestinoId], references: [id])
+  depositoOrigen         Deposito?            @relation("DepositoOrigen", fields: [depositoOrigenId], references: [id])
+  movimiento             Movimiento           @relation(fields: [movimientoId], references: [id], onDelete: Cascade)
+  producto               Producto             @relation(fields: [productoId], references: [id])
+  tallerDestino          Taller?              @relation("TallerDestino", fields: [tallerDestinoId], references: [id])
+  tallerOrigen           Taller?              @relation("TallerOrigen", fields: [tallerOrigenId], references: [id])
+
+  @@index([movimientoId])
+  @@index([productoId, createdAt])
+  @@index([depositoOrigenId])
+  @@index([depositoDestinoId])
+}
+
+model MovimientoInsumo {
+  id           String     @id @default(cuid())
+  movimientoId String
+  descripcion  String
+  cantidad     Float
+  createdAt    DateTime   @default(now())
+  movimiento   Movimiento @relation(fields: [movimientoId], references: [id], onDelete: Cascade)
+}
+
+model StockActual {
+  id               String               @id @default(cuid())
+  productoId       String
+  depositoId       String?
+  tallerId         String?
+  calidad          CalidadProducto
+  presentacion     PresentacionProducto
+  canal            CanalStock
+  cantidadUnidades Int                  @default(0)
+  version          Int                  @default(1)
+  updatedAt        DateTime             @default(now()) @updatedAt
+  deletedAt        DateTime?
+  deposito         Deposito?            @relation(fields: [depositoId], references: [id])
+  producto         Producto             @relation(fields: [productoId], references: [id])
+  taller           Taller?              @relation(fields: [tallerId], references: [id])
+
+  @@unique([productoId, depositoId, tallerId, calidad, presentacion, canal])
+  @@index([productoId, deletedAt])
+  @@index([depositoId, deletedAt])
+  @@index([tallerId, deletedAt])
+}
+
+model Usuario {
+  id                String           @id @default(cuid())
+  codigo            String?          @unique // e.g. US001 to US012
+  nombre            String
+  email             String           @unique
+  passwordHash      String
+  activo            Boolean          @default(true)
+  rol               RolUsuario       @default(OPERARIO)
+  area              String?
+  accesoStock       Boolean          @default(false)
+  tallerId          String?
+  ultimoLoginAt     DateTime?
+  passwordUpdatedAt DateTime         @default(now())
+  sessionVersion    Int              @default(1)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @default(now()) @updatedAt
+  deletedAt         DateTime?
+  alertasResueltas  AlertaStock[]    @relation("AlertasResueltas")
+  auditorias        Auditoria[]
+  movimientos       Movimiento[]
+  permisos          UsuarioPermiso[]
+  taller            Taller?          @relation(fields: [tallerId], references: [id])
+
+  @@index([email])
+  @@index([activo])
+  @@index([deletedAt])
+}
+
+model Permiso {
+  id          String           @id @default(cuid())
+  clave       String           @unique
+  descripcion String
+  modulo      String
+  createdAt   DateTime         @default(now())
+  usuarios    UsuarioPermiso[]
+
+  @@index([clave])
+}
+
+model UsuarioPermiso {
+  id        String  @id @default(cuid())
+  usuarioId String
+  permisoId String
+  permiso   Permiso @relation(fields: [permisoId], references: [id], onDelete: Cascade)
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, permisoId])
+  @@index([usuarioId])
+}
+
+model Auditoria {
+  id           String      @id @default(cuid())
+  usuarioId    String
+  accion       String
+  entidad      String
+  entidadId    String
+  movimientoId String?
+  cambios      Json
+  before       Json?
+  after        Json?
+  requestId    String?
+  ip           String?
+  userAgent    String?
+  syncStatus   SyncStatus?
+  syncBatchId  String?
+  createdAt    DateTime    @default(now())
+  usuario      Usuario     @relation(fields: [usuarioId], references: [id])
+
+  @@index([usuarioId])
+  @@index([createdAt])
+}
+
+model Configuracion {
+  id          String   @id @default(cuid())
+  clave       String   @unique
+  valor       String
+  descripcion String?
+  updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model AlertaStock {
+  id             String    @id @default(cuid())
+  productoId     String
+  depositoId     String?
+  tallerId       String?
+  cantidadActual Int
+  limiteMinimo   Int
+  activa         Boolean   @default(true)
+  resueltaAt     DateTime?
+  resueltaPorId  String?
+  createdAt      DateTime  @default(now())
+  deposito       Deposito? @relation(fields: [depositoId], references: [id])
+  producto       Producto  @relation(fields: [productoId], references: [id])
+  resueltaPor    Usuario?  @relation("AlertasResueltas", fields: [resueltaPorId], references: [id])
+  taller         Taller?   @relation(fields: [tallerId], references: [id])
+
+  @@index([productoId, activa])
+  @@index([depositoId, activa])
+  @@index([tallerId, activa])
+}
+
+enum TipoProducto {
+  BASE
+  COMERCIAL
+  FALLADO
+  INSUMO
+  RETAZO
+}
+
+enum TipoTrabajoTaller {
+  TRAPOS
+  REJILLAS
+}
+
+enum RolUsuario {
+  ADMINISTRADOR
+  DUENO
+  SUPERVISOR
+  OPERARIO
+  TALLER
+}
+
+enum TipoMovimiento {
+  CORTADA
+  ENTREGA_TALLER
+  DEVOLUCION_TALLER
+  ETIQUETADO
+  VENTA
+  TRANSFERENCIA
+  AJUSTE
+  PAGO_TALLER
+}
+
+enum CalidadProducto {
+  PERFECTO
+  FALLADO
+}
+
+enum PresentacionProducto {
+  UNIDAD
+  DOCENA
+  FARDO
+  SIN_ETIQUETA
+}
+
+enum CanalStock {
+  MAYORISTA
+  MINORISTA
+}
+
+enum TipoDeposito {
+  PRODUCCION
+  STOCK
+  TALLER
+}
+
+enum UnidadVisual {
+  UNIDAD
+  DOCENA
+  FARDO
+}
+
+enum EstadoMovimiento {
+  CONFIRMADO
+  ANULADO
+}
+
+enum DireccionItem {
+  ENTRADA
+  SALIDA
+}
+
+enum SyncStatus {
+  PENDING
+  SYNCED
+  CONFLICT
+  FAILED
+}
+
+model TallerTarifa {
+  id          String            @id @default(cuid())
+  tallerId    String
+  tipoTrabajo TipoTrabajoTaller
+  precioFardo Float
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @default(now()) @updatedAt
+  taller      Taller            @relation(fields: [tallerId], references: [id], onDelete: Cascade)
+
+  @@unique([tallerId, tipoTrabajo])
+  @@index([tallerId])
+}
+
+model TallerPago {
+  id            String    @id @default(cuid())
+  tallerId      String
+  monto         Float
+  fecha         DateTime  @default(now())
+  observaciones String?
+  periodoNombre String?
+  periodoInicio DateTime?
+  periodoFin    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  taller        Taller    @relation(fields: [tallerId], references: [id], onDelete: Cascade)
+
+  @@index([tallerId])
+}
+

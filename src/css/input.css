@@ -19,10 +19,22 @@
       transform: translateY(0);
     }
   }
+
+  /* Custom utility to hide horizontal scrollbars gracefully */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 :root {
-  --color-primary: #16a34a;
+  --color-primary: #2563eb; /* Modern Indigo primary */
+  --color-success: #10b981; /* Modern Emerald success */
+  --color-warning: #f59e0b; /* Modern Amber warning */
+  --color-error: #ef4444; /* Modern Red error */
 }
 
 @layer utilities {
@@ -57,9 +69,46 @@
   .bg-brand-gradient {
     background-image: linear-gradient(
       to right,
-      rgba(22, 163, 74, 0.08),
-      #ffffff,
-      rgba(22, 163, 74, 0.06)
+      rgba(37, 99, 235, 0.08),
+      #0f172a,
+      rgba(37, 99, 235, 0.06)
     );
   }
+}
+
+/* Custom Segmented Control styling */
+.segment-container {
+  display: flex;
+  background-color: #0f172a; /* bg-slate-900 */
+  border: 1px solid #1e293b; /* border-slate-800 */
+  padding: 4px;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.segment-btn {
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 8px;
+  transition: all 0.12s ease-in-out;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.segment-btn-active {
+  background-color: #2563eb; /* bg-blue-600 */
+  color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.08);
+}
+
+.segment-btn-inactive {
+  color: #94a3b8; /* text-slate-400 */
+}
+
+.segment-btn-inactive:hover {
+  color: #f1f5f9; /* text-slate-100 */
 }

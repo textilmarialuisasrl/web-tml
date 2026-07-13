@@ -1,357 +1,1033 @@
 [
   {
-    "id": 1,
-    "nombre": "Surtido",
-    "descripcion": "Trapos de piso 45x60 cm en colores surtidos. Ideal para reventa o consumo mayorista. Excelente absorción y durabilidad.",
-    "categoria": "Trapos",
+    "nombre": "Tela 45x60 Blanco",
+    "categoria": "Telas",
     "medida": "45x60 cm",
-    "colores": "Colores surtidos",
-    "unidadesPorFardo": 60,
-    "permiteUnidad": false,
-    "presentacion": "Fardo x 60 unidades (5 docenas)",
-    "uso": "Multiuso. Todo tipo de pisos.",
-    "imagenes": [
-      "/images/productos/trapo-para-piso-surtido-1.webp",
-      "/images/productos/trapo-para-piso-surtido-2.webp"
-    ]
-  },
-  {
-    "id": 2,
-    "nombre": "Trapo Dura Más",
-    "descripcion": "Línea económica 100% algodón. Excelente absorción y resistencia para uso intensivo diario.",
-    "categoria": "Trapos",
-    "medida": "50x60 cm",
-    "colores": "Blanco, Gris o Rayado",
-    "unidadesPorFardo": 60,
+    "unidadesPorFardo": 1,
     "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Todo tipo de pisos.",
-    "imagenes": [
-      "/images/productos/trapo-para-piso-duramas-1.webp",
-      "/images/productos/trapo-para-piso-duramas-2.webp"
-    ]
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 45x60 Blanco"
   },
   {
-    "id": 3,
-    "nombre": "Trapo Chico",
-    "descripcion": "Formato práctico y versátil para limpieza cotidiana. Excelente relación tamaño-rendimiento.",
-    "categoria": "Trapos",
-    "medida": "50x60 cm",
-    "colores": "Blanco o Gris",
-    "unidadesPorFardo": 60,
+    "nombre": "Tela 45x60 Gris",
+    "categoria": "Telas",
+    "medida": "45x60 cm",
+    "unidadesPorFardo": 1,
     "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Multiuso.",
-    "imagenes": [
-      "/images/productos/trapo-para-piso-chico-1.webp",
-      "/images/productos/trapo-para-piso-chico-2.webp"
-    ]
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 45x60 Gris"
   },
   {
-    "id": 4,
-    "nombre": "Trapo Mediano",
-    "descripcion": "Equilibrio ideal entre tamaño y capacidad de absorción.",
-    "categoria": "Trapos",
+    "nombre": "Tela 45x60 Rayado",
+    "categoria": "Telas",
+    "medida": "45x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 45x60 Rayado"
+  },
+  {
+    "nombre": "Tela 45x60 Azul",
+    "categoria": "Telas",
+    "medida": "45x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 45x60 Azul"
+  },
+  {
+    "nombre": "Tela 45x60 Rojo",
+    "categoria": "Telas",
+    "medida": "45x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 45x60 Rojo"
+  },
+  {
+    "nombre": "Tela 45x60 Nido",
+    "categoria": "Telas",
+    "medida": "45x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 45x60 Nido"
+  },
+  {
+    "nombre": "Tela 50x60 Blanco",
+    "categoria": "Telas",
+    "medida": "50x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 50x60 Blanco"
+  },
+  {
+    "nombre": "Tela 50x60 Gris",
+    "categoria": "Telas",
+    "medida": "50x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 50x60 Gris"
+  },
+  {
+    "nombre": "Tela 50x60 Rayado Turquesa",
+    "categoria": "Telas",
+    "medida": "50x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 50x60 Rayado Turquesa"
+  },
+  {
+    "nombre": "Tela 50x60 Rayado Gris",
+    "categoria": "Telas",
+    "medida": "50x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 50x60 Rayado Gris"
+  },
+  {
+    "nombre": "Tela 50x60 Nido",
+    "categoria": "Telas",
+    "medida": "50x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 50x60 Nido"
+  },
+  {
+    "nombre": "Tela 60x60 Blanco",
+    "categoria": "Telas",
     "medida": "60x60 cm",
-    "colores": "Blanco o Gris",
-    "unidadesPorFardo": 60,
+    "unidadesPorFardo": 1,
     "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Multiuso.",
-    "imagenes": [
-      "/images/productos/trapo-para-piso-mediano-1.webp",
-      "/images/productos/trapo-para-piso-mediano-2.webp"
-    ]
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 60x60 Blanco"
   },
   {
-    "id": 5,
-    "nombre": "Trapo Grande",
-    "descripcion": "Mayor cobertura para superficies amplias. Alta resistencia al uso continuo.",
-    "categoria": "Trapos",
+    "nombre": "Tela 60x60 Gris",
+    "categoria": "Telas",
+    "medida": "60x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 60x60 Gris"
+  },
+  {
+    "nombre": "Tela 60x60 Rayado",
+    "categoria": "Telas",
+    "medida": "60x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 60x60 Rayado"
+  },
+  {
+    "nombre": "Tela 60x60 Azul",
+    "categoria": "Telas",
+    "medida": "60x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 60x60 Azul"
+  },
+  {
+    "nombre": "Tela 60x60 Rojo",
+    "categoria": "Telas",
+    "medida": "60x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 60x60 Rojo"
+  },
+  {
+    "nombre": "Tela 70x60 Blanco",
+    "categoria": "Telas",
     "medida": "70x60 cm",
-    "colores": "Blanco o Gris",
-    "unidadesPorFardo": 60,
+    "unidadesPorFardo": 1,
     "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Pisos de alto tránsito.",
-    "imagenes": [
-      "/images/productos/trapo-para-piso-grande-1.webp",
-      "/images/productos/trapo-para-piso-grande-2.webp"
-    ]
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 70x60 Blanco"
   },
   {
-    "id": 6,
-    "nombre": "Trapo Nido Tradicional",
-    "descripcion": "Tejido tipo nido clásico. Resistente y duradero para uso profesional.",
+    "nombre": "Tela 70x60 Gris",
+    "categoria": "Telas",
+    "medida": "70x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 70x60 Gris"
+  },
+  {
+    "nombre": "Tela 70x60 Rayado",
+    "categoria": "Telas",
+    "medida": "70x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 70x60 Rayado"
+  },
+  {
+    "nombre": "Tela 70x60 Nido",
+    "categoria": "Telas",
+    "medida": "70x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 70x60 Nido"
+  },
+  {
+    "nombre": "Tela 80x60 Blanco",
+    "categoria": "Telas",
+    "medida": "80x60 cm",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Rollo / Bobina",
+    "descripcion": "Tela cortada real para producción: Tela 80x60 Blanco"
+  },
+  {
+    "nombre": "Cono de hilo Blanco",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Cono de hilo Blanco"
+  },
+  {
+    "nombre": "Cono de hilo Rojo",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Cono de hilo Rojo"
+  },
+  {
+    "nombre": "Cono de hilo Negro",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Cono de hilo Negro"
+  },
+  {
+    "nombre": "Cono de hilo Azul",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Cono de hilo Azul"
+  },
+  {
+    "nombre": "Cono de hilo Verde",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Cono de hilo Verde"
+  },
+  {
+    "nombre": "Hilo de Enfardar Negro",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Hilo de Enfardar Negro"
+  },
+  {
+    "nombre": "Bolsa P/Rejilla",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa P/Rejilla"
+  },
+  {
+    "nombre": "Bolsa Naranja",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Naranja"
+  },
+  {
+    "nombre": "Bolsa Azul",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Azul"
+  },
+  {
+    "nombre": "Bolsa Negra",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Negra"
+  },
+  {
+    "nombre": "Bolsa Tradicional",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Tradicional"
+  },
+  {
+    "nombre": "Bolsa Roja",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Roja"
+  },
+  {
+    "nombre": "Bolsa Verde",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Verde"
+  },
+  {
+    "nombre": "Bolsa Consorcio",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Consorcio"
+  },
+  {
+    "nombre": "Bolsa Extra Consorcio",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Extra Consorcio"
+  },
+  {
+    "nombre": "Bolsa Negra P/U",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Negra P/U"
+  },
+  {
+    "nombre": "Bolsa Roja P/U",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Roja P/U"
+  },
+  {
+    "nombre": "Bolsa Verde P/U",
+    "categoria": "Insumos",
+    "medida": "Unidad",
+    "unidadesPorFardo": 1,
+    "permiteUnidad": true,
+    "presentacion": "Unidad individual",
+    "descripcion": "Insumo real de fábrica: Bolsa Verde P/U"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Blanco Millenian",
     "categoria": "Trapos",
-    "medida": "50x60 cm",
-    "colores": "Natural",
-    "unidadesPorFardo": 60,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Multiuso.",
-    "imagenes": [
-      "/images/productos/trapo-para-piso-nido-1.webp",
-      "/images/productos/trapo-para-piso-nido-2.webp"
-    ]
-  },
-  {
-    "id": 7,
-    "nombre": "Alfombrita Estampada",
-    "descripcion": "Trapo de piso 100% algodón con diseño estampado decorativo.",
-    "categoria": "Trapos",
-    "medida": "50x60 cm",
-    "colores": "Estampados varios",
-    "unidadesPorFardo": 36,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 36 unidades",
-    "uso": "Ambientes del hogar.",
-    "imagenes": [
-      "/images/productos/trapo-alfombra-piso-1.webp",
-      "/images/productos/trapo-alfombra-piso-2.webp",
-      "/images/productos/trapo-alfombra-piso-3.webp",
-      "/images/productos/trapo-alfombra-piso-4.webp",
-      "/images/productos/trapo-alfombra-piso-5.webp",
-      "/images/productos/trapo-alfombra-piso-6.webp",
-      "/images/productos/trapo-alfombra-piso-7.webp",
-      "/images/productos/trapo-alfombra-piso-8.webp"
-    ]
-  },
-  {
-    "id": 8,
-    "nombre": "Rejilla Pabilo",
-    "descripcion": "Liviana y económica para superficies pequeñas.",
-    "categoria": "Rejillas",
-    "medida": "38x40 cm",
-    "colores": "Natural 100% algodón",
-    "unidadesPorFardo": 120,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 120 unidades",
-    "uso": "Cocinas y sanitarios.",
-    "imagenes": [
-      "/images/productos/rejilla-pabilo-1.webp",
-      "/images/productos/rejilla-pabilo-2.webp"
-    ]
-  },
-  {
-    "id": 9,
-    "nombre": "Rejilla Americana",
-    "descripcion": "Eficaz para limpieza de cocinas. Línea económica.",
-    "categoria": "Rejillas",
-    "medida": "38x40 cm",
-    "colores": "Natural 100% algodón",
-    "unidadesPorFardo": 120,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 120 unidades",
-    "uso": "Cocinas y sanitarios.",
-    "imagenes": [
-      "/images/productos/rejilla-americana-1.webp",
-      "/images/productos/rejilla-americana-2.webp"
-    ]
-  },
-  {
-    "id": 10,
-    "nombre": "Rejilla Doble Liviana",
-    "descripcion": "Tejido de malla doble liviano y resistente. Económica dentro de las rejillas pesadas.",
-    "categoria": "Rejillas",
-    "medida": "38x45 cm",
-    "colores": "Natural 100% algodón",
-    "unidadesPorFardo": 60,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Hogar y automotor.",
-    "imagenes": [
-      "/images/productos/rejilla-doble-liviana-1.webp",
-      "/images/productos/rejilla-doble-liviana-2.webp"
-    ]
-  },
-  {
-    "id": 11,
-    "nombre": "Rejilla Doble Pesada",
-    "descripcion": "Alta resistencia al uso diario y productos químicos.",
-    "categoria": "Rejillas",
-    "medida": "40x45 cm",
-    "colores": "Natural 100% algodón",
-    "unidadesPorFardo": 60,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Hogar y automotor.",
-    "imagenes": [
-      "/images/productos/rejilla-doble-pesada-1.webp",
-      "/images/productos/rejilla-doble-pesada-2.webp"
-    ]
-  },
-  {
-    "id": 12,
-    "nombre": "Rejilla Tubular",
-    "descripcion": "Tejido de doble punto tubular. Alta absorción y resistencia.",
-    "categoria": "Rejillas",
-    "medida": "40x45 cm",
-    "colores": "Natural 100% algodón",
-    "unidadesPorFardo": 60,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Multiuso de alta exigencia.",
-    "imagenes": [
-      "/images/productos/rejilla-tubular-1.webp",
-      "/images/productos/rejilla-tubular-2.webp"
-    ]
-  },
-  {
-    "id": 13,
-    "nombre": "Rejilla Triple",
-    "descripcion": "Tejido de malla triple, máximo rendimiento y durabilidad.",
-    "categoria": "Rejillas",
-    "medida": "45x50 cm",
-    "colores": "Natural 100% algodón",
-    "unidadesPorFardo": 60,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Automotor y alta exigencia.",
-    "imagenes": [
-      "/images/productos/rejilla-triple-1.webp",
-      "/images/productos/rejilla-triple-2.webp"
-    ]
-  },
-  {
-    "id": 14,
-    "nombre": "Rejilla Profesional",
-    "descripcion": "Proceso de blanqueado de fábrica. No se altera con cloro o lavandina.",
-    "categoria": "Rejillas",
-    "medida": "40x45 cm",
-    "colores": "Blanco 100% algodón",
-    "unidadesPorFardo": 60,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Comercios alimenticios y cocinas.",
-    "imagenes": [
-      "/images/productos/rejilla-profesional-1.webp",
-      "/images/productos/rejilla-profesional-2.webp"
-    ]
-  },
-  {
-    "id": 15,
-    "nombre": "Paño Absorbente",
-    "descripcion": "Ideal para limpieza general del hogar.",
-    "categoria": "Limpieza",
-    "medida": "38x40 cm",
-    "colores": "Colores varios",
-    "unidadesPorFardo": 120,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 120 unidades",
-    "uso": "Limpieza del hogar.",
-    "imagenes": [
-      "/images/productos/pano-para-cocina-1.webp",
-      "/images/productos/pano-para-cocina-2.webp"
-    ]
-  },
-  {
-    "id": 16,
-    "nombre": "Franela",
-    "descripcion": "Máxima suavidad para superficies delicadas.",
-    "categoria": "Limpieza",
-    "medida": "40x50 cm",
-    "colores": "Naranja",
-    "unidadesPorFardo": 60,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Muebles e interiores de autos.",
-    "imagenes": [
-      "/images/productos/franela-1.webp",
-      "/images/productos/franela-2.webp"
-    ]
-  },
-  {
-    "id": 17,
-    "nombre": "Repasador Sarga",
-    "descripcion": "100% algodón, máxima absorción.",
-    "categoria": "Limpieza",
-    "medida": "40x60 cm",
-    "colores": "Estampados varios",
-    "unidadesPorFardo": 60,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades",
-    "uso": "Cocina.",
-    "imagenes": [
-      "/images/productos/repasador-cocina-sarga-1.webp",
-      "/images/productos/repasador-cocina-sarga-2.webp"
-    ]
-  },
-  {
-    "id": 18,
-    "nombre": "Repasador Toalla Cuadro",
-    "descripcion": "Tejido doble, resistente y absorbente.",
-    "categoria": "Limpieza",
-    "medida": "42x60 cm",
-    "colores": "Colores combinados",
-    "unidadesPorFardo": 36,
-    "permiteUnidad": true,
-    "presentacion": "Fardo x 36 unidades",
-    "uso": "Cocina.",
-    "imagenes": [
-      "/images/productos/repasador-cocina-toalla-cuadro-1.webp",
-      "/images/productos/repasador-cocina-toalla-cuadro-2.webp"
-    ]
-  },
-  {
-    "id": 19,
-    "nombre": "Surtido Rayado",
-    "descripcion": "Trapos de piso rayados de 50x60 cm en colores surtidos. Ideal para reventa o consumo mayorista. Excelente absorción y durabilidad.",
-    "categoria": "Trapos",
-    "medida": "50x60 cm",
-    "colores": "Colores surtidos",
     "unidadesPorFardo": 60,
     "permiteUnidad": false,
-    "presentacion": "Fardo x 60 unidades (5 docenas)",
-    "uso": "Multiuso. Todo tipo de pisos.",
-    "imagenes": [
-      "/images/productos/trapo-para-piso-surtido-rayado-1.webp",
-      "/images/productos/trapo-para-piso-surtido-rayado-2.webp"
-    ]
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Blanco Millenian"
   },
   {
-    "id": 20,
-    "nombre": "Oferta Trapo Económico 10+1",
-    "descripcion": "Aprovechá esta promo mayorista: llevás 10 fardos y te regalamos 1 sin costo.",
-    "categoria": "Ofertas",
-    "medida": "45x60 cm aprox.",
-    "colores": "Colores surtidos",
+    "nombre": "Trapo de piso 45x60 Gris Millenian",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Gris Millenian"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Rayado Millenian",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Rayado Millenian"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Nido Millenian",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Nido Millenian"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Blanco Uso Diario",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Blanco Uso Diario"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Gris Uso Diario",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Gris Uso Diario"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Rayado Uso Diario",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Rayado Uso Diario"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Nido Uso Diario",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Nido Uso Diario"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Blanco TML",
+    "categoria": "Trapos",
     "unidadesPorFardo": 60,
     "permiteUnidad": true,
-    "presentacion": "Fardo x 60 unidades (5 docenas)",
-    "uso": "Producto multiuso de alta rotación para comercios.",
-    "detalle": "Tejido 100% algodón. Peso aproximado 95g por unidad.",
-    "promocion": "Llevando 10 fardos, te regalamos 1 adicional sin cargo.",
-    "destacado": true,
-    "imagenes": [
-      "/images/productos/oferta-trapo-para-piso-10x1.webp",
-      "/images/productos/trapo-para-piso-fardo.webp",
-      "/images/productos/trapo-para-piso-detalle.webp"
-    ]
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Blanco TML"
   },
   {
-    "id": 21,
-    "nombre": "Oferta Alfombra Estampada 10+1",
-    "descripcion": "Aprovechá esta promo mayorista: llevás 10 fardos y te regalamos 1 sin costo.",
-    "categoria": "Ofertas",
-    "medida": "50x60 cm aprox.",
-    "colores": "Variedad de estampados",
+    "nombre": "Trapo de piso 45x60 Gris TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Gris TML"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Rayado TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Rayado TML"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Azul TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Azul TML"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Rojo TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Rojo TML"
+  },
+  {
+    "nombre": "Trapo de piso 45x60 Surtido TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 45x60 Surtido TML"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Blanco TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Blanco TML"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Gris TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Gris TML"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Rayado Surtido TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Rayado Surtido TML"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Rayado TML P/U",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Rayado TML P/U"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Blanco Dura Más",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Blanco Dura Más"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Gris Dura Más",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Gris Dura Más"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Rayado Turquesa Dura Más",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Rayado Turquesa Dura Más"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Rayado Gris Dura Más",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Rayado Gris Dura Más"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Blanco Emme",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Blanco Emme"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Gris Emme",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Gris Emme"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Blanco FX",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Blanco FX"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Gris FX",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Gris FX"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Rayado Tradicional FX",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Rayado Tradicional FX"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Rayado Color FX",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 50x60 Rayado Color FX"
+  },
+  {
+    "nombre": "Trapo de piso 60x50 Nido FX",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 60x50 Nido FX"
+  },
+  {
+    "nombre": "Trapo de piso 60x50 Nido TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 60x50 Nido TML"
+  },
+  {
+    "nombre": "Trapo de piso 60x60 Blanco TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 60x60 Blanco TML"
+  },
+  {
+    "nombre": "Trapo de piso 60x60 Gris TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 60x60 Gris TML"
+  },
+  {
+    "nombre": "Trapo de piso 60x60 Rayado TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 60x60 Rayado TML"
+  },
+  {
+    "nombre": "Trapo de piso 60x60 Blanco TML P/U",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 60x60 Blanco TML P/U"
+  },
+  {
+    "nombre": "Trapo de piso 60x60 Surtido TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 60x60 Surtido TML"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Blanco TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 70x60 Blanco TML"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Gris TML",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 70x60 Gris TML"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Blanco TML P/U",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 70x60 Blanco TML P/U"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Blanco Emme",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 70x60 Blanco Emme"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Blanco Consorcio FX",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 70x60 Blanco Consorcio FX"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Gris Consorcio FX",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 70x60 Gris Consorcio FX"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Rayado Consorcio FX",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 70x60 Rayado Consorcio FX"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Nido Consorcio FX",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 70x60 Nido Consorcio FX"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Blanco Portero",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 70x60 Blanco Portero"
+  },
+  {
+    "nombre": "Trapo de piso 80x60 Blanco Emme",
+    "categoria": "Trapos",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": false,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Trapo de piso 80x60 Blanco Emme"
+  },
+  {
+    "nombre": "Rejilla 45x50 TML Triple",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Rejilla 45x50 TML Triple"
+  },
+  {
+    "nombre": "Rejilla 40x45 TML Doble Pesada",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Rejilla 40x45 TML Doble Pesada"
+  },
+  {
+    "nombre": "Rejilla 38x40 TML Doble Liviana",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Rejilla 38x40 TML Doble Liviana"
+  },
+  {
+    "nombre": "Rejilla 40x45 TML Profesional",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Rejilla 40x45 TML Profesional"
+  },
+  {
+    "nombre": "Rejilla 38x40 TML Americana",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 120,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 120 unidades",
+    "descripcion": "Producto terminado: Rejilla 38x40 TML Americana"
+  },
+  {
+    "nombre": "Rejilla 38x40 Americana",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 1200,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 1200 unidades",
+    "descripcion": "Producto terminado: Rejilla 38x40 Americana"
+  },
+  {
+    "nombre": "Rejilla 38x40 TML Pabilo",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 120,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 120 unidades",
+    "descripcion": "Producto terminado: Rejilla 38x40 TML Pabilo"
+  },
+  {
+    "nombre": "Rejilla 38x40 Pabilo",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 1200,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 1200 unidades",
+    "descripcion": "Producto terminado: Rejilla 38x40 Pabilo"
+  },
+  {
+    "nombre": "Rejilla 40x45 TML Tubular",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Rejilla 40x45 TML Tubular"
+  },
+  {
+    "nombre": "Rejilla 40x45 Tubular",
+    "categoria": "Rejillas",
+    "unidadesPorFardo": 480,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 480 unidades",
+    "descripcion": "Producto terminado: Rejilla 40x45 Tubular"
+  },
+  {
+    "nombre": "Repasador 42x60 TML Toalla",
+    "categoria": "Repasadores",
     "unidadesPorFardo": 36,
     "permiteUnidad": true,
-    "presentacion": "Fardo x 36 unidades (3 docenas)",
-    "uso": "Producto multiuso de alta rotación para comercios.",
-    "detalle": "Tejido 100% algodón.",
-    "promocion": "Llevando 10 fardos, te regalamos 1 adicional sin cargo.",
-    "destacado": true,
-    "imagenes": [
-      "/images/productos/oferta-alfombra-10x1.webp",
-      "/images/productos/trapo-alfombra-piso-2.webp",
-      "/images/productos/trapo-alfombra-piso-3.webp",
-      "/images/productos/trapo-alfombra-piso-4.webp",
-      "/images/productos/trapo-alfombra-piso-5.webp",
-      "/images/productos/trapo-alfombra-piso-6.webp",
-      "/images/productos/trapo-alfombra-piso-7.webp",
-      "/images/productos/trapo-alfombra-piso-8.webp"
-    ]
+    "presentacion": "Fardo x 36 unidades",
+    "descripcion": "Producto terminado: Repasador 42x60 TML Toalla"
+  },
+  {
+    "nombre": "Repasador 42x60 Toalla",
+    "categoria": "Repasadores",
+    "unidadesPorFardo": 192,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 192 unidades",
+    "descripcion": "Producto terminado: Repasador 42x60 Toalla"
+  },
+  {
+    "nombre": "Repasador 40x60 TML Sarga",
+    "categoria": "Repasadores",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Repasador 40x60 TML Sarga"
+  },
+  {
+    "nombre": "Repasador 40x60 Sarga",
+    "categoria": "Repasadores",
+    "unidadesPorFardo": 300,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 300 unidades",
+    "descripcion": "Producto terminado: Repasador 40x60 Sarga"
+  },
+  {
+    "nombre": "Franela 45x60 TML",
+    "categoria": "Franelas",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Franela 45x60 TML"
+  },
+  {
+    "nombre": "Franela 45x60 Cruda",
+    "categoria": "Franelas",
+    "unidadesPorFardo": 600,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 600 unidades",
+    "descripcion": "Producto terminado: Franela 45x60 Cruda"
+  },
+  {
+    "nombre": "Franela 50x50 TML",
+    "categoria": "Franelas",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Franela 50x50 TML"
+  },
+  {
+    "nombre": "Franela 50x50 Cruda",
+    "categoria": "Franelas",
+    "unidadesPorFardo": 300,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 300 unidades",
+    "descripcion": "Producto terminado: Franela 50x50 Cruda"
+  },
+  {
+    "nombre": "Paño 38x40 TML",
+    "categoria": "Paños",
+    "unidadesPorFardo": 120,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 120 unidades",
+    "descripcion": "Producto terminado: Paño 38x40 TML"
+  },
+  {
+    "nombre": "Paño 38x40 Crudo",
+    "categoria": "Paños",
+    "unidadesPorFardo": 250,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 250 unidades",
+    "descripcion": "Producto terminado: Paño 38x40 Crudo"
+  },
+  {
+    "nombre": "Alfombra de Piso 50x60 TML",
+    "categoria": "Alfombras",
+    "unidadesPorFardo": 36,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 36 unidades",
+    "descripcion": "Producto terminado: Alfombra de Piso 50x60 TML"
+  },
+  {
+    "nombre": "Alfombra de Piso 50x60 Sin terminar",
+    "categoria": "Alfombras",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo x 60 unidades",
+    "descripcion": "Producto terminado: Alfombra de Piso 50x60 Sin terminar"
+  },
+  {
+    "nombre": "Trapo de piso fallado 45x60 Varios Sin Etiqueta",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Trapo de piso fallado 45x60 Varios Sin Etiqueta"
+  },
+  {
+    "nombre": "Trapo de piso fallado 50x60 Varios Sin Etiqueta",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Trapo de piso fallado 50x60 Varios Sin Etiqueta"
+  },
+  {
+    "nombre": "Trapo de piso fallado 60x60 Varios Sin Etiqueta",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Trapo de piso fallado 60x60 Varios Sin Etiqueta"
+  },
+  {
+    "nombre": "Trapo de piso fallado 70x60 Varios Sin Etiqueta",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Trapo de piso fallado 70x60 Varios Sin Etiqueta"
+  },
+  {
+    "nombre": "Trapo de piso fallado 80x60 Varios Sin Etiqueta",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Trapo de piso fallado 80x60 Varios Sin Etiqueta"
+  },
+  {
+    "nombre": "Trapo de piso 50x60 Varios",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Trapo de piso 50x60 Varios"
+  },
+  {
+    "nombre": "Trapo de piso 60x60 Varios",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Trapo de piso 60x60 Varios"
+  },
+  {
+    "nombre": "Trapo de piso 70x60 Varios",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Trapo de piso 70x60 Varios"
+  },
+  {
+    "nombre": "Trapo de piso 80x60 Varios",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Trapo de piso 80x60 Varios"
+  },
+  {
+    "nombre": "Retazo 45",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Retazo 45"
+  },
+  {
+    "nombre": "Retazo 50",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Retazo 50"
+  },
+  {
+    "nombre": "Retazo 60",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Retazo 60"
+  },
+  {
+    "nombre": "Retazo 70",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Retazo 70"
+  },
+  {
+    "nombre": "Retazo 80",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Retazo 80"
+  },
+  {
+    "nombre": "Rejilla 45x50 Triple S/E",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Rejilla 45x50 Triple S/E"
+  },
+  {
+    "nombre": "Rejilla 40x45 Doble Pesada S/E",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Rejilla 40x45 Doble Pesada S/E"
+  },
+  {
+    "nombre": "Rejilla 38x40 Doble Liviana S/E",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Rejilla 38x40 Doble Liviana S/E"
+  },
+  {
+    "nombre": "Rejilla 40x45 Profesional S/E",
+    "categoria": "Especiales",
+    "unidadesPorFardo": 60,
+    "permiteUnidad": true,
+    "presentacion": "Fardo / Unidad",
+    "descripcion": "Producto especial: Rejilla 40x45 Profesional S/E"
   }
 ]

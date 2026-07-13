@@ -1,0 +1,2552 @@
+DATOS MAESTROS DEL SISTEMA
+1 - DEPÓSITOS
+Código
+Nombre
+Tipo
+¿Qué se guarda?
+DEP001
+Zona de Corte
+Producción
+Se almacenan:
+• Cortadas
+• Retazos
+• Productos fallados
+• Fardos abiertos para venta presencial
+DEP002
+Galpón Central
+Stock
+Stock principal
+DEP003
+Casa
+Stock
+Stock comercial + insumos
+DEP004
+Contenedor
+Stock
+Excedentes
+DEP005
+Galpón Secundario
+Stock
+Mercadería comprada sin terminar
+DEP006
+Depósito Eve
+Taller
+En el depósito del taller de Eve se guarda también todo el excedente de stock, puede ir variando.
+DEP007
+Depósito Vanesa
+Taller
+En el depósito del taller de Vanesa se guarda también todo el excedente de stock, puede ir variando.
+2 - TALLERES
+2.1 - DATOS GENERALES
+Código
+Nombre
+Tipo
+Activo
+Usuario del sistema
+TAL001
+Evelina
+Externo
+Sí
+Sí
+TAL002
+Vanesa
+Externo
+Sí
+Sí
+TAL003
+Mary
+Externo
+Sí
+Sí
+TAL004
+Fernanda
+Externo
+Sí
+Sí
+TAL005
+Silvia
+Externo
+Sí
+Sí
+TAL006
+Taller Propio
+Interno
+Sí
+No
+2.2 - PROCESOS DEL TALLER
+Taller
+Proceso
+Evelina
+Trapos
+Mary
+Trapos
+Fernanda
+Trapos
+Silvia
+Trapos
+Vanesa
+Trapos
+Vanesa
+Rejillas
+2.3 – TARIFAS
+Taller
+Proceso
+Precio por Fardo
+Evelina
+Trapos
+3100
+Mary
+Trapos
+3000
+Fernanda
+Trapos
+3000
+Silvia
+Trapos
+2700
+Vanesa
+Trapos
+3100
+Vanesa
+Rejillas
+3500
+2.4 – DEPÓSITOS ASOCIADOS
+Taller
+Depósito
+Evelina
+DEPÓSITO EVE
+Vanesa
+DEPÓSITO VANESA
+3 – PRODUCTOS
+3.1 – FAMILIAS
+Código
+Familia
+FAM001
+Trapos
+FAM002
+Rejillas
+FAM003
+Franelas
+FAM004
+Repasadores
+FAM005
+Paños
+FAM006
+Alfombras
+FAM007
+Insumos
+3.2 – CATÁLOGO BASE DE PRODUCCIÓN
+Código
+Producto Base
+Familia
+Medida
+Color
+Tipo
+Estado Actual
+Unidad
+Proceso Siguiente
+Origen
+PB001
+Cortada Trapo Blanco
+Trapos
+80x60
+Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB002
+Cortada Trapo Blanco
+Trapos
+70x60
+Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB003
+Cortada Trapo Gris
+Trapos
+70x60
+Gris
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB004
+Cortada Trapo Rayado Tradicional
+Trapos
+70x60
+Gris y Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB005
+Cortada Trapo Nido
+Trapos
+70x50
+Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB006
+Cortada Trapo Blanco
+Trapos
+60x60
+Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB007
+Cortada Trapo Gris
+Trapos
+60x60
+Gris
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB008
+Cortada Trapo Color
+Trapos
+60x60
+Color
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB009
+Cortada Trapo Blanco
+Trapos
+50x60
+Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB010
+Cortada Trapo Gris
+Trapos
+50x60
+Gris
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB011
+Cortada Trapo Rayado Tradicional
+Trapos
+50x60
+Gris y Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB012
+Cortada Trapo Rayado Color
+Trapos
+50x60
+Color
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB013
+Cortada Trapo Nido
+Trapos
+60x50
+Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB014
+Cortada Trapo Dura Más
+Trapos
+50x60
+Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB015
+Cortada Trapo Dura Más
+Trapos
+50x60
+Gris
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB016
+Cortada Trapo Dura Más Rayado Tradicional
+Trapos
+50x60
+Gris y Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB017
+Cortada Trapo Dura Más Rayado Color
+Trapos
+50x60
+Color
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB018
+Cortada Trapo Blanco
+Trapos
+45x60
+Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB019
+Cortada Trapo Gris
+Trapos
+45x60
+Gris
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB020
+Cortada Trapo Rayado Tradicional
+Trapos
+45x60
+Gris y Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB021
+Cortada Trapo Color
+Trapos
+45x60
+Color
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB022
+Cortada Trapo Nido
+Trapos
+45x50
+Blanco
+Intermedio
+Cortado
+Unidad
+Taller Trapos
+Producto final
+PB023
+Rejilla Triple
+Rejillas
+-
+Crudo
+Materia Prima
+En Rollo
+Kg
+Taller Rejillas
+Compra
+PB024
+Rejilla Doble Pesada
+Rejillas
+-
+Crudo
+Materia Prima
+En Rollo
+Kg
+Taller Rejillas
+Compra
+PB025
+Rejilla Doble Liviana
+Rejillas
+-
+Crudo
+Materia Prima
+En Rollo
+Kg
+Taller Rejillas
+Compra
+PB026
+Rejilla Profesional
+Rejillas
+-
+Crudo
+Materia Prima
+En Rollo
+Kg
+Taller Rejillas
+Compra
+PB027
+Rejilla Americana S/Etiqueta
+Rejillas
+38x40
+Crudo
+Semielaborado
+Sin Etiqueta
+Unidad
+Producto terminado
+Compra
+PB028
+Rejilla Pabilo S/Etiqueta
+Rejillas
+38x40
+Crudo
+Semielaborado
+Sin Etiqueta
+Unidad
+Producto terminado
+Compra
+PB029
+Rejilla Tubular S/Etiqueta
+Rejillas
+40x45
+Crudo
+Semielaborado
+Sin Etiqueta
+Unidad
+Producto terminado
+Compra
+PB030
+Franela 45x60 S/Etiqueta
+Franela
+45x60
+Naranja
+Semielaborado
+Sin Etiqueta
+Unidad
+Producto terminado
+Compra
+PB031
+Franela 50x50 S/Etiqueta
+Franela
+50x50
+Naranja
+Semielaborado
+Sin Etiqueta
+Unidad
+Producto terminado
+Compra
+PB032
+Repasador Sarga S/Etiqueta
+Repasadores
+40x60
+Varios
+Semielaborado
+Sin Etiqueta
+Unidad
+Producto terminado
+Compra
+PB033
+Repasador Toalla
+Repasadores
+42x60
+Varios
+Semielaborado
+Recepcionado
+Unidad
+Producto terminado
+Compra
+PB034
+Paño Absorvente S/Etiqueta
+Paños
+38x40
+Varios
+Semielaborado
+Sin Etiqueta
+Unidad
+Producto terminado
+Compra
+3.3 – PRODUCTOS COMERCIALES
+Código
+Nombre Comercial
+Marca
+Medida
+Unidades/Fardo
+Vende Unidad
+Vende Docena
+Vende Fardo
+Requiere Taller
+Requiere Etiqueta
+PF001
+TRAPO P/PISO SURTIDO
+TML
+45x60
+60
+NO
+SI
+SI
+SI
+NO
+PF002
+TRAPO P/PISO BLANCO
+MILLENIAN
+45x60
+60
+NO
+NO
+SI
+SI
+NO
+PF003
+TRAPO P/PISO GRIS
+MILLENIAN
+45x60
+60
+NO
+NO
+SI
+SI
+NO
+PF004
+TRAPO P/PISO RAYADO
+MILLENIAN
+45x60
+60
+NO
+NO
+SI
+SI
+NO
+PF005
+TRAPO P/PISO NIDO
+MILLENIAN
+45x50
+60
+NO
+NO
+SI
+SI
+NO
+PF006
+TRAPO P/PISO BLANCO
+USO DIARIO
+45x60
+60
+NO
+NO
+SI
+SI
+NO
+PF007
+TRAPO P/PISO GRIS
+USO DIARIO
+45x60
+60
+NO
+NO
+SI
+SI
+NO
+PF008
+TRAPO P/PISO RAYADO
+USO DIARIO
+45x60
+60
+NO
+NO
+SI
+SI
+NO
+PF009
+TRAPO P/PISO NIDO
+USO DIARIO
+45x50
+60
+NO
+NO
+SI
+SI
+NO
+PF010
+TRAPO P/PISO BLANCO
+TML
+50x60
+60
+SI
+SI
+SI
+SI
+NO
+PF011
+TRAPO P/PISO GRIS
+TML
+50x60
+60
+SI
+SI
+SI
+SI
+NO
+PF012
+TRAPO P/PISO RAYADO
+TML
+50x60
+60
+SI
+SI
+SI
+SI
+NO
+PF013
+TRAPO P/PISO RAYADO xUNIDAD
+TML
+50x60
+60
+NO
+NO
+SI
+SI
+NO
+PF014
+TRAPO P/PISO NIDO
+TML
+60x50
+60
+SI
+SI
+SI
+SI
+NO
+PF015
+TRAPO P/PISO BLANCO
+DURA MÁS
+50x60
+60
+SI
+SI
+SI
+SI
+NO
+PF016
+TRAPO P/PISO GRIS
+DURA MÁS
+50x60
+60
+SI
+SI
+SI
+SI
+NO
+PF017
+TRAPO P/PISO RAYADO TURQUESA
+DURA MÁS
+50x60
+60
+SI
+SI
+SI
+SI
+NO
+PF018
+TRAPO P/PISO RAYADO GRIS
+DURA MÁS
+50x60
+60
+SI
+SI
+SI
+SI
+NO
+PF019
+TRAPO P/PISO BLANCO
+EMME
+50x60
+60
+NO
+NO
+SI
+SI
+NO
+PF020
+TRAPO P/PISO GRIS
+EMME
+50x60
+60
+NO
+NO
+SI
+SI
+NO
+PF021
+TRAPO P/PISO BLANCO
+FX
+50x60
+60
+NO
+NO
+SI
+SI
+NO
+PF022
+TRAPO P/PISO GRIS
+FX
+50x60
+60
+NO
+NO
+SI
+SI
+NO
+PF023
+TRAPO P/PISO RAYADO TRADICIONAL
+FX
+50x60
+60
+NO
+NO
+SI
+SI
+NO
+PF024
+TRAPO P/PISO RAYADO COLOR
+FX
+50x60
+60
+NO
+NO
+SI
+SI
+NO
+PF025
+TRAPO P/PISO NIDO
+FX
+60x50
+60
+NO
+NO
+SI
+SI
+NO
+PF026
+TRAPO P/PISO BLANCO
+TML
+60x60
+60
+SI
+SI
+SI
+SI
+NO
+PF027
+TRAPO P/PISO GRIS
+TML
+60x60
+60
+SI
+SI
+SI
+SI
+NO
+PF028
+TRAPO P/PISO BLANCO xUNIDAD
+TML
+60x60
+60
+NO
+NO
+SI
+SI
+NO
+PF029
+TRAPO P/PISO SURTIDO
+TML
+60x60
+60
+NO
+SI
+SI
+SI
+NO
+PF030
+TRAPO P/PISO BLANCO
+TML
+70x60
+60
+SI
+SI
+SI
+SI
+NO
+PF031
+TRAPO P/PISO GRIS
+TML
+70x60
+60
+SI
+SI
+SI
+SI
+NO
+PF032
+TRAPO P/PISO BLANCO xUNIDAD
+TML
+70x60
+60
+NO
+NO
+SI
+SI
+NO
+PF033
+TRAPO P/PISO BLANCO CONSORCIO
+FX
+70x60
+60
+NO
+NO
+SI
+SI
+NO
+PF034
+TRAPO P/PISO GRIS CONSORCIO
+FX
+70x60
+60
+NO
+NO
+SI
+SI
+NO
+PF035
+TRAPO P/PISO RAYADO CONSORCIO
+FX
+70x60
+60
+NO
+NO
+SI
+SI
+NO
+PF036
+TRAPO P/PISO NIDO CONSORCIO
+FX
+70x50
+60
+NO
+NO
+SI
+SI
+NO
+PF037
+TRAPO P/PISO PORTERO
+FX
+70x60
+60
+NO
+NO
+SI
+SI
+NO
+PF038
+TRAPO P/PISO BLANCO
+EMME
+70x60
+60
+NO
+NO
+SI
+SI
+NO
+PF039
+TRAPO P/PISO BLANCO
+EMME
+80x60
+60
+NO
+SI
+SI
+SI
+NO
+PF040
+REJILLA TRIPLE
+TML
+45x50
+60
+SI
+SI
+SI
+SI
+NO
+PF041
+REJILLA DOBLE PESADA
+TML
+40x45
+60
+SI
+SI
+SI
+SI
+NO
+PF042
+REJILLA DOBLE LIVIANA
+TML
+38x40
+60
+SI
+SI
+SI
+SI
+NO
+PF043
+REJILLA PROFESIONAL
+TML
+40x45
+60
+SI
+SI
+SI
+SI
+NO
+PF044
+REJILLA AMERICANA
+TML
+38x40
+120
+SI
+SI
+SI
+NO
+SI
+PF045
+REJILLA PABILO
+TML
+38x40
+120
+SI
+SI
+SI
+NO
+SI
+PF046
+REJILLA TUBULAR
+TML
+40x45
+60
+SI
+SI
+SI
+NO
+SI
+PF047
+FRANELA
+TML
+45x60
+60
+SI
+SI
+SI
+NO
+SI
+PF048
+FRANELA
+TML
+50x50
+60
+SI
+SI
+SI
+NO
+SI
+PF049
+REPASADOR SARGA
+TML
+40x60
+60
+SI
+SI
+SI
+NO
+SI
+PF050
+REPASADOR TOALLA
+TML
+42x60
+36
+SI
+SI
+SI
+NO
+SI
+PF051
+PAÑO ABSORVENTE
+TML
+38x40
+120
+SI
+SI
+SI
+NO
+SI
+PF052
+ALFOMBRA ESTAMPADA
+TML
+50x60
+36
+SI
+SI
+SI
+NO
+SI
+3.4 – PRODUCTOS FALLADOS
+Código
+Nombre del Fallado
+Familia
+Medida
+Unidad
+FL001
+Trapo P/Piso Blanco Fallado
+Trapos
+45x60
+Unidad
+FL002
+Trapo P/Piso Gris Fallado
+Trapos
+45x60
+Unidad
+FL003
+Trapo P/Piso Color Fallado
+Trapos
+45x60
+Unidad
+FL004
+Trapo P/Piso Rayado Fallado
+Trapos
+45x60
+Unidad
+FL005
+Trapo P/Piso Nido Fallado
+Trapos
+45x60
+Unidad
+FL006
+Trapo P/Piso Blanco Fallado
+Trapos
+50x60
+Unidad
+FL007
+Trapo P/Piso Gris Fallado
+Trapos
+50x60
+Unidad
+FL008
+Trapo P/Piso Rayado Fallado
+Trapos
+50x60
+Unidad
+FL009
+Trapo P/Piso Nido Fallado
+Trapos
+60x50
+Unidad
+FL010
+Trapo P/Piso Blanco Fallado
+Trapos
+60x60
+Unidad
+FL011
+Trapo P/Piso Gris Fallado
+Trapos
+60x60
+Unidad
+FL012
+Trapo P/Piso Color Fallado
+Trapos
+60x60
+Unidad
+FL013
+Trapo P/Piso Blanco Fallado
+Trapos
+70x60
+Unidad
+FL014
+Trapo P/Piso Gris Fallado
+Trapos
+70x60
+Unidad
+FL015
+Trapo P/Piso Rayado Fallado
+Trapos
+70x60
+Unidad
+FL016
+Trapo P/Piso Nido Fallado
+Trapos
+60x70
+Unidad
+FL017
+Trapo P/Piso Blanco Fallado
+Trapos
+80x60
+Unidad
+3.5 – INSUMOS
+Código
+Insumo
+Categoría
+Unidad
+Stock Mínimo
+INS001
+Cono Blanco
+Conos de Hilo
+Cono
+3
+INS003
+Cono Negro
+Conos de Hilo
+Cono
+3
+INS004
+Cono Azul
+Conos de Hilo
+Cono
+3
+INS005
+Cono Verde
+Conos de Hilo
+Cono
+3
+INS006
+Cono Rojo
+Conos de Hilo
+Cono
+3
+INS007
+Hilo de Enfardar
+Enfardado
+Rollo
+2
+INS008
+Bolsa Rosada
+Bolsas
+Unidad
+60
+INS009
+Bolsa Naranja
+Bolsas
+Unidad
+60
+INS010
+Bolsa Azul
+Bolsas
+Unidad
+60
+INS011
+Bolsa Negra
+Bolsas
+Unidad
+60
+INS012
+Bolsa Roja
+Bolsas
+Unidad
+60
+INS013
+Bolsa Verde
+Bolsas
+Unidad
+60
+INS014
+Bolsa Negra xUnidad
+Bolsas
+Unidad
+60
+INS015
+Bolsa Roja xUnidad
+Bolsas
+Unidad
+60
+INS016
+Bolsa Verde xUnidad
+Bolsas
+Unidad
+60
+INS017
+Bolsa Tradicional
+Bolsas
+Unidad
+60
+INS018
+Bolsa Consorcio
+Bolsas
+Unidad
+60
+INS019
+Bolsa Extra Consorcio
+Bolsas
+Unidad
+60
+INS020
+Bolsa 60x80
+Bolsas
+Unidad
+60
+3.6 – RETAZOS
+Código
+Descripción
+RET001
+80 cm
+RET002
+70 cm
+RET003
+60 cm
+RET004
+50 cm
+RET005
+45 cm
+RET006
+Varios
+4 – USUARIOS
+Código
+Nombre
+Usuario
+Contraseña Inicial
+Rol
+Área
+Acceso Stock
+Taller Asociado
+Activo
+US001
+Leonel
+LeonelTML
+Leonelalejandro5
+Administrador
+Administración
+Sí
+—
+Sí
+US002
+Ariel
+ArielTML
+TML2026
+Dueño
+Administración
+Sí
+—
+Sí
+US003
+Diego
+DiegoTML
+TML2026
+Dueño
+Administración
+Sí
+—
+Sí
+US004
+Nacho
+NachoTML
+TMLSUP2026
+Supervisor
+Producción
+Sí
+—
+Sí
+US005
+Daniel
+DanielTML
+TMLSUP2026
+Supervisor
+Producción
+Sí
+—
+Sí
+US006
+Rolando
+RolandoTML
+TMLOP2026
+Operario
+Corte
+No
+—
+Sí
+US007
+Walter
+WalterTML
+TMLOP2026
+Operario
+Corte
+No
+—
+Sí
+US008
+Evelina
+EvelinaTML
+TMLTALLER2026
+Taller
+Taller
+No
+TAL001
+Sí
+US009
+Vanesa
+VanesaTML
+TMLTALLER2026
+Taller
+Taller
+No
+TAL002
+Sí
+US010
+Mary
+MaryTML
+TMLTALLER2026
+Taller
+Taller
+No
+TAL003
+Sí
+US011
+Fernanda
+FernandaTML
+TMLTALLER2026
+Taller
+Taller
+No
+TAL004
+Sí
+US012
+Silvia
+SilviaTML
+TMLTALLER2026
+Taller
+Taller
+No
+TAL005
+Sí
+DOCUMENTO FUNCIONAL TML STOCK
+Versión 1.0
+1. Objetivo del sistema
+El sistema tiene como objetivo controlar el flujo completo de producción y stock de TML.
+No pretende ser un ERP general ni administrar clientes, proveedores, compras, contabilidad o facturación.
+Su único objetivo es registrar el movimiento físico de la mercadería desde que se corta la tela hasta que el producto es vendido o transferido entre depósitos.
+El sistema está diseñado para reflejar exactamente la forma de trabajo actual de la empresa, intentando modificar la menor cantidad posible de procesos internos.
+2. Filosofía del sistema
+El sistema es un sistema de movimientos.
+No trabaja sobre "procesos abstractos", sino sobre operaciones reales que realizan los empleados todos los días.
+Cada operación genera automáticamente los movimientos de stock correspondientes.
+El usuario solamente informa qué ocurrió.
+El sistema calcula el resto.
+3. Flujo general del negocio
+Compra de rollos
+│
+▼
+Zona de Corte
+(Cortadas + Retazos)
+│
+▼
+Entrega al Taller
+│
+▼
+Stock del Taller
+│
+▼
+Devolución
+├─────────────┐
+▼             ▼
+Producto     Fallados
+Final
+│
+▼
+Depósitos
+│
+├───────────────┐
+▼               ▼
+Venta      Transferencia
+Productos comprados ya confeccionados siguen otro flujo:
+Compra
+│
+▼
+Producto sin etiqueta
+│
+▼
+Etiquetado
+│
+▼
+Producto Comercial
+│
+▼
+Venta
+4. Tipos de productos existentes
+Durante el análisis se identificaron seis grupos completamente distintos.
+1. Productos Base
+Son productos que todavía no pueden venderse.
+Ejemplos:
+Cortadas de trapos
+Rollos de rejilla
+Productos comprados sin etiqueta
+Se utilizan para abastecer talleres o iniciar procesos internos.
+2. Productos Comerciales
+Son todos los productos que pueden venderse.
+Se almacenan por depósito.
+Pueden venderse:
+Unidad
+Docena
+Fardo
+según lo indique cada producto.
+Cada producto comercial define:
+marca
+medida
+cantidad por fardo
+si requiere taller
+si requiere etiquetado
+3. Productos Fallados
+Son productos devueltos por los talleres que presentan defectos.
+No se enfardan.
+Siempre se almacenan individualmente.
+También generan pago al taller.
+4. Retazos
+Son sobrantes obtenidos durante el corte.
+No representan desperdicio.
+Se almacenan porque posteriormente pueden reutilizarse para realizar nuevas cortadas.
+Se registran únicamente para mantener consistencia del stock físico.
+5. Insumos
+Se controlan únicamente de forma manual.
+No se descuentan automáticamente.
+Su objetivo es generar alertas cuando el stock sea bajo.
+Actualmente se registran:
+Conos de hilo
+Hilo de enfardar
+Bolsas
+6. Talleres
+Los talleres representan producción externa.
+No son depósitos normales.
+Cada taller posee:
+stock propio
+tarifas
+producción
+pagos
+5. Depósitos
+Actualmente existen siete depósitos.
+Zona de Corte
+Aquí permanecen:
+cortadas
+retazos
+fallados
+fardos abiertos para venta minorista
+Es el punto de inicio de toda la producción.
+Galpón Central
+Contiene:
+productos terminados embolsados.
+Casa
+Contiene principalmente:
+insumos
+franelas
+rejillas
+paños
+repasadores
+Contenedor
+Depósito destinado al excedente de producción.
+Puede contener cualquier producto.
+Galpón Secundario
+Aquí permanecen generalmente los bultos comprados a proveedores.
+Depósito Eve
+Depósito perteneciente al taller de Evelina.
+Puede contener excedentes.
+Depósito Vanesa
+Depósito perteneciente al taller de Vanesa.
+Puede contener excedentes.
+6. Reglas fundamentales
+Estas reglas surgieron directamente del funcionamiento de la empresa.
+Regla 1
+Una cortada nunca puede venderse.
+Regla 2
+Toda cortada debe pasar por un taller.
+Regla 3
+El taller devuelve:
+productos comerciales
+fallados
+Nunca devuelve cortadas.
+Regla 4
+Los fallados siempre permanecen en unidades.
+Nunca se enfardan.
+Regla 5
+Los fallados también generan pago al taller.
+Cuando exista una tarifa por fardo, el sistema calculará automáticamente el valor unitario:
+Tarifa fardo / 60
+y multiplicará por la cantidad de fallados.
+Regla 6
+Los rollos de rejilla se entregan en kilogramos.
+Los productos terminados regresan como:
+unidades
+docenas
+fardos
+Regla 7
+Los productos comprados sin etiqueta deben pasar por etiquetado antes de transformarse en productos comerciales.
+Excepto aquellos productos que no requieren etiquetado.
+Regla 8
+Los insumos no generan descuentos automáticos.
+Su control es únicamente manual.
+Regla 9
+Los movimientos de stock deben reflejar únicamente movimientos físicos reales.
+No existen movimientos ficticios.
+Regla 10
+El usuario siempre ingresa la menor cantidad posible de información.
+El sistema calcula automáticamente todos los movimientos derivados.
+7. Principio de diseño
+Todo el sistema sigue una única regla:
+Registrar únicamente lo indispensable para reflejar la realidad física de la empresa.
+Si un dato no aporta valor operativo o no existe en la operatoria real de TML, no debe formar parte del sistema.
+8. Módulos del Sistema
+El sistema está compuesto por siete módulos operativos principales. Cada uno representa una operación real que se realiza diariamente en TML.
+Todos los módulos siguen el mismo principio:
+El usuario ingresa únicamente la información indispensable.
+El sistema genera automáticamente los movimientos de stock correspondientes.
+Todo movimiento queda registrado en un historial.
+Módulo 1 – Registrar Cortada
+Objetivo
+Registrar las cortadas realizadas por los operarios en la zona de corte.
+Una cortada representa materia prima ya cortada que posteriormente será enviada a un taller.
+Usuarios habilitados
+Administrador
+Supervisor
+Operarios de Corte
+Actualmente:
+Leonel
+Nacho
+Daniel
+Rolando
+Walter
+Información solicitada
+Encabezado
+Fecha
+Operario (automático según usuario logueado)
+Observaciones (opcional)
+Detalle
+Por cada línea:
+Producto Base
+Cantidad cortada
+Retazos generados (opcional)
+Ejemplo
+Cortada Blanco 50x60      320
+Retazo 80 cm               15
+Retazo 60 cm               12
+Movimientos automáticos
+Al confirmar:
+➜ aumenta el stock del Producto Base en Zona de Corte.
+➜ aumenta el stock de los retazos registrados.
+Reglas
+Una cortada:
+nunca puede venderse.
+nunca puede ir a un depósito de venta.
+siempre queda inicialmente en Zona de Corte.
+posteriormente será enviada a un taller.
+No existen lotes.
+No existe trazabilidad por unidad.
+Módulo 2 – Entrega al Taller
+Objetivo
+Registrar el envío de mercadería desde la empresa hacia un taller.
+Puede incluir:
+Cortadas
+Rollos de Rejilla
+Todo el envío corresponde a un único remito.
+Usuarios
+Administrador
+Supervisor
+Encabezado
+Fecha
+Taller
+Observaciones
+Detalle
+Cada línea contiene:
+Producto Base
+Cantidad
+Unidad correspondiente
+Ejemplo
+Cortada Blanco 50x60      320 unidades
+Cortada Gris 60x60        180 unidades
+Rejilla Triple             48 kg
+Movimientos automáticos
+Por cada línea:
+descuenta del depósito origen
+↓
+aumenta el stock del taller
+Reglas
+No se valida contra un acuse de recibo.
+Si existe una diferencia física:
+el usuario realizará posteriormente un Ajuste de Stock.
+Todo el movimiento queda asociado al taller.
+Módulo 3 – Devolución del Taller
+Objetivo
+Registrar la producción devuelta por un taller.
+La devolución puede contener simultáneamente:
+Productos comerciales.
+Productos fallados.
+Usuarios
+Administrador
+Supervisor
+Encabezado
+Fecha
+Taller
+Observaciones
+Detalle
+Cada línea contiene:
+Producto Comercial
+Cantidad
+Depósito destino
+Ejemplo
+Trapo Blanco TML 50x60
+300 unidades
+Galpón Central
+Segunda sección
+Productos Fallados
+Cada línea:
+Producto Fallado
+Cantidad
+Siempre destino:
+Zona de Corte
+Ejemplo
+Blanco Fallado 50x60
+18 unidades
+Movimientos automáticos
+Productos comerciales
+↓
+Descuentan automáticamente el stock del taller.
+↓
+Ingresan al depósito elegido.
+Fallados
+↓
+Descuentan automáticamente el stock del taller.
+↓
+Ingresan siempre en Zona de Corte.
+Reglas
+Cada producto puede ingresar a un depósito distinto.
+No existe un único depósito para toda la devolución.
+Los fallados nunca se enfardan.
+Módulo 4 – Etiquetado
+Objetivo
+Transformar productos comprados sin etiqueta en productos comerciales.
+Usuarios
+Administrador
+Supervisor
+Información
+Fecha
+Observaciones
+Detalle
+Producto Base sin etiqueta
+↓
+Producto Comercial
+↓
+Cantidad
+↓
+Depósito destino
+Movimientos
+Descuenta Producto Base.
+Aumenta Producto Comercial.
+Reglas
+Solamente participan productos cuyo catálogo indique:
+Requiere Etiqueta = Sí
+Módulo 5 – Registrar Venta
+Objetivo
+Registrar una salida de stock por venta.
+El sistema no administra clientes ni facturación.
+Únicamente controla el movimiento físico del stock.
+Usuarios
+Administrador
+Supervisor
+Encabezado
+Fecha
+Observaciones (opcional)
+Detalle
+Depósito origen
+Producto
+Presentación
+Cantidad
+Presentación puede ser:
+Unidad
+Docena
+Fardo
+Movimientos
+Descuenta automáticamente el stock del depósito seleccionado.
+Reglas
+No puede venderse un producto inexistente.
+No puede venderse más stock del disponible.
+El sistema respeta las configuraciones del producto comercial:
+vende unidad
+vende docena
+vende fardo
+Módulo 6 – Transferencia entre Depósitos
+Objetivo
+Mover stock entre depósitos.
+Usuarios
+Administrador
+Supervisor
+Encabezado
+Fecha
+Observaciones
+Detalle
+Depósito Origen
+Depósito Destino
+Producto
+Cantidad
+Presentación
+Movimiento
+Descuenta del depósito origen.
+Aumenta en depósito destino.
+Reglas
+Debe existir stock suficiente.
+Origen y destino no pueden ser iguales.
+No modifica el stock total de la empresa.
+Módulo 7 – Pago a Talleres
+Objetivo
+Liquidar la producción realizada por un taller durante un período determinado.
+Usuarios
+Administrador
+Dueños
+Encabezado
+Taller
+Período Desde
+Período Hasta
+Descuento Manual (opcional)
+Observaciones
+Funcionamiento
+El sistema obtiene automáticamente todas las devoluciones del taller comprendidas dentro del período.
+Agrupa la producción por producto.
+Aplica las tarifas configuradas.
+Calcula automáticamente:
+Producción total.
+Valor por producto.
+Valor de fallados.
+Subtotal.
+Descuentos.
+Total final.
+Tratamiento de fallados
+Los fallados también generan pago.
+Cuando la tarifa esté expresada por fardo:
+Valor Unidad = Valor Fardo / 60
+Luego:
+Valor Unidad × Cantidad Fallada
+Resultado
+El sistema genera un comprobante imprimible.
+El comprobante contiene:
+período liquidado
+taller
+detalle por producto
+detalle de fallados
+subtotales
+descuentos
+total final
+Este comprobante puede entregarse físicamente al taller junto con el pago.
+Módulo 9 – Historial de Movimientos
+Objetivo
+Consultar el historial completo de todas las operaciones realizadas dentro del sistema.
+El historial funciona como una auditoría general, permitiendo conocer qué movimiento se realizó, cuándo, quién lo realizó y cuáles fueron sus efectos sobre el stock.
+Cada operación registrada genera automáticamente un movimiento dentro del historial.
+Usuarios
+Administrador
+Dueños
+Supervisor
+Información mostrada
+Para cada movimiento se visualizará:
+Número de movimiento
+Tipo de movimiento
+Fecha y hora
+Usuario responsable
+Observaciones (si existen)
+Tipos de movimiento
+El historial registra automáticamente las siguientes operaciones:
+Registrar Cortada
+Entrega al Taller
+Devolución del Taller
+Etiquetado
+Venta
+Transferencia entre Depósitos
+Ajuste de Stock
+Pago al Taller
+Consulta del detalle
+Al seleccionar un movimiento el sistema mostrará el comprobante completo de la operación realizada.
+Dependiendo del tipo de movimiento podrá visualizarse:
+Encabezado de la operación.
+Productos involucrados.
+Cantidades.
+Depósitos.
+Taller asociado.
+Observaciones.
+Movimientos automáticos generados.
+Filtros de búsqueda
+El historial podrá filtrarse por:
+Fecha desde
+Fecha hasta
+Tipo de movimiento
+Usuario
+Taller
+Depósito
+Producto
+También podrá buscarse mediante el número de movimiento.
+Reglas
+Los movimientos registrados no podrán modificarse.
+Si existe un error operativo deberá registrarse un nuevo movimiento que corrija el stock correspondiente.
+El historial siempre conservará el registro original para mantener la trazabilidad de todas las operaciones realizadas.
+Cada movimiento posee un identificador único.
+Ejemplo
+MOV000125
+Tipo:
+Entrega al Taller
+Fecha:
+15/07/2026 - 09:42
+Usuario:
+Nacho
+Taller:
+Vanesa
+Observaciones:
+Pedido urgente Cliente XXX
+Detalle
+• Cortada Trapo Blanco 50x60      320 Unidades
+• Cortada Trapo Gris 50x60        180 Unidades
+• Rejilla Triple                   45 Kg
+Movimientos generados
+Zona de Corte
+-320 Cortada Blanco
+-180 Cortada Gris
+-45 Kg Rejilla Triple
+↓
+Depósito Vanesa
++320 Cortada Blanco
++180 Cortada Gris
++45 Kg Rejilla Triple
+9. Reglas de Negocio y Validaciones
+Este apartado reúne todas las reglas que deben cumplirse obligatoriamente durante el funcionamiento del sistema.
+Estas reglas representan la operatoria real de TML y no deben modificarse sin autorización, ya que forman parte del modelo de negocio de la empresa.
+9.1 Reglas Generales
+RN001
+Una cortada nunca puede venderse.
+Siempre debe pasar previamente por un taller.
+RN002
+Todo producto comercial vendido debe existir previamente en stock.
+No se permiten ventas con stock negativo.
+RN003
+Los productos fallados nunca pueden venderse.
+Únicamente permanecen almacenados en la Zona de Corte.
+RN004
+Los retazos nunca generan productos automáticamente.
+Su registro tiene únicamente fines de control de stock.
+RN005
+Los insumos se administran manualmente.
+El sistema no realizará descuentos automáticos por consumo.
+RN006
+Todos los movimientos registrados generan automáticamente una actualización del stock.
+No existen movimientos sin impacto sobre el inventario.
+RN007
+Cada movimiento posee un identificador único y permanente.
+No podrá reutilizarse.
+RN008
+Una vez confirmado un movimiento no podrá modificarse.
+En caso de error deberá realizarse un Ajuste de Stock o un nuevo movimiento correctivo.
+9.2 Cortadas
+RN009
+Todas las cortadas ingresan inicialmente al depósito "Zona de Corte".
+RN010
+Las cortadas únicamente pueden enviarse a un taller.
+Nunca pueden transferirse directamente a otro depósito de stock.
+RN011
+Durante el registro de una cortada podrán registrarse también los retazos obtenidos.
+RN012
+No existe control por lotes ni trazabilidad individual de las cortadas.
+9.3 Entrega a Taller
+RN013
+Una entrega puede contener simultáneamente distintos productos base.
+RN014
+Cada entrega genera un único remito.
+RN015
+Al confirmar una entrega el stock se descuenta automáticamente del depósito origen.
+RN016
+El mismo movimiento aumenta automáticamente el stock del taller correspondiente.
+RN017
+No se solicita confirmación de recepción por parte del taller.
+Si existe una diferencia física deberá corregirse mediante un Ajuste de Stock.
+9.4 Devolución del Taller
+RN018
+Una devolución puede contener simultáneamente productos comerciales y productos fallados.
+RN019
+Cada producto comercial puede regresar a un depósito diferente.
+No existe un depósito único para toda la devolución.
+RN020
+Los productos fallados siempre ingresan a la Zona de Corte.
+RN021
+Toda devolución descuenta automáticamente el stock pendiente del taller.
+RN022
+Los fallados siempre se almacenan por unidad.
+Nunca por docena o fardo.
+9.5 Productos Comerciales
+RN023
+Cada producto comercial define las presentaciones habilitadas para la venta.
+El sistema únicamente permitirá vender aquellas configuradas en su ficha.
+RN024
+Los productos pueden venderse en:
+Unidad
+Docena
+Fardo
+según corresponda.
+RN025
+El sistema no modifica automáticamente el stock entre presentaciones.
+Cada presentación representa únicamente una forma de venta del mismo producto.
+9.6 Etiquetado
+RN026
+Solamente podrán etiquetarse los productos cuya ficha indique "Requiere Etiqueta = Sí".
+RN027
+El etiquetado transforma un Producto Base en un Producto Comercial.
+RN028
+El etiquetado descuenta automáticamente el Producto Base y aumenta el Producto Comercial.
+9.7 Transferencias
+RN029
+Toda transferencia requiere un depósito origen y un depósito destino.
+RN030
+El depósito origen y destino no podrán ser iguales.
+RN031
+No podrán realizarse transferencias si el stock disponible es insuficiente.
+9.8 Ajustes de Stock
+RN032
+Los ajustes podrán ser positivos o negativos.
+RN033
+Todo ajuste deberá registrar obligatoriamente un motivo.
+RN034
+Los ajustes generan un movimiento dentro del Historial General.
+9.9 Pagos a Talleres
+RN035
+Los pagos se realizan por período y no necesariamente por mes calendario.
+RN036
+El sistema calculará automáticamente la producción correspondiente al período seleccionado.
+RN037
+Los productos fallados también generan pago.
+RN038
+Cuando la tarifa se encuentre expresada por fardo, el valor unitario de un fallado se calculará automáticamente dividiendo el valor del fardo por sesenta (60).
+RN039
+El usuario podrá aplicar descuentos manuales antes de confirmar el pago.
+RN040
+El sistema emitirá un comprobante con el detalle completo de la liquidación realizada.
+9.10 Historial
+RN041
+Todo movimiento confirmado quedará registrado en el Historial General.
+RN042
+Los movimientos nunca podrán eliminarse.
+RN043
+Cada movimiento conservará:
+Fecha
+Hora
+Usuario
+Tipo de operación
+Detalle
+Observaciones
+9.11 General
+RN044
+El sistema nunca debe intentar deducir producción ni consumos automáticamente cuando estos dependan de variables físicas de la realidad.
+Ejemplos:
+No descontar cortadas al crear productos finales (porque el taller puede devolver una cantidad variable de fallados).
+No descontar insumos automáticamente (porque el consumo real no es preciso).
+No asumir la composición de un surtido (porque depende de la disponibilidad de colores).
+En estos casos, el sistema únicamente registrará los movimientos informados por el usuario.
+10. Roles y Permisos
+El sistema utiliza un modelo de acceso basado en roles.
+Cada usuario pertenece a un único rol, el cual determina las operaciones que puede realizar y la información que puede visualizar.
+El objetivo es que cada empleado tenga acceso únicamente a las funciones necesarias para desempeñar su trabajo.
+10.1 Roles del sistema
+Actualmente el sistema contempla cinco roles.
+Administrador
+Posee acceso completo al sistema.
+Puede realizar cualquier operación y administrar la configuración general.
+Actualmente corresponde a:
+Leonel
+Dueño
+Posee acceso completo a toda la información del sistema.
+Puede consultar reportes, realizar movimientos de stock y registrar pagos a talleres.
+Actualmente corresponde a:
+Ariel
+Diego
+Supervisor
+Es el responsable operativo del stock y la producción.
+Puede realizar prácticamente todos los movimientos diarios, excepto tareas exclusivas de administración del sistema.
+Actualmente corresponde a:
+Nacho
+Daniel
+Operario
+Se encarga exclusivamente del proceso de corte.
+Su función principal consiste en registrar las cortadas realizadas durante la jornada.
+Actualmente corresponde a:
+Rolando
+Walter
+Taller
+Representa a los talleres externos que realizan la confección de productos.
+Cada usuario de este rol se encuentra asociado a un único taller.
+Actualmente:
+Evelina
+Vanesa
+Mary
+Fernanda
+Silvia
+10.2 Permisos por módulo
+Módulo
+Administrador
+Dueño
+Supervisor
+Operario
+Taller
+Dashboard
+✔
+✔
+✔
+✔
+✔
+Registrar Cortada
+✔
+✔
+✔
+✔
+✖
+Entrega al Taller
+✔
+✔
+✔
+✖
+✖
+Devolución del Taller
+✔
+✔
+✔
+✖
+✔*
+Etiquetado
+✔
+✔
+✔
+✖
+✖
+Registrar Venta
+✔
+✔
+✔
+✖
+✖
+Transferencias
+✔
+✔
+✔
+✖
+✖
+Ajuste de Stock
+✔
+✔
+✔
+✖
+✖
+Pago a Talleres
+✔
+✔
+✖
+✖
+✖
+Historial
+✔
+✔
+✔
+✖
+Solo propio
+Reportes
+✔
+✔
+✔
+✖
+Solo producción propia
+Observación
+(*) El rol Taller únicamente podrá registrar la devolución correspondiente a su propio taller, en caso de que esta funcionalidad se habilite en futuras versiones. En la versión inicial, las devoluciones serán registradas por los supervisores o administradores.
+10.3 Restricciones
+El sistema deberá impedir que un usuario acceda a funcionalidades para las cuales no posee autorización.
+Por ejemplo:
+Un operario no podrá registrar ventas.
+Un operario no podrá modificar stock.
+Un operario no podrá pagar talleres.
+Un taller no podrá visualizar información de otros talleres.
+Un taller no podrá acceder a depósitos generales.
+Un supervisor no podrá modificar usuarios ni configuraciones generales.
+10.4 Asociación con talleres
+Los usuarios cuyo rol sea Taller deberán estar asociados obligatoriamente a un único taller registrado en el sistema.
+Esta asociación permitirá:
+conocer la producción correspondiente al taller;
+limitar la visualización de información;
+identificar automáticamente el taller en futuras operaciones.
+Un usuario de tipo Taller nunca podrá estar asociado a más de un taller.
+10.5 Principio de mínimo privilegio
+El sistema deberá otorgar a cada usuario únicamente los permisos necesarios para realizar sus tareas habituales.
+No deberán habilitarse funciones administrativas a usuarios que no las requieran.
+Toda ampliación de permisos deberá realizarse modificando el rol correspondiente o asignando un nuevo rol.
+11. Seguridad
+11.1 Autenticación
+RN045
+Todo acceso al sistema requerirá autenticación mediante usuario y contraseña.
+RN046
+No existirán usuarios anónimos.
+RN047
+Cada usuario tendrá un nombre de usuario único.
+RN048
+Las contraseñas nunca se almacenarán en texto plano.
+Deberán almacenarse utilizando hash seguro (bcrypt).
+RN049
+Luego del inicio de sesión el sistema generará una sesión autenticada.
+RN050
+El usuario podrá cerrar sesión manualmente en cualquier momento.
+11.2 Gestión de contraseñas
+RN051
+El Administrador podrá restablecer la contraseña de cualquier usuario.
+RN052
+Cada usuario podrá cambiar su propia contraseña.
+RN053
+Las contraseñas deberán cumplir una longitud mínima configurable.
+11.3 Autorización
+RN054
+Cada operación verificará el rol del usuario antes de ejecutarse.
+RN055
+Si un usuario intenta acceder a un módulo sin permiso, el sistema deberá impedir la operación.
+RN056
+Nunca deberá confiarse únicamente en restricciones del Frontend.
+Todos los permisos deberán validarse también en el Backend.
+(Esta regla es muy importante.)
+11.4 Auditoría
+RN057
+Todo movimiento registrará automáticamente:
+Usuario
+Fecha
+Hora
+RN058
+Nunca podrá modificarse el usuario responsable de un movimiento.
+RN059
+Toda modificación de stock deberá quedar registrada en el historial.
+RN060
+Las operaciones nunca podrán eliminarse físicamente.
+Sólo podrán compensarse mediante nuevos movimientos.
+11.5 Integridad
+RN061
+El sistema nunca permitirá confirmar movimientos que generen stock negativo.
+RN062
+Toda operación deberá ejecutarse como una transacción única.
+Si ocurre un error, ningún cambio será persistido.
+RN063
+Las claves primarias serán generadas automáticamente por el sistema.
+RN064
+Las tablas maestras no podrán eliminar registros utilizados históricamente.
+Sólo podrán desactivarse.
+(Esta regla evita romper movimientos antiguos.)
+11.6 Registro de errores
+RN065
+Todo error inesperado deberá registrarse en un log interno.
+RN066
+Los errores técnicos nunca deberán mostrarse completos al usuario.
+Sólo se mostrará un mensaje amigable.
+11.7 Respaldo de información
+RN067
+La base de datos deberá permitir realizar copias de seguridad periódicas.
+RN068
+Las restauraciones deberán conservar íntegramente la información histórica.
+11.8 Principios generales
+RN069
+El sistema prioriza la trazabilidad por sobre la eliminación de información.
+RN070
+Toda operación deberá poder reconstruirse a partir del historial registrado.
+RN071
+Nunca se asumirán datos automáticamente cuando dependan de decisiones humanas.
+11.9 Validaciones generales
+Porque hoy están repartidas por todo el documento.
+Algo como:
+RN072
+Todos los formularios deberán validar los campos obligatorios.
+RN073
+No podrán registrarse cantidades negativas.
+RN074
+Los códigos de tablas maestras serán únicos.
+RN075
+Los depósitos deberán existir antes de utilizarse.
+RN076
+Los productos deberán existir antes de registrar movimientos.
+RN077
+Los talleres deberán estar activos para recibir entregas.
+RN078
+Los usuarios inactivos no podrán iniciar sesión.
+12. Dashboard
+Objetivo
+El Dashboard constituye la pantalla principal del sistema.
+Su finalidad es presentar un resumen del estado operativo actual de la empresa, permitiendo detectar rápidamente situaciones que requieran atención sin reemplazar los módulos específicos de gestión.
+Información mostrada
+RN079
+El Dashboard mostrará indicadores resumidos del estado actual del sistema.
+RN080
+Se visualizarán los productos comerciales cuyo stock se encuentre por debajo del stock mínimo configurado.
+RN081
+Se visualizarán los insumos cuyo stock sea inferior al mínimo establecido.
+RN082
+Se mostrará la producción actualmente asignada a cada taller.
+RN083
+Se mostrarán las últimas entregas registradas a talleres.
+RN084
+Se mostrarán las últimas devoluciones registradas por los talleres.
+RN085
+Se mostrará un resumen de las ventas registradas durante el día.
+RN086
+El Dashboard mostrará una alerta únicamente cuando exista un período de producción con más de 30 días desde su cierre y aún no haya sido liquidado.
+RN087
+El sistema podrá mostrar alertas operativas, entre ellas:
+Productos con stock bajo.
+Insumos próximos a agotarse.
+Productos pendientes de etiquetado.
+Producciones pendientes de liquidación.
+RN088
+Toda la información mostrada en el Dashboard será únicamente informativa y no permitirá modificar datos directamente.
+RN089
+El Dashboard siempre reflejará la información actual del sistema al momento de su consulta.
+RN090
+El Dashboard deberá priorizar la claridad y la información operativa antes que la visualización estadística, mostrando únicamente indicadores relevantes para la gestión diaria.
+13. Auditoría e Historial
+Objetivo
+Registrar automáticamente todas las operaciones relevantes realizadas dentro del sistema, permitiendo conocer qué acción fue realizada, por quién, cuándo ocurrió y sobre qué información se efectuó, garantizando la trazabilidad completa de las operaciones.
+El historial constituye una herramienta de control y seguimiento, no de modificación.
+13.1 Operaciones auditadas
+RN091
+Toda operación que modifique información del sistema deberá generar automáticamente un registro de auditoría.
+RN092
+Se registrarán como mínimo las siguientes operaciones:
+Registro de cortadas.
+Entregas a talleres.
+Devoluciones de talleres.
+Etiquetado de productos.
+Ventas.
+Transferencias entre depósitos.
+Ajustes de stock.
+Liquidaciones de talleres.
+Alta, modificación y desactivación de usuarios.
+13.2 Información registrada
+RN093
+Cada registro de auditoría almacenará automáticamente:
+Fecha.
+Hora.
+Usuario responsable.
+Módulo.
+Acción realizada.
+Documento asociado.
+Observaciones cuando existan.
+RN094
+La información registrada no podrá modificarse manualmente.
+13.3 Historial de documentos
+RN095
+Cada documento generado por el sistema conservará su historial de acciones.
+RN096
+El historial permitirá conocer:
+Usuario que creó el documento.
+Fecha y hora de creación.
+Modificaciones realizadas.
+Usuario responsable de cada modificación.
+Anulaciones realizadas y su motivo.
+13.4 Integridad del historial
+RN097
+Los movimientos registrados nunca podrán eliminarse físicamente del sistema.
+RN098
+Toda corrección deberá realizarse mediante una nueva operación o mediante la anulación del movimiento correspondiente.
+RN099
+Toda anulación requerirá obligatoriamente una observación indicando el motivo.
+13.5 Consultas
+RN100
+El sistema permitirá consultar el historial completo de operaciones mediante filtros por:
+Usuario.
+Fecha.
+Módulo.
+Tipo de operación.
+RN101
+Los registros de auditoría podrán exportarse en formato PDF y Excel.
+14. Reportes
+Objetivo
+Permitir consultar y exportar la información operativa registrada por el sistema para facilitar el control del stock, la producción, los talleres y las ventas.
+Los reportes serán únicamente informativos y no permitirán modificar información.
+14.1 Reporte de Stock
+RN102
+El sistema permitirá consultar el stock actual de productos comerciales.
+RN103
+Podrá filtrarse por:
+Depósito.
+Familia.
+Producto.
+Marca.
+RN104
+Mostrará:
+Producto.
+Depósito.
+Stock disponible.
+RN105
+Podrá exportarse a PDF y Excel.
+14.2 Reporte de Cortadas
+RN106
+Permitirá consultar las cortadas registradas.
+RN107
+Podrá filtrarse por:
+Producto base.
+Fecha.
+Usuario.
+RN108
+Mostrará:
+Producto base.
+Cantidad.
+Fecha.
+Usuario.
+Observaciones.
+14.3 Reporte de Producción por Taller
+RN109
+Permitirá consultar la producción registrada por cada taller.
+RN110
+Podrá filtrarse por:
+Taller.
+Período.
+RN111
+Mostrará:
+Productos terminados.
+Productos fallados.
+Totales producidos.
+14.4 Reporte de Ventas
+RN112
+Permitirá consultar las ventas registradas.
+RN113
+Podrá filtrarse por:
+Fecha.
+Producto.
+Depósito.
+RN114
+Mostrará:
+Producto.
+Cantidad.
+Depósito de origen.
+Observaciones.
+14.5 Reporte de Transferencias
+RN115
+Permitirá consultar todas las transferencias realizadas entre depósitos.
+RN116
+Mostrará:
+Fecha.
+Producto.
+Depósito origen.
+Depósito destino.
+Cantidad transferida.
+14.6 Reporte de Ajustes de Stock
+RN117
+Permitirá consultar todos los ajustes realizados sobre el stock.
+RN118
+Mostrará:
+Producto.
+Depósito.
+Cantidad anterior.
+Cantidad nueva.
+Motivo.
+Usuario responsable.
+14.7 Reporte de Pagos a Talleres
+RN119
+Permitirá consultar las liquidaciones realizadas a los talleres.
+RN120
+Podrá filtrarse por:
+Taller.
+Período.
+RN121
+Mostrará:
+Producción.
+Fallados.
+Descuentos aplicados.
+Total abonado.
+14.8 Reporte de Insumos
+RN122
+Permitirá consultar el stock actual de los insumos.
+RN123
+Permitirá identificar automáticamente aquellos insumos cuyo stock se encuentre por debajo del mínimo establecido.
+15. Consideraciones Técnicas
+Objetivo
+Definir los criterios técnicos generales que deberá respetar el sistema durante su desarrollo, garantizando consistencia, integridad de la información y facilidad de mantenimiento.
+15.1 Integridad de la información
+RN124
+Toda operación que modifique información deberá ejecutarse como una única transacción.
+RN125
+Si una operación falla parcialmente, ningún cambio deberá guardarse.
+RN126
+El sistema nunca permitirá generar stock negativo.
+RN127
+Todas las relaciones entre tablas deberán mantener integridad referencial.
+15.2 Generación automática
+RN128
+Todos los códigos internos de documentos deberán generarse automáticamente.
+RN129
+La fecha y hora de cada movimiento serán registradas automáticamente.
+RN130
+El usuario responsable será registrado automáticamente.
+15.3 Validaciones
+RN131
+Todos los formularios deberán validar los campos obligatorios antes de guardar.
+RN132
+No podrán registrarse cantidades iguales o menores a cero.
+RN133
+Los productos utilizados deberán existir previamente en el catálogo correspondiente.
+RN134
+Los depósitos deberán existir antes de registrar movimientos.
+RN135
+Los talleres deberán encontrarse activos para recibir entregas.
+RN136
+Los usuarios inactivos no podrán acceder al sistema.
+15.4 Eliminación de información
+RN137
+Ningún movimiento operativo podrá eliminarse físicamente.
+RN138
+Los registros históricos deberán conservarse permanentemente.
+RN139
+Las tablas maestras únicamente podrán desactivarse cuando corresponda.
+15.5 Filosofía de desarrollo
+RN140
+El sistema registrará únicamente hechos ocurridos en la realidad.
+RN141
+No realizará cálculos automáticos cuando dependan de decisiones humanas.
+RN142
+Siempre se priorizará la simplicidad operativa antes que automatizaciones innecesarias.
+16. Alcance de la Primera Versión
+Objetivo
+Definir el alcance funcional de la primera versión del sistema, evitando incorporar funcionalidades no contempladas durante el análisis.
+RN143
+La primera versión incluirá únicamente las funcionalidades descriptas en el presente documento.
+RN144
+No deberán incorporarse módulos adicionales sin una nueva etapa de análisis funcional.
+RN145
+Toda mejora futura deberá respetar la arquitectura y las reglas de negocio definidas en este documento.
+RN146
+El sistema deberá funcionar tanto en computadoras de escritorio como en dispositivos móviles, utilizando una única aplicación responsive.
+17. Filosofía del Proyecto
+Porque ese capítulo no es una funcionalidad.
+Es la identidad del sistema.
+Ahí dejamos escrito cosas como:
+el sistema registra hechos reales;
+nunca inventa stock;
+la simplicidad está por encima de la automatización;
+representa la operatoria de Textil María Luisa y no la de un ERP genérico.
+18. ANEXOS
+18.1 Convenciones utilizadas
+Para facilitar la lectura del documento se utilizaron las siguientes convenciones.
+Prefijo
+Descripción
+DEP
+Depósitos
+TAL
+Talleres
+FAM
+Familias de productos
+PB
+Productos Base de Producción
+PF
+Productos Comerciales
+FL
+Productos Fallados
+INS
+Insumos
+RET
+Retazos
+US
+Usuarios
+RN
+Regla de Negocio
+18.2 Glosario
+Producto Base
+Producto intermedio que aún no puede venderse y requiere pasar por un proceso posterior.
+Producto Comercial
+Producto listo para su comercialización.
+Producto Fallado
+Producto devuelto por un taller que presenta alguna falla, pero cuya producción debe computarse para el pago correspondiente.
+Retazo
+Fragmento de tela recuperado durante el proceso de corte y reutilizado posteriormente para fabricar nuevas cortadas.
+Cortada
+Conjunto de piezas cortadas listas para enviarse a un taller.
+Taller
+Lugar donde se realiza la costura de las cortadas o la confección de rejillas.
+Entrega
+Movimiento mediante el cual se envían productos base desde la fábrica hacia un taller.
+Devolución
+Movimiento mediante el cual un taller devuelve productos terminados y fallados.
+Transferencia
+Movimiento de stock entre depósitos.
+Ajuste
+Corrección manual realizada sobre el stock cuando existe una diferencia física.
+18.3 Diagramas de Flujo
+Producción de Trapos
+Tela
+↓
+Corte
+↓
+Zona de Corte
+↓
+Entrega al Taller
+↓
+Taller
+↓
+Productos Terminados
++
+Productos Fallados
+↓
+Depósito correspondiente
+↓
+Venta
+Producción de Rejillas
+Rollo
+↓
+Entrega al Taller
+↓
+Confección
+↓
+Productos Terminados
+↓
+Depósito correspondiente
+↓
+Venta
+Productos Comprados
+Proveedor
+↓
+Recepción
+↓
+Sin Etiqueta
+↓
+Etiquetado
+↓
+Producto Comercial
+↓
+Venta
+Movimiento entre Depósitos
+Depósito Origen
+↓
+Transferencia
+↓
+Depósito Destino
+Pago a Taller
+Entrega
+↓
+Producción
+↓
+Devolución
+↓
+Liquidación
+↓
+Pago
+18.4 Alcance del Documento
+El presente documento constituye el análisis funcional completo de la primera versión del Sistema de Gestión para Textil María Luisa.
+Toda funcionalidad desarrollada deberá respetar las reglas de negocio, estructuras de datos y procesos definidos en este documento.
+Las modificaciones futuras deberán realizarse sobre una nueva versión del análisis funcional, preservando la coherencia del modelo implementado.
