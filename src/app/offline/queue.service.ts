@@ -55,14 +55,15 @@ class QueueService {
     items: OfflineMovementItem[],
     tallerId?: string | null,
     observaciones?: string | null,
-    priority: SyncPriority = "NORMAL"
+    priority: SyncPriority = "NORMAL",
+    insumos?: { descripcion: string; cantidad: number }[]
   ): Promise<OfflineMovement> {
     
     // 1. Generate unique client identifier
     const clientGeneratedId = generateUUID();
     
     // 2. Generate canonical hash of the payload for replay protection
-    const canonicalPayload = canonicalStringify({ tipo, items, tallerId, observaciones });
+    const canonicalPayload = canonicalStringify({ tipo, items, tallerId, observaciones, insumos });
     const payloadHash = await generateSHA256(canonicalPayload);
 
     // 3. Construct movement object
@@ -77,6 +78,7 @@ class QueueService {
       payloadHash,
       priority,
       syncAttempts: 0,
+      insumos: insumos || [],
     };
 
     // 4. Persistence transaction

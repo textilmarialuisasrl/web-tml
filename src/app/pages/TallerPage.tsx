@@ -126,6 +126,9 @@ export const TallerPage: React.FC = () => {
   const handleTallerChange = (id: string) => {
     setSelectedTallerId(id);
     sessionStorage.setItem("tml_taller_id", id);
+    setEntregasTelas([]);
+    setEntregasInsumos([]);
+    setDevolucionesProductos([]);
   };
 
   const handleDepositoChange = (id: string) => {
@@ -163,8 +166,8 @@ export const TallerPage: React.FC = () => {
   const corteDep = depositos.find(d => d.tipo === "PRODUCCION" || d.nombre.toUpperCase().includes("CORTE"));
   const corteDepId = corteDep?.id;
 
-  const centralDep = depositos.find(d => d.tipo === "STOCK" || d.nombre.toUpperCase().includes("CENTRAL"));
-  const centralDepId = centralDep?.id;
+  const casaDep = depositos.find(d => d.nombre.toUpperCase().includes("CASA"));
+  const casaDepId = casaDep?.id;
 
   // Filter products by tipoProducto as per unified model
   const telasCortadasRaw = productos.filter(p => p.tipoProducto === "BASE");
@@ -182,8 +185,9 @@ export const TallerPage: React.FC = () => {
   };
 
   const getAvailableInsumos = () => {
+    if (!casaDepId) return [];
     return insumosRaw.map(p => {
-      const stock = stockItems.find(item => item.productoId === p.id && (item.depositoId === centralDepId || !centralDepId));
+      const stock = stockItems.find(item => item.productoId === p.id && item.depositoId === casaDepId);
       const available = stock ? stock.cantidadUnidades : 0;
       return { ...p, available };
     }).filter(p => p.available > 0);
@@ -237,11 +241,11 @@ export const TallerPage: React.FC = () => {
     }
     const insumo = getAvailableInsumos().find(p => p.id === tempInsumoId);
     if (!insumo) {
-      alert("El insumo seleccionado no cuenta con existencias en el Galpón Central.");
+      alert("El insumo seleccionado no cuenta con existencias en Casa TML.");
       return;
     }
     if (qty > insumo.available) {
-      alert(`Error: No puede entregar más unidades que las disponibles físicas en el Galpón Central (${insumo.available} u. disponibles).`);
+      alert(`Error: No puede entregar más unidades que las disponibles físicas en Casa TML (${insumo.available} u. disponibles).`);
       return;
     }
 
@@ -249,7 +253,7 @@ export const TallerPage: React.FC = () => {
     const exists = entregasInsumos.find(item => item.descripcion === desc);
     if (exists) {
       if (exists.cantidad + qty > insumo.available) {
-        alert(`Error: La suma agregada supera el stock disponible en el Galpón Central (${insumo.available} u.).`);
+        alert(`Error: La suma agregada supera el stock disponible en Casa TML (${insumo.available} u.).`);
         return;
       }
       setEntregasInsumos(entregasInsumos.map(item => 
@@ -278,9 +282,37 @@ export const TallerPage: React.FC = () => {
     const prod = productos.find(p => p.id === tempProductId);
     if (!prod) return;
 
+    const baseProdId = prod.productoBaseId;
+    if (!baseProdId) {
+      alert("El producto seleccionado no posee un producto base registrado en el catálogo.");
+      return;
+    }
+    const baseProd = productos.find(p => p.id === baseProdId);
+    if (!baseProd) {
+      alert("No se pudo encontrar el producto base asociado en el catálogo.");
+      return;
+    }
+
     const uPorFardo = prod.unidadesPorFardo || 60;
     const perfUnits = convertToUnits(rawPerf, tempPerfectUnit, uPorFardo);
     const fallUnits = convertToUnits(rawFall, tempFalladoUnit, uPorFardo);
+
+    // Validate that the total requested (perfects + fallados) does not exceed raw material stock in workshop
+    const baseStock = stockItems.find(item => item.productoId === baseProdId && item.tallerId === selectedTallerId);
+    const availableBaseQty = baseStock ? baseStock.cantidadUnidades : 0;
+
+    let alreadyAddedBaseQty = 0;
+    devolucionesProductos.forEach(item => {
+      if (item.productoBaseId === baseProdId) {
+        alreadyAddedBaseQty += item.cantidadUnidades + item.cantidadFallados;
+      }
+    });
+
+    const totalRequested = alreadyAddedBaseQty + perfUnits + fallUnits;
+    if (totalRequested > availableBaseQty) {
+      alert(`Error: La cantidad total a devolver (${totalRequested} u.) supera el stock del producto base ${baseProd.nombre} disponible en el taller (${availableBaseQty} u.).`);
+      return;
+    }
 
     const labelPerf = formatUnitText(tempPerfectQty, tempPerfectUnit);
     const labelFall = formatUnitText(tempFalladoQty, tempFalladoUnit);
@@ -291,6 +323,7 @@ export const TallerPage: React.FC = () => {
         item.productoId === tempProductId 
           ? { 
               ...item, 
+              productoBaseId: baseProdId,
               cantidadUnidades: item.cantidadUnidades + perfUnits, 
               cantidadFallados: item.cantidadFallados + fallUnits,
               displayPerfect: item.displayPerfect ? `${item.displayPerfect} + ${labelPerf}` : labelPerf,
@@ -301,6 +334,7 @@ export const TallerPage: React.FC = () => {
     } else {
       setDevolucionesProductos([...devolucionesProductos, {
         productoId: tempProductId,
+        productoBaseId: baseProdId,
         nombre: prod.nombre,
         cantidadUnidades: perfUnits,
         cantidadFallados: fallUnits,
@@ -363,12 +397,12 @@ export const TallerPage: React.FC = () => {
         const insumoItems = entregasInsumos.map(ins => ({
           productoId: ins.productoId,
           cantidadUnidades: ins.cantidad,
-          depositoOrigenId: centralDepId || null, // Fixed to Central
+          depositoOrigenId: casaDepId || null, // Dynamic Casa depot ID
           depositoDestinoId: null,
           tallerOrigenId: null,
           tallerDestinoId: selectedTallerId,
           calidad: "PERFECTO" as const,
-          presentacion: "SIN_ETIQUETA" as const,
+          presentacion: "UNIDAD" as const,
           canal: "MAYORISTA" as const,
           direccion: "SALIDA" as const
         }));
@@ -408,13 +442,17 @@ export const TallerPage: React.FC = () => {
       try {
         const items: any[] = [];
         for (const p of devolucionesProductos) {
-          if (p.cantidadUnidades > 0) {
+          const perfects = p.cantidadUnidades || 0;
+          const fallados = p.cantidadFallados || 0;
+
+          // 1. Entrada de comercial perfecto a depósito elegido
+          if (perfects > 0) {
             items.push({
               productoId: p.productoId,
-              cantidadUnidades: p.cantidadUnidades,
+              cantidadUnidades: perfects,
               depositoOrigenId: null,
               depositoDestinoId: selectedDepositoId,
-              tallerOrigenId: selectedTallerId,
+              tallerOrigenId: null,
               tallerDestinoId: null,
               calidad: "PERFECTO" as const,
               presentacion: "SIN_ETIQUETA" as const,
@@ -422,13 +460,15 @@ export const TallerPage: React.FC = () => {
               direccion: "ENTRADA" as const
             });
           }
-          if (p.cantidadFallados > 0) {
+
+          // 2. Entrada de comercial fallado a Zona de Corte (forzado)
+          if (fallados > 0) {
             items.push({
               productoId: p.productoId,
-              cantidadUnidades: p.cantidadFallados,
+              cantidadUnidades: fallados,
               depositoOrigenId: null,
-              depositoDestinoId: selectedDepositoId,
-              tallerOrigenId: selectedTallerId,
+              depositoDestinoId: corteDepId || null,
+              tallerOrigenId: null,
               tallerDestinoId: null,
               calidad: "FALLADO" as const,
               presentacion: "SIN_ETIQUETA" as const,
@@ -436,6 +476,21 @@ export const TallerPage: React.FC = () => {
               direccion: "ENTRADA" as const
             });
           }
+
+          // 3. Salida de producto base del taller
+          const total = perfects + fallados;
+          items.push({
+            productoId: p.productoBaseId,
+            cantidadUnidades: total,
+            depositoOrigenId: null,
+            depositoDestinoId: null,
+            tallerOrigenId: selectedTallerId,
+            tallerDestinoId: null,
+            calidad: "PERFECTO" as const,
+            presentacion: "SIN_ETIQUETA" as const,
+            canal: "MAYORISTA" as const,
+            direccion: "SALIDA" as const
+          });
         }
 
         const movement = await queueService.enqueue(
@@ -734,11 +789,11 @@ export const TallerPage: React.FC = () => {
 
               {/* Insumos */}
               <div className="bg-slate-900 border-2 border-slate-800 p-4 rounded-md space-y-3">
-                <h4 className="text-xs font-black uppercase tracking-widest text-green-400 border-b border-slate-850 pb-2">2. Insumos a Enviar (Origen: Galpón Central)</h4>
+                <h4 className="text-xs font-black uppercase tracking-widest text-green-400 border-b border-slate-850 pb-2">2. Insumos a Enviar (Origen: Casa TML)</h4>
                 
                 {availableInsumos.length === 0 ? (
                   <p className="text-[10px] text-yellow-400 font-bold uppercase py-2 bg-yellow-950/15 border border-yellow-900/30 px-3 rounded">
-                    ⚠️ No hay Insumos disponibles físicas en el Galpón Central.
+                    ⚠️ No hay Insumos disponibles físicas en Casa TML.
                   </p>
                 ) : (
                   <div className="flex gap-2">

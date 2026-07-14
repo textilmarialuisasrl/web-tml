@@ -189,7 +189,7 @@ export const MovementService = {
       const isOperarioUser = userPerms.includes("MOVIMIENTOS_CREAR") && !userPerms.includes("MOVIMIENTOS_VER");
 
       if (isOperarioUser) {
-        const allowedTypes = ["MOVIMIENTO_INTERNO", "INGRESO_MANUAL"];
+        const allowedTypes = ["MOVIMIENTO_INTERNO", "CORTADA"];
         if (!allowedTypes.includes(data.tipo)) {
           throw new AppError({
             message: `Acceso denegado: el Operario no tiene permisos para realizar movimientos de tipo ${data.tipo}`,
@@ -197,9 +197,12 @@ export const MovementService = {
             code: "FORBIDDEN_OPERATION",
           });
         }
-        if (data.tipo === "INGRESO_MANUAL") {
+        if (data.tipo === "CORTADA") {
           const corteDep = await tx.deposito.findFirst({
-            where: { tipo: "CORTE", activo: true }
+            where: {
+              nombre: { equals: "Zona de Corte", mode: "insensitive" },
+              activo: true
+            }
           });
           const corteId = corteDep?.id;
           for (const item of mergedItems) {
@@ -333,6 +336,47 @@ export const MovementService = {
         });
       }
 
+      if (data.tipo === "DEVOLUCION_TALLER") {
+        const baseGroup = new Map<string, number>();
+        for (const item of mergedItems) {
+          if (item.tallerOrigenId && item.direccion === "SALIDA") {
+            baseGroup.set(item.productoId, (baseGroup.get(item.productoId) || 0) + item.cantidadUnidades);
+          }
+        }
+
+        for (const [baseId, requiredQty] of baseGroup.entries()) {
+          const baseProduct = await tx.producto.findFirst({
+            where: { id: baseId, tipoProducto: "BASE", activo: true },
+          });
+          if (!baseProduct) {
+            throw new AppError({
+              message: `El producto base con ID ${baseId} no existe o no está activo`,
+              statusCode: 400,
+              code: "PRODUCT_NOT_FOUND",
+            });
+          }
+
+          const tallerStock = await tx.stockActual.findFirst({
+            where: {
+              productoId: baseId,
+              tallerId: data.tallerId,
+              depositoId: null,
+              calidad: CalidadProducto.PERFECTO,
+              presentacion: PresentacionProducto.SIN_ETIQUETA,
+              canal: CanalStock.MAYORISTA,
+            },
+          });
+          const available = tallerStock ? tallerStock.cantidadUnidades : 0;
+          if (available < requiredQty) {
+            throw new AppError({
+              message: `El taller no cuenta con suficiente stock del producto base ${baseProduct.nombre} (Disponible: ${available}, Requerido: ${requiredQty})`,
+              statusCode: 400,
+              code: "INSUFFICIENT_STOCK",
+            });
+          }
+        }
+      }
+
       // 2.3 Fetch product snapshots and run item-level validations
       const itemsWithSnapshots = [];
       for (const item of mergedItems) {
@@ -411,9 +455,9 @@ export const MovementService = {
             }
           }
           if (item.depositoDestinoId || item.tallerDestinoId) {
-            if (item.presentacion !== "ETIQUETADO") {
+            if (item.presentacion !== "UNIDAD") {
               throw new AppError({
-                message: "El stock de destino resultante del etiquetado debe ser ETIQUETADO",
+                message: "El stock de destino resultante del etiquetado debe ser UNIDAD",
                 statusCode: 400,
                 code: "INVALID_PRESENTATION",
               });
@@ -540,6 +584,47 @@ export const MovementService = {
         }
       }
 
+      // 2.5.2 Custom stock updates for Retazos generated in CORTADA operations
+      if (data.tipo === "CORTADA" && data.insumos && data.insumos.length > 0) {
+        const depCorte = await tx.deposito.findFirst({
+          where: {
+            nombre: { equals: "Zona de Corte", mode: "insensitive" },
+            activo: true
+          }
+        });
+        if (!depCorte) {
+          throw new AppError({
+            message: "El depósito 'Zona de Corte' no existe o está inactivo",
+            statusCode: 500,
+            code: "ZONA_DE_CORTE_NOT_FOUND",
+          });
+        }
+
+        for (const ins of data.insumos) {
+          const retazoProduct = await tx.producto.findFirst({
+            where: {
+              nombre: { equals: ins.descripcion, mode: "insensitive" },
+              tipoProducto: "RETAZO",
+              activo: true,
+            },
+          });
+          if (retazoProduct) {
+            await StockService.incrementStock(
+              {
+                productoId: retazoProduct.id,
+                depositoId: depCorte.id,
+                tallerId: null,
+                calidad: "PERFECTO",
+                presentacion: "SIN_ETIQUETA",
+                canal: "MAYORISTA",
+                cantidadUnidades: Math.round(ins.cantidad),
+              },
+              tx
+            );
+          }
+        }
+      }
+
       // 2.6 Register Audit Record
       await AuditService.registerAudit(
         {
@@ -640,20 +725,62 @@ export const MovementService = {
       });
     }
 
-    const items = data.items.map((item) => {
-      return {
-        productoId: item.productoId,
-        cantidadUnidades: item.cantidadUnidades,
-        depositoOrigenId: depCorte.id,
-        depositoDestinoId: null,
-        tallerOrigenId: null,
-        tallerDestinoId: data.tallerId,
-        calidad: CalidadProducto.PERFECTO,
-        presentacion: PresentacionProducto.SIN_ETIQUETA,
-        canal: CanalStock.MAYORISTA,
-        direccion: "SALIDA" as const,
-      };
+    const depCasa = await prisma.deposito.findFirst({
+      where: {
+        nombre: { equals: "Casa", mode: "insensitive" },
+        deletedAt: null,
+      },
     });
+
+    if (!depCasa) {
+      throw new AppError({
+        message: "El depósito 'Casa' (origen de insumos) no existe o está inactivo",
+        statusCode: 500,
+        code: "DEP_CASA_NOT_FOUND",
+      });
+    }
+
+    const items = [];
+    for (const item of data.items) {
+      const product = await prisma.producto.findUnique({
+        where: { id: item.productoId },
+      });
+      if (!product) {
+        throw new AppError({
+          message: `El producto con ID ${item.productoId} no existe`,
+          statusCode: 400,
+          code: "PRODUCT_NOT_FOUND",
+        });
+      }
+
+      if (product.tipoProducto === "INSUMO") {
+        items.push({
+          productoId: item.productoId,
+          cantidadUnidades: item.cantidadUnidades,
+          depositoOrigenId: depCasa.id,
+          depositoDestinoId: null,
+          tallerOrigenId: null,
+          tallerDestinoId: data.tallerId,
+          calidad: CalidadProducto.PERFECTO,
+          presentacion: PresentacionProducto.UNIDAD,
+          canal: CanalStock.MAYORISTA,
+          direccion: "SALIDA" as const,
+        });
+      } else {
+        items.push({
+          productoId: item.productoId,
+          cantidadUnidades: item.cantidadUnidades,
+          depositoOrigenId: depCorte.id,
+          depositoDestinoId: null,
+          tallerOrigenId: null,
+          tallerDestinoId: data.tallerId,
+          calidad: CalidadProducto.PERFECTO,
+          presentacion: PresentacionProducto.SIN_ETIQUETA,
+          canal: CanalStock.MAYORISTA,
+          direccion: "SALIDA" as const,
+        });
+      }
+    }
 
     return this.createMovimiento(
       {
@@ -674,7 +801,7 @@ export const MovementService = {
       tallerId: string;
       depositoId: string;
       observaciones?: string | null;
-      items: { productoId: string; cantidadUnidades?: number; cantidadFallados?: number }[];
+      items: { productoId: string; productoBaseId: string; cantidadUnidades?: number; cantidadFallados?: number }[];
       deviceId?: string;
       offlineCreatedAt?: Date;
       syncBatchId?: string;
@@ -697,6 +824,21 @@ export const MovementService = {
       });
     }
 
+    const depCorte = await prisma.deposito.findFirst({
+      where: {
+        nombre: { equals: "Zona de Corte", mode: "insensitive" },
+        deletedAt: null,
+      },
+    });
+
+    if (!depCorte) {
+      throw new AppError({
+        message: "El depósito 'Zona de Corte' no existe",
+        statusCode: 500,
+        code: "ZONA_DE_CORTE_NOT_FOUND",
+      });
+    }
+
     const items: MovementItemInput[] = [];
     for (const item of data.items) {
       const perfects = item.cantidadUnidades || 0;
@@ -710,13 +852,41 @@ export const MovementService = {
         });
       }
 
+      if (!item.productoBaseId) {
+        throw new AppError({
+          message: "Debe especificar el producto base de origen para cada ítem",
+          statusCode: 400,
+          code: "PRODUCT_BASE_REQUIRED",
+        });
+      }
+
+      // Check catalog mapping validity
+      const pfProduct = await prisma.producto.findUnique({
+        where: { id: item.productoId },
+      });
+      if (!pfProduct) {
+        throw new AppError({
+          message: `El producto comercial con ID ${item.productoId} no existe`,
+          statusCode: 400,
+          code: "PRODUCT_NOT_FOUND",
+        });
+      }
+      if (pfProduct.productoBaseId !== item.productoBaseId) {
+        throw new AppError({
+          message: `El producto base especificado para ${pfProduct.nombre} no corresponde al registrado en el catálogo`,
+          statusCode: 400,
+          code: "INVALID_PRODUCT_BASE_MAPPING",
+        });
+      }
+
+      // 1. Add commercial perfect ENTRADA item
       if (perfects > 0) {
         items.push({
           productoId: item.productoId,
           cantidadUnidades: perfects,
           depositoOrigenId: null,
           depositoDestinoId: data.depositoId,
-          tallerOrigenId: data.tallerId,
+          tallerOrigenId: null,
           tallerDestinoId: null,
           calidad: CalidadProducto.PERFECTO,
           presentacion: PresentacionProducto.SIN_ETIQUETA,
@@ -725,13 +895,14 @@ export const MovementService = {
         });
       }
 
+      // 2. Add commercial fallado ENTRADA item to Zona de Corte
       if (fallados > 0) {
         items.push({
           productoId: item.productoId,
           cantidadUnidades: fallados,
           depositoOrigenId: null,
-          depositoDestinoId: data.depositoId,
-          tallerOrigenId: data.tallerId,
+          depositoDestinoId: depCorte.id,
+          tallerOrigenId: null,
           tallerDestinoId: null,
           calidad: CalidadProducto.FALLADO,
           presentacion: PresentacionProducto.SIN_ETIQUETA,
@@ -739,6 +910,21 @@ export const MovementService = {
           direccion: "ENTRADA" as const,
         });
       }
+
+      // 3. Add base product SALIDA item from workshop
+      const total = perfects + fallados;
+      items.push({
+        productoId: item.productoBaseId,
+        cantidadUnidades: total,
+        depositoOrigenId: null,
+        depositoDestinoId: null,
+        tallerOrigenId: data.tallerId,
+        tallerDestinoId: null,
+        calidad: CalidadProducto.PERFECTO,
+        presentacion: PresentacionProducto.SIN_ETIQUETA,
+        canal: CanalStock.MAYORISTA,
+        direccion: "SALIDA" as const,
+      });
     }
 
     return this.createMovimiento(
@@ -832,13 +1018,31 @@ export const MovementService = {
       });
     }
 
+    const prod = await prisma.producto.findUnique({
+      where: { id: data.productoId },
+    });
+    if (!prod) {
+      throw new AppError({
+        message: "El producto comercial no existe",
+        statusCode: 400,
+        code: "PRODUCT_NOT_FOUND",
+      });
+    }
+    if (!prod.requiereEtiqueta) {
+      throw new AppError({
+        message: `El producto ${prod.nombre} no requiere etiquetado según la ficha técnica`,
+        statusCode: 400,
+        code: "ETIQUETADO_NOT_REQUIRED",
+      });
+    }
+
     const items: MovementItemInput[] = [
       {
         productoId: data.productoId,
         cantidadUnidades: data.cantidadUnidades,
         depositoOrigenId: data.depositoId,
         depositoDestinoId: null,
-        calidad: data.calidad,
+        calidad: CalidadProducto.PERFECTO,
         presentacion: PresentacionProducto.SIN_ETIQUETA,
         canal: data.canal,
       },
@@ -847,8 +1051,8 @@ export const MovementService = {
         cantidadUnidades: data.cantidadUnidades,
         depositoOrigenId: null,
         depositoDestinoId: data.depositoId,
-        calidad: data.calidad,
-        presentacion: PresentacionProducto.ETIQUETADO,
+        calidad: CalidadProducto.PERFECTO,
+        presentacion: PresentacionProducto.UNIDAD,
         canal: data.canal,
       },
     ];
@@ -857,7 +1061,7 @@ export const MovementService = {
       {
         tipo: TipoMovimiento.ETIQUETADO,
         usuarioId: data.usuarioId,
-        observaciones: data.observaciones || `Etiquetado manual de ${data.cantidadUnidades} unidades`,
+        observaciones: data.observaciones || `Etiquetado de ${data.cantidadUnidades} unidades de ${prod.nombre}`,
         deviceId: data.deviceId,
         offlineCreatedAt: data.offlineCreatedAt,
         syncBatchId: data.syncBatchId,

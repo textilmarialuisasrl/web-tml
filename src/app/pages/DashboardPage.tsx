@@ -249,7 +249,7 @@ export const DashboardPage: React.FC = () => {
   const getDailyCutCount = () => {
     const today = new Date().toISOString().substring(0, 10);
     const cuts = recentMovements.filter(m => 
-      m.tipo === "INGRESO_MANUAL" && 
+      m.tipo === "CORTADA" && 
       new Date(m.createdAt).toISOString().substring(0, 10) === today &&
       m.items.some((it: any) => depositoMap[it.depositoDestinoId]?.toUpperCase().includes("CORTE"))
     );
@@ -328,7 +328,7 @@ export const DashboardPage: React.FC = () => {
       const isToday = new Date(m.createdAt).toISOString().substring(0, 10) === today;
       if (!isToday) return;
 
-      if (m.tipo === "INGRESO_MANUAL") {
+      if (m.tipo === "CORTADA") {
         m.items.forEach((it: any) => {
           if (depositoMap[it.depositoDestinoId]?.toUpperCase().includes("CORTE")) {
             cuts += it.cantidadUnidades;

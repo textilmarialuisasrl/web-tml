@@ -184,6 +184,7 @@ class SyncEngine {
         tallerId: m.tallerId || null,
         observaciones: m.observaciones || null,
         items: m.items,
+        insumos: m.insumos || [],
       })),
     };
 

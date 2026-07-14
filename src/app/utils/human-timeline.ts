@@ -78,28 +78,18 @@ export function formatHumanMovement(
       return `Ajuste administrativo de stock realizado por ${user}: ${desc}.`;
     }
 
+    case "CORTADA":
     case "INGRESO_MANUAL": {
       const desc = m.items.map((it: any) => {
         const prodName = productMap[it.productoId] || it.productoNombreSnapshot || it.productoId;
-        const dep = it.depositoDestinoId ? (depositoMap[it.depositoDestinoId] || "depósito") : "depósito";
-        
-        // If it's in Zona de Corte, it's Production of Corte
-        const isCorte = dep.toUpperCase().includes("CORTE") || (it.depositoDestinoId && it.depositoDestinoId.includes("corte"));
-        if (isCorte) {
-          return `${it.cantidadUnidades.toLocaleString()} unidades de ${prodName}`;
-        }
-        return `+${it.cantidadUnidades.toLocaleString()} unidades de ${prodName} en ${dep}`;
+        return `${it.cantidadUnidades.toLocaleString()} unidades de ${prodName}`;
       }).join(", ");
 
-      const isCorte = m.items.some((it: any) => {
-        const dep = it.depositoDestinoId ? (depositoMap[it.depositoDestinoId] || "depósito") : "";
-        return dep.toUpperCase().includes("CORTE") || (it.depositoDestinoId && it.depositoDestinoId.includes("corte"));
-      });
+      const retazosDesc = m.insumos && m.insumos.length > 0
+        ? " con retazos: " + m.insumos.map((ins: any) => `${ins.cantidad.toLocaleString()} unidades de ${ins.descripcion}`).join(", ")
+        : "";
 
-      if (isCorte) {
-        return `${user} registró producción de corte: ${desc}.`;
-      }
-      return `${user} realizó ingreso manual: ${desc}.`;
+      return `${user} registró producción de corte: ${desc}${retazosDesc}.`;
     }
 
     default: {

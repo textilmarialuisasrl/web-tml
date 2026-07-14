@@ -12,6 +12,7 @@ export const CortePage: React.FC = () => {
   
   // Master lists
   const [productosIntermedios, setProductosIntermedios] = useState<any[]>([]);
+  const [retazosCatalog, setRetazosCatalog] = useState<any[]>([]);
   const [zonaCorteId, setZonaCorteId] = useState<string>("");
   const [loading, setLoading] = useState(true);
   
@@ -19,6 +20,10 @@ export const CortePage: React.FC = () => {
   const [corteItems, setCorteItems] = useState<any[]>([]);
   const [tempProductId, setTempProductId] = useState("");
   const [tempQty, setTempQty] = useState("");
+
+  const [corteRetazos, setCorteRetazos] = useState<any[]>([]);
+  const [tempRetazoId, setTempRetazoId] = useState("");
+  const [tempRetazoQty, setTempRetazoQty] = useState("");
   
   const [observaciones, setObservaciones] = useState("");
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -52,9 +57,13 @@ export const CortePage: React.FC = () => {
           catalogService.getDepositos()
         ]);
 
-        // Filter: only intermediate products (cut pieces of type BASE)
-        const intermedios = pList.filter(p => p.tipoProducto === "BASE" && p.nombre.toLowerCase().includes("cortada"));
+        // Filter: only intermediate products (cut pieces of type BASE) that are active
+        const intermedios = pList.filter(p => p.tipoProducto === "BASE" && p.nombre.toLowerCase().includes("cortada") && p.activo === true);
         setProductosIntermedios(intermedios);
+
+        // Filter: only retazos that are active
+        const retazos = pList.filter(p => p.tipoProducto === "RETAZO" && p.activo === true);
+        setRetazosCatalog(retazos);
 
         // Find ZONA DE CORTE warehouse id (tipo PRODUCCION)
         const corteDep = dList.find(d => d.tipo === "PRODUCCION" || d.nombre.toUpperCase().includes("CORTE"));
@@ -64,6 +73,7 @@ export const CortePage: React.FC = () => {
 
         console.log("[CATALOGOS] CortePage loaded:", {
           intermedios: intermedios.length,
+          retazos: retazos.length,
           zonaCorteId: corteDep?.id || "not found"
         });
       } catch (err) {
@@ -115,6 +125,39 @@ export const CortePage: React.FC = () => {
     setCorteItems(corteItems.filter((_, i) => i !== index));
   };
 
+  const handleAddRetazo = () => {
+    const qty = parseInt(tempRetazoQty, 10);
+    if (!tempRetazoId) return;
+    if (isNaN(qty) || qty <= 0) {
+      alert("Ingrese una cantidad de retazo válida mayor a cero.");
+      return;
+    }
+
+    const ret = retazosCatalog.find(r => r.id === tempRetazoId);
+    if (!ret) return;
+
+    // Check duplicate/consolidation
+    const exists = corteRetazos.find(item => item.productoId === tempRetazoId);
+    if (exists) {
+      setCorteRetazos(corteRetazos.map(item =>
+        item.productoId === tempRetazoId ? { ...item, cantidadUnidades: item.cantidadUnidades + qty } : item
+      ));
+    } else {
+      setCorteRetazos([...corteRetazos, {
+        productoId: tempRetazoId,
+        nombre: ret.nombre,
+        cantidadUnidades: qty
+      }]);
+    }
+
+    setTempRetazoId("");
+    setTempRetazoQty("");
+  };
+
+  const handleRemoveRetazo = (index: number) => {
+    setCorteRetazos(corteRetazos.filter((_, i) => i !== index));
+  };
+
   const handleProcessSubmit = async () => {
     setSubmitError(null);
     setLastCreatedId(null);
@@ -146,19 +189,27 @@ export const CortePage: React.FC = () => {
         direccion: "ENTRADA" as const
       }));
 
+      // Map retazos registered as Insumos parameter of queueService.enqueue
+      const insumos = corteRetazos.map(ret => ({
+        descripcion: ret.nombre,
+        cantidad: ret.cantidadUnidades
+      }));
+
       const movement = await queueService.enqueue(
-        "INGRESO_MANUAL",
+        "CORTADA",
         items,
         null,
         observaciones || "Producción diaria de corte registrada",
-        "HIGH"
+        "HIGH",
+        insumos
       );
 
       triggerHaptic("success");
-      setLastCreatedId(movement.clientGeneratedId);
+      setLastCreatedId(movement.clientGeneratedId || null);
       
       // Reset form
       setCorteItems([]);
+      setCorteRetazos([]);
       setObservaciones("");
     } catch (err: any) {
       triggerHaptic("warning");
@@ -240,6 +291,72 @@ export const CortePage: React.FC = () => {
                   </div>
                   <button
                     onClick={() => handleRemoveItem(idx)}
+                    className="p-1.5 text-red-450 hover:bg-red-950/20 border border-transparent hover:border-red-900/30 rounded transition cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Retazos Form Fields */}
+        <div className="space-y-3.5 border-t border-slate-800 pt-3.5">
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400">Retazos Obtenidos (Opcional)</h3>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Tipo de Retazo</label>
+              <select
+                value={tempRetazoId}
+                onChange={(e) => setTempRetazoId(e.target.value)}
+                className="w-full bg-slate-950 border-2 border-slate-800 rounded-md px-3 py-3 text-xs text-slate-200 focus:outline-none focus:border-blue-600 uppercase font-extrabold cursor-pointer"
+                style={{ minHeight: "45px" }}
+              >
+                <option value="">-- Seleccionar --</option>
+                {retazosCatalog.map(r => (
+                  <option key={r.id} value={r.id}>{r.nombre}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Cantidad Retazos</label>
+              <input
+                type="number"
+                value={tempRetazoQty}
+                onChange={(e) => setTempRetazoQty(e.target.value)}
+                placeholder="Cantidad..."
+                className="w-full bg-slate-950 border-2 border-slate-800 rounded-md px-3.5 py-3 text-xs text-slate-200 focus:outline-none focus:border-blue-600 font-bold"
+                style={{ minHeight: "45px" }}
+              />
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleAddRetazo}
+            className="w-full bg-slate-800 hover:bg-slate-750 text-gray-250 border-2 border-slate-700 font-black py-3 rounded-md text-xs uppercase tracking-wider transition active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <Plus className="w-4 h-4 text-green-400" />
+            <span>Agregar Retazo</span>
+          </button>
+        </div>
+
+        {/* List of retazos to register */}
+        {corteRetazos.length > 0 && (
+          <div className="space-y-2 border-t border-slate-800 pt-3">
+            <h3 className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Retazos Registrados:</h3>
+            <div className="space-y-1.5">
+              {corteRetazos.map((item, idx) => (
+                <div key={idx} className="bg-black/30 border-2 border-slate-850 p-3 rounded-md flex justify-between items-center text-xs">
+                  <div>
+                    <span className="font-extrabold text-gray-205 uppercase">{item.nombre}</span>
+                    <span className="block text-[10px] text-gray-400 mt-0.5 font-mono font-bold">{item.cantidadUnidades.toLocaleString()} Unidades</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveRetazo(idx)}
                     className="p-1.5 text-red-450 hover:bg-red-950/20 border border-transparent hover:border-red-900/30 rounded transition cursor-pointer"
                   >
                     <Trash2 className="w-4 h-4" />

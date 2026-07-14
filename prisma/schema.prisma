@@ -47,6 +47,10 @@ model Producto {
   updatedAt             DateTime             @default(now()) @updatedAt
   deletedAt             DateTime?
 
+  productoBaseId        String?
+  productoBase          Producto?            @relation("ProductoBase", fields: [productoBaseId], references: [id])
+  productosDerivados    Producto[]           @relation("ProductoBase")
+
   // Relations
   familia               Familia?             @relation(fields: [familiaId], references: [id])
   alertasStock          AlertaStock[]

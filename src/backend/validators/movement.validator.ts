@@ -12,7 +12,7 @@ const tipoMovimientoEnum = z.enum([
   "EGRESO",
   "AJUSTE",
   "RECONVERSION",
-  "INGRESO_MANUAL",
+  "CORTADA",
   "ETIQUETADO",
 ]);
 
@@ -70,6 +70,7 @@ export const createDevolucionTallerSchema = z.object({
   items: z.array(
     z.object({
       productoId: cuidSchema,
+      productoBaseId: cuidSchema,
       cantidadUnidades: z.number().int().nonnegative("La cantidad de perfectos no puede ser negativa").optional(),
       cantidadFallados: z.number().int().nonnegative("La cantidad de fallados no puede ser negativa").optional(),
     })

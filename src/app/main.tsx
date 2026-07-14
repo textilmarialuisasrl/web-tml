@@ -26,7 +26,7 @@ import { runtimeLifecycle } from "./runtime/runtime.lifecycle";
 import { selectHeaderStatus } from "./runtime/selectors";
 import { useRuntimeStore } from "./runtime/runtime.store";
 import { useLocation } from "react-router-dom";
-import { LayoutDashboard, History, Wrench, Warehouse, Scissors, Settings, Menu, X } from "lucide-react";
+import { LayoutDashboard, History, Wrench, Warehouse, Scissors, Settings, Menu, X, Tag } from "lucide-react";
 import { RouteErrorBoundary } from "./components/runtime/RouteErrorBoundary";
 import { DegradedScreen } from "./components/runtime/DegradedScreen";
 import { AuthRecoveryScreen } from "./components/runtime/AuthRecoveryScreen";
@@ -55,6 +55,9 @@ const DashboardPage = lazy(() =>
 );
 const AdminPage = lazy(() =>
   import("./pages/AdminPage").then((m) => ({ default: m.AdminPage }))
+);
+const EtiquetadoPage = lazy(() =>
+  import("./pages/EtiquetadoPage").then((m) => ({ default: m.EtiquetadoPage }))
 );
 
 function TelemetryRoute({ name, children }: { name: string; children: ReactNode }) {
@@ -259,6 +262,9 @@ function AppShell() {
       allowedTabs.push({ to: "/app/taller", label: "TALLERES", icon: Wrench });
     }
     if (isSupervisor || isAdmin) {
+      allowedTabs.push({ to: "/app/etiquetado", label: "ETIQUETADO", icon: Tag });
+    }
+    if (isSupervisor || isAdmin) {
       allowedTabs.push({ to: "/app/admin", label: "ADMIN", icon: Settings });
     }
   }
@@ -423,6 +429,18 @@ function AppShell() {
                     <RouteErrorBoundary routeName="taller">
                       <ProtectedRoute permission="MOVIMIENTOS_CREAR">
                         {isSupervisor || isAdmin ? <TallerPage /> : <UnauthorizedScreen requiredPermission="SUPERVISOR" />}
+                      </ProtectedRoute>
+                    </RouteErrorBoundary>
+                  </TelemetryRoute>
+                }
+              />
+              <Route
+                path="/app/etiquetado"
+                element={
+                  <TelemetryRoute name="etiquetado">
+                    <RouteErrorBoundary routeName="etiquetado">
+                      <ProtectedRoute permission="MOVIMIENTOS_CREAR">
+                        {isSupervisor || isAdmin ? <EtiquetadoPage /> : <UnauthorizedScreen requiredPermission="SUPERVISOR" />}
                       </ProtectedRoute>
                     </RouteErrorBoundary>
                   </TelemetryRoute>
