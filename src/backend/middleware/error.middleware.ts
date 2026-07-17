@@ -28,7 +28,8 @@ export const errorHandler = (
     statusCode = 400;
     code = "VALIDATION_ERROR";
     message = "Datos de solicitud inválidos o incompletos";
-    details = err.errors.map((e) => ({
+    const issues = err.issues || err.errors || [];
+    details = issues.map((e: any) => ({
       field: e.path.join("."),
       message: e.message,
     }));

@@ -104,7 +104,7 @@ export const PdfService = {
         const prod = item.productoNombreSnapshot.substring(0, 16);
         const qty = String(item.cantidadUnidades);
         const dir = item.direccion;
-        const det = `${item.calidad.charAt(0)}/${item.presentacion === "ETIQUETADO" ? "E" : "S"}`;
+        const det = `${item.calidad.charAt(0)}/${item.presentacion.charAt(0)}`;
 
         doc.text(prod, 10, doc.y, { width: 90, continued: true });
         doc.text(qty, 110, doc.y, { width: 30, continued: true });
@@ -129,7 +129,7 @@ export const PdfService = {
       for (const item of movement.items) {
         const orig = item.depositoOrigen?.nombre || item.tallerOrigen?.nombre || "N/A";
         const dest = item.depositoDestino?.nombre || item.tallerDestino?.nombre || "N/A";
-        const details = `${item.calidad}/${item.presentacion === "ETIQUETADO" ? "Etiq" : "S/Etiq"}`;
+        const details = `${item.calidad}/${item.presentacion}`;
         
         doc.text(item.productoNombreSnapshot, 40, doc.y, { width: 170, continued: true });
         doc.text(orig, 220, doc.y, { width: 90, continued: true });

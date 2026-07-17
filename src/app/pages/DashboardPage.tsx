@@ -3,20 +3,23 @@ import { useRuntimeStore } from "../runtime/runtime.store";
 import { authFetch } from "../auth/auth.api";
 import { formatHumanMovement } from "../utils/human-timeline";
 import { catalogService } from "../services/catalog.service";
-import { syncEngine } from "../sync/sync-engine";
-import { 
-  Settings, 
-  AlertOctagon,
-  RefreshCw,
-  Coins
-} from "lucide-react";
+import { PageHeader } from "../components/layout/PageHeader";
+import { Card } from "../components/ui/Card";
+import { Badge } from "../components/ui/Badge";
+import { Button } from "../components/ui/Button";
+import { DataTable } from "../components/tables/DataTable";
+import { Form, FormSection, FormRow } from "../components/forms/Form";
+import { FormInput } from "../components/forms/FormInput";
+import { FormSelect } from "../components/forms/FormSelect";
+import { Modal } from "../components/feedback/Modal";
+import { Skeleton } from "../components/feedback/Skeleton";
+import { EmptyState } from "../components/feedback/EmptyState";
+import { useToast } from "../components/feedback/Toast";
 
 export const DashboardPage: React.FC = () => {
   const currentUser = useRuntimeStore((s) => s.currentUser);
   const online = useRuntimeStore((s) => s.online);
-  const syncPending = useRuntimeStore((s) => s.syncPending);
-  const failed = useRuntimeStore((s) => s.failed);
-  const syncing = useRuntimeStore((s) => s.syncing);
+  const toast = useToast();
 
   // User Role Helpers
   const isAdmin = currentUser?.permisos?.includes("ADMIN_SISTEMA") || currentUser?.nombre === "Ariel" || currentUser?.nombre === "Leo";
@@ -31,14 +34,14 @@ export const DashboardPage: React.FC = () => {
   const [tallerMap, setTallerMap] = useState<Record<string, string>>({});
   const [depositoMap, setDepositoMap] = useState<Record<string, string>>({});
 
-  // Finance and metrics states (Ariel & Taller)
+  // Finance and metrics states
   const [financeSummary, setFinanceSummary] = useState<any[]>([]);
   const [generalStock, setGeneralStock] = useState<any[]>([]);
   const [recentMovements, setRecentMovements] = useState<any[]>([]);
 
   // Operational states
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Modals / Form states (Ariel only)
@@ -114,6 +117,7 @@ export const DashboardPage: React.FC = () => {
     } catch (err: any) {
       console.error("Error loading dashboard metrics:", err);
       setError("No se pudieron cargar todas las métricas. Trabajando en modo offline.");
+      toast.error("Error al cargar datos en tiempo real.");
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -139,7 +143,7 @@ export const DashboardPage: React.FC = () => {
       setTallerPrecioTrapo("0");
       setTallerPrecioRejilla("0");
     }
-  }, [selectedTallerId]);
+  }, [selectedTallerId, financeSummary]);
 
   // Realtime payment calculation
   useEffect(() => {
@@ -176,7 +180,7 @@ export const DashboardPage: React.FC = () => {
   const handleRegisterPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedTallerId || !paymentAmount || parseFloat(paymentAmount) <= 0) {
-      alert("Por favor ingrese un taller y un rango de fechas con producción devuelta válida.");
+      toast.error("Monto o taller no válido para liquidación.");
       return;
     }
 
@@ -205,6 +209,8 @@ export const DashboardPage: React.FC = () => {
       setPaymentPeriodInicio("");
       setPaymentPeriodFin("");
       
+      toast.success("Pago registrado correctamente");
+
       // Auto open PDF
       if (json.success && json.data?.id && paymentPeriodName) {
         window.open(`/api/talleres/pagos/${json.data.id}/pdf`, "_blank");
@@ -212,14 +218,14 @@ export const DashboardPage: React.FC = () => {
       
       void loadDashboardData();
     } catch (err: any) {
-      alert("Error al registrar pago: " + err.message);
+      toast.error("Error al registrar pago: " + err.message);
     }
   };
 
   const handleSaveRates = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedTallerId) {
-      alert("Por favor seleccione un taller.");
+      toast.error("Por favor seleccione un taller.");
       return;
     }
 
@@ -237,13 +243,14 @@ export const DashboardPage: React.FC = () => {
       if (!res.ok) throw new Error("Error al guardar tarifas");
 
       setShowRatesModal(false);
+      toast.success("Tarifas de fardos actualizadas");
       void loadDashboardData();
     } catch (err: any) {
-      alert("Error al guardar tarifas: " + err.message);
+      toast.error("Error al guardar tarifas: " + err.message);
     }
   };
 
-  // --- KPI & Summary Computations (Ariel & Supervisor) ---
+  // --- KPI & Summary Computations ---
 
   // 1. Daily production count (Corte area)
   const getDailyCutCount = () => {
@@ -289,7 +296,7 @@ export const DashboardPage: React.FC = () => {
     return generalStock.reduce((sum, item) => sum + item.cantidadUnidades, 0);
   };
 
-  // 4. Low stock alerts (computed using custom limits per product)
+  // 4. Low stock alerts
   const getLowStockAlerts = () => {
     const alerts: Array<{ producto: string; deposito: string; stock: number; min: number; prioridad: "ALTA" | "MEDIA" }> = [];
     
@@ -316,7 +323,7 @@ export const DashboardPage: React.FC = () => {
     return alerts.slice(0, 8);
   };
 
-  // 5. Daily production recap (Centro de Producción)
+  // 5. Daily production recap
   const getDailyRecap = () => {
     const today = new Date().toISOString().substring(0, 10);
     let cuts = 0;
@@ -360,256 +367,310 @@ export const DashboardPage: React.FC = () => {
     };
   };
 
+  const recap = getDailyRecap();
+
+  // Premium loading state skeleton
   if (loading) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center text-gray-400 gap-3">
-        <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-        <span className="text-xs uppercase font-black tracking-widest">Cargando panel operativo...</span>
+      <div className="space-y-6 animate-pulse select-none bg-background p-4 min-h-screen">
+        <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg flex justify-between items-center">
+          <div className="space-y-2">
+            <Skeleton className="h-6 w-48 rounded" />
+            <Skeleton className="h-4 w-64 rounded" />
+          </div>
+          <Skeleton className="h-10 w-28 rounded" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="bg-surface-container-lowest border border-outline-variant p-5 rounded-lg space-y-4">
+              <Skeleton className="h-3.5 w-24 rounded" />
+              <Skeleton className="h-8 w-36 rounded" />
+              <Skeleton className="h-3 w-40 rounded" />
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-surface-container-lowest border border-outline-variant p-5 rounded-lg space-y-4">
+              <Skeleton className="h-5 w-44 rounded" />
+              <Skeleton className="h-40 w-full rounded" />
+            </div>
+          </div>
+          <div className="space-y-6">
+            <div className="bg-surface-container-lowest border border-outline-variant p-5 rounded-lg space-y-4">
+              <Skeleton className="h-5 w-32 rounded" />
+              <div className="space-y-2">
+                <Skeleton className="h-12 w-full rounded" />
+                <Skeleton className="h-12 w-full rounded" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
-  const recap = getDailyRecap();
-
   return (
-    <div className="flex-1 max-w-5xl mx-auto w-full space-y-6 pb-12 px-2 text-gray-200 font-sans">
+    <div className="space-y-6 pb-12 select-none">
       
       {error && (
-        <div className="bg-red-950/40 border border-red-900 rounded p-4 text-xs text-red-300 font-bold">
+        <div className="border border-error-container/30 bg-error-container/10 text-error px-5 py-3 rounded text-xs font-bold uppercase tracking-wider text-center">
           {error}
         </div>
       )}
-
-      {/* Header section with role badge */}
-      <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md flex justify-between items-center gap-4">
-        <div>
-          <span className="bg-slate-800 text-slate-300 border border-slate-700 px-2 py-0.5 rounded text-[9px] font-black tracking-widest font-mono">
-            {isAdmin ? "PANEL EJECUTIVO" : isSupervisor ? "PANEL SUPERVISOR" : isOperario ? "PLANTA DE CORTE" : "ACCESO TALLER"}
-          </span>
-          <h2 className="text-lg font-black tracking-wide text-white uppercase mt-1">
-            {isAdmin ? "Panel de Control de Ariel" : isSupervisor ? "Centro de Supervisión" : isOperario ? "Consola de Corte" : `Taller: ${currentUser?.nombre}`}
-          </h2>
-        </div>
-
-        <div>
-          {online && (
-            <button
-              onClick={() => loadDashboardData(true)}
-              disabled={refreshing}
-              className="px-4 py-2.5 bg-slate-800 hover:bg-slate-750 border-2 border-slate-700 text-xs font-black uppercase tracking-wider rounded transition flex items-center gap-1.5 cursor-pointer"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`} />
-              <span>Recargar</span>
-            </button>
-          )}
-        </div>
-      </div>
 
       {/* ========================================================================= */}
       {/* 1. ARIEL (ADMIN) EXECUTIVE DASHBOARD                                      */}
       {/* ========================================================================= */}
       {isAdmin && (
         <div className="space-y-6">
-          
-          {/* Main indicators */}
+          <PageHeader
+            title="Tablero Central de Control"
+            description="Monitoreo financiero de talleres y existencias críticas de planta."
+            breadcrumbs={[{ label: "Tablero" }]}
+            actions={
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  leftIcon={<span className="material-symbols-outlined text-xs">settings</span>}
+                  onClick={() => { setSelectedTallerId(""); setShowRatesModal(true); }}
+                  className="text-xs"
+                >
+                  Tarifas Fardos
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  leftIcon={<span className="material-symbols-outlined text-xs">payments</span>}
+                  onClick={() => { setSelectedTallerId(""); setCalculatedPayment(null); setShowPaymentModal(true); }}
+                  className="text-xs"
+                >
+                  Registrar Pago
+                </Button>
+              </div>
+            }
+          />
+
+          {/* Grid de KPIs principales (Alineados con Stitch) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-slate-900 border-2 border-slate-800 p-4.5 rounded-md flex flex-col justify-between">
-              <span className="text-[9px] uppercase font-black text-gray-450 tracking-widest block">DEUDA TOTAL TALLERES</span>
-              <span className="text-2xl font-black text-red-500 block mt-2 font-mono">
+            <Card className="hover:shadow-sm transition-shadow duration-150 relative">
+              <div className="flex justify-between items-start mb-1">
+                <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest block">Deuda Total Talleres</span>
+                <span className="text-error bg-error-container/10 px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-wider">Límite</span>
+              </div>
+              <span className="text-2xl font-black text-error mt-2 block text-mono">
                 ${financeSummary.reduce((sum, t) => sum + t.deudaActual, 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
               </span>
-            </div>
+              <span className="text-[9px] text-on-surface-variant mt-1 block uppercase font-bold">Saldo pendiente de liquidación</span>
+            </Card>
+
+            <Card className="hover:shadow-sm transition-shadow duration-150 relative">
+              <div className="flex justify-between items-start mb-1">
+                <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest block">Producción del Mes</span>
+                <span className="text-primary bg-primary-container/20 px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-wider">+12%</span>
+              </div>
+              <div className="flex items-end justify-between">
+                <div>
+                  <span className="text-2xl font-black text-primary mt-2 block text-mono">
+                    {getMonthlyConfeccionCount().toLocaleString()} <span className="text-xs font-normal text-on-surface-variant">u.</span>
+                  </span>
+                  <span className="text-[9px] text-on-surface-variant mt-1 block uppercase font-bold">Piezas confeccionadas recibidas</span>
+                </div>
+                {/* Sparklines visuales Stitch */}
+                <div className="flex items-end gap-0.5 h-8 pr-1">
+                  <div className="w-1 bg-primary rounded-xs" style={{ height: "10px" }}></div>
+                  <div className="w-1 bg-primary rounded-xs" style={{ height: "18px" }}></div>
+                  <div className="w-1 bg-primary rounded-xs" style={{ height: "12px" }}></div>
+                  <div className="w-1 bg-primary rounded-xs" style={{ height: "24px" }}></div>
+                  <div className="w-1 bg-primary rounded-xs" style={{ height: "20px" }}></div>
+                  <div className="w-1 bg-primary rounded-xs" style={{ height: "30px" }}></div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="hover:shadow-sm transition-shadow duration-150 relative">
+              <div className="flex justify-between items-start mb-1">
+                <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest block">Pendiente en Talleres</span>
+                <span className="text-amber-600 bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-wider">Pend.</span>
+              </div>
+              <span className="text-2xl font-black text-amber-600 mt-2 block text-mono">
+                {financeSummary.reduce((sum, t) => sum + t.totalPendiente, 0).toLocaleString()} <span className="text-xs font-normal text-on-surface-variant">u.</span>
+              </span>
+              <span className="text-[9px] text-on-surface-variant mt-1 block uppercase font-bold">Cortes en taller sin confeccionar</span>
+            </Card>
+
+            <Card className="hover:shadow-sm transition-shadow duration-150 relative">
+              <div className="flex justify-between items-start mb-1">
+                <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest block">Talleres Activos</span>
+                <span className="text-blue-600 bg-blue-500/10 px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-wider">Activos</span>
+              </div>
+              <div className="flex items-end justify-between">
+                <div>
+                  <span className="text-2xl font-black text-blue-600 mt-2 block text-mono">
+                    {financeSummary.filter(t => t.totalPendiente > 0).length} <span className="text-xs font-normal text-on-surface-variant">t.</span>
+                  </span>
+                  <span className="text-[9px] text-on-surface-variant mt-1 block uppercase font-bold">Talleres con saldo activo</span>
+                </div>
+                <div className="flex items-end gap-0.5 h-8 pr-1">
+                  <div className="w-1 bg-blue-600 rounded-xs" style={{ height: "15px" }}></div>
+                  <div className="w-1 bg-blue-600 rounded-xs" style={{ height: "10px" }}></div>
+                  <div className="w-1 bg-blue-600 rounded-xs" style={{ height: "22px" }}></div>
+                  <div className="w-1 bg-blue-600 rounded-xs" style={{ height: "26px" }}></div>
+                  <div className="w-1 bg-blue-600 rounded-xs" style={{ height: "18px" }}></div>
+                  <div className="w-1 bg-blue-600 rounded-xs" style={{ height: "28px" }}></div>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Grilla Principal: Tablas y Alertas */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <div className="bg-slate-900 border-2 border-slate-800 p-4.5 rounded-md flex flex-col justify-between">
-              <span className="text-[9px] uppercase font-black text-gray-455 tracking-widest block">PRODUCCIÓN DEL MES</span>
-              <span className="text-2xl font-black text-green-400 block mt-2 font-mono">
-                {getMonthlyConfeccionCount().toLocaleString()} u.
-              </span>
-            </div>
+            {/* Tabla de talleres (Panel Izquierdo) */}
+            <div className="lg:col-span-2 space-y-6">
+              <Card
+                title="Estado Financiero y Tarifas de Talleres"
+                subtitle="Saldos acumulados y tarifas de confección vigentes."
+              >
+                <DataTable
+                  data={financeSummary}
+                  getRowId={(row) => row.tallerId}
+                  columns={[
+                    { key: "tallerNombre", header: "Taller", sortable: true },
+                    { 
+                      key: "totalPendiente", 
+                      header: "Pendiente", 
+                      align: "right",
+                      render: (row) => <span className="font-bold text-mono">{row.totalPendiente.toLocaleString()} u.</span> 
+                    },
+                    { 
+                      key: "produccionPerfecta", 
+                      header: "Confeccionadas", 
+                      align: "right",
+                      render: (row) => <span className="text-on-surface-variant text-mono">{row.produccionPerfecta.toLocaleString()} u.</span> 
+                    },
+                    { 
+                      key: "precioTrapoFardo", 
+                      header: "Tarifa Trapos", 
+                      align: "right",
+                      render: (row) => <span className="text-mono text-primary font-bold">${row.precioTrapoFardo?.toLocaleString()}</span> 
+                    },
+                    { 
+                      key: "precioRejillaFardo", 
+                      header: "Tarifa Rejillas", 
+                      align: "right",
+                      render: (row) => <span className="text-mono text-primary font-bold">${row.precioRejillaFardo?.toLocaleString()}</span> 
+                    },
+                    { 
+                      key: "deudaActual", 
+                      header: "Deuda Actual", 
+                      align: "right",
+                      render: (row) => (
+                        <span className="font-black text-error text-mono">
+                          ${row.deudaActual.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                        </span>
+                      )
+                    }
+                  ]}
+                />
+              </Card>
 
-            <div className="bg-slate-900 border-2 border-slate-800 p-4.5 rounded-md flex flex-col justify-between">
-              <span className="text-[9px] uppercase font-black text-gray-455 tracking-widest block">PENDIENTE EN TALLERES</span>
-              <span className="text-2xl font-black text-yellow-500 block mt-2 font-mono">
-                {financeSummary.reduce((sum, t) => sum + t.totalPendiente, 0).toLocaleString()} u.
-              </span>
-            </div>
-
-            <div className="bg-slate-900 border-2 border-slate-800 p-4.5 rounded-md flex flex-col justify-between">
-              <span className="text-[9px] uppercase font-black text-gray-455 tracking-widest block">TALLERES ACTIVOS</span>
-              <span className="text-2xl font-black text-blue-400 block mt-2 font-mono">
-                {financeSummary.filter(t => t.totalPendiente > 0).length} Talleres
-              </span>
-            </div>
-          </div>
-
-          {/* Ariel Quick Actions */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <button
-              onClick={() => { setSelectedTallerId(""); setCalculatedPayment(null); setShowPaymentModal(true); }}
-              className="bg-blue-700 hover:bg-blue-650 text-white font-black py-4 rounded-md text-sm border-2 border-blue-600 shadow-md transition active:scale-[0.98] uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
-            >
-              <Coins className="w-5 h-5" />
-              <span>REGISTRAR PAGO Y LIQUIDACIÓN</span>
-            </button>
-
-            <button
-              onClick={() => { setSelectedTallerId(""); setShowRatesModal(true); }}
-              className="bg-slate-800 hover:bg-slate-750 text-gray-250 border-2 border-slate-700 font-black py-4 rounded-md text-sm shadow-md transition active:scale-[0.98] uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
-            >
-              <Settings className="w-5 h-5" />
-              <span>CONFIGURAR TARIFAS DE TALLER</span>
-            </button>
-          </div>
-
-          {/* Daily recap */}
-          <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-            <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 mb-3 border-b-2 border-slate-850 pb-2">
-              Resumen Operativo de Hoy
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div className="bg-black/30 p-4 border border-slate-850 rounded text-center">
-                <span className="text-[9px] text-gray-450 font-bold uppercase tracking-wider block">PIEZAS CORTADAS</span>
-                <span className="text-lg font-black text-white font-mono mt-1 block">{recap.cuts.toLocaleString()} U.</span>
-              </div>
-              <div className="bg-black/30 p-4 border border-slate-855 rounded text-center">
-                <span className="text-[9px] text-gray-455 font-bold uppercase tracking-wider block">ENVIADO A TALLERES</span>
-                <span className="text-lg font-black text-yellow-500 font-mono mt-1 block">{recap.sent.toLocaleString()} U.</span>
-              </div>
-              <div className="bg-black/30 p-4 border border-slate-850 rounded text-center">
-                <span className="text-[9px] text-gray-455 font-bold uppercase tracking-wider block">CONFECCIÓN RECIBIDA</span>
-                <span className="text-lg font-black text-green-450 font-mono mt-1 block">{recap.returned.toLocaleString()} U.</span>
-              </div>
-              <div className="bg-black/30 p-4 border border-slate-855 rounded text-center">
-                <span className="text-[9px] text-gray-455 font-bold uppercase tracking-wider block">FARDOS ABIERTOS</span>
-                <span className="text-lg font-black text-blue-400 font-mono mt-1 block">{recap.openedFardos} Fardos</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Daily cuts list details */}
-          <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-            <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 mb-3 border-b-2 border-slate-850 pb-2">
-              Detalle Diario de Corte
-            </h3>
-            {getDailyCutCount().length === 0 ? (
-              <p className="text-xs text-gray-500 font-bold uppercase py-2">No se ha registrado producción de corte en la jornada.</p>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                {getDailyCutCount().map(([prodName, qty]) => (
-                  <div key={prodName} className="bg-black/30 border border-slate-850 p-4 rounded flex justify-between items-center">
-                    <span className="text-[10px] text-gray-400 font-black uppercase truncate mr-2">{prodName}</span>
-                    <span className="text-base font-black text-white font-mono shrink-0">{qty.toLocaleString()} U.</span>
+              {/* Stock por depósito */}
+              <Card
+                title="Stock Físico Consolidado"
+                subtitle="Ubicación física e inventario consolidado en depósitos."
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="border border-outline-variant p-4 rounded bg-surface-container-low flex flex-col justify-between">
+                    <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">Existencias Consolidadas</span>
+                    <span className="text-xl font-black text-blue-600 mt-2 block text-mono">
+                      {getConsolidatedStock().toLocaleString()} U.
+                    </span>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Workshops breakdown table */}
-          <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-            <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 mb-3 border-b-2 border-slate-850 pb-2">
-              Estado Financiero y Tarifas de Talleres
-            </h3>
-            <div className="overflow-x-auto border border-slate-850 rounded">
-              <table className="w-full text-xs text-left border-collapse min-w-[700px]">
-                <thead>
-                  <tr className="bg-slate-950 text-gray-450 border-b border-slate-800 uppercase tracking-wider text-[9px] font-black">
-                    <th className="p-3">Taller</th>
-                    <th className="p-3 text-right">Pendiente En taller</th>
-                    <th className="p-3 text-right">Confeccionadas</th>
-                    <th className="p-3 text-right">Fardo Trapos</th>
-                    <th className="p-3 text-right">Fardo Rejillas</th>
-                    <th className="p-3 text-right font-black text-red-400">Saldo Pendiente</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800 font-mono">
-                  {financeSummary.map((t) => (
-                    <tr key={t.tallerId} className="hover:bg-slate-850/20">
-                      <td className="p-3 font-bold text-white uppercase font-sans">{t.tallerNombre}</td>
-                      <td className="p-3 text-right text-gray-400">{t.totalPendiente.toLocaleString()} u.</td>
-                      <td className="p-3 text-right text-gray-300">{t.produccionPerfecta.toLocaleString()} u.</td>
-                      <td className="p-3 text-right text-green-455">${t.precioTrapoFardo?.toLocaleString()}</td>
-                      <td className="p-3 text-right text-green-455">${t.precioRejillaFardo?.toLocaleString()}</td>
-                      <td className="p-3 text-right font-black text-red-500 bg-red-950/10 text-sm">${t.deudaActual.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Stock and Low Stock alert */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            
-            {/* General Stock Card */}
-            <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md md:col-span-1 flex flex-col justify-between">
-              <div>
-                <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 border-b border-slate-855 pb-2 mb-3">Stock Consolidado</h3>
-                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Existencias totales en fábrica</span>
-              </div>
-              <span className="text-3xl font-black text-blue-400 mt-4 block font-mono">
-                {getConsolidatedStock().toLocaleString()} U.
-              </span>
+                  <div className="border border-outline-variant p-4 rounded bg-surface-container-low flex flex-col justify-between">
+                    <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">Cortes del Día</span>
+                    <span className="text-xl font-black text-on-surface mt-2 block text-mono">
+                      {recap.cuts.toLocaleString()} u.
+                    </span>
+                  </div>
+                  <div className="border border-outline-variant p-4 rounded bg-surface-container-low flex flex-col justify-between">
+                    <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">Enviado a Talleres</span>
+                    <span className="text-xl font-black text-amber-600 mt-2 block text-mono">
+                      {recap.sent.toLocaleString()} u.
+                    </span>
+                  </div>
+                </div>
+              </Card>
             </div>
 
-            {/* Low Stock alerts */}
-            <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md md:col-span-2 space-y-3.5 animate-fadeIn">
-              <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 border-b border-slate-850 pb-2 flex items-center gap-1.5 text-yellow-500">
-                <AlertOctagon className="w-4 h-4 shrink-0 text-yellow-500" />
-                <span>Alertas de Stock Mínimo</span>
-              </h3>
-              <div className="space-y-2">
-                {getLowStockAlerts().length === 0 ? (
-                  <p className="text-xs text-gray-500 font-bold uppercase italic py-2">Todos los productos operan por encima de su stock mínimo.</p>
-                ) : (
-                  getLowStockAlerts().map((alert, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`border-2 p-3.5 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-xs ${
-                        alert.prioridad === "ALTA" 
-                          ? "bg-red-950/20 border-red-900/60 text-red-300" 
-                          : "bg-amber-950/20 border-amber-900/50 text-amber-300"
-                      }`}
-                    >
-                      <div>
-                        <span className="font-extrabold uppercase font-sans tracking-wide block text-[13px]">{alert.producto}</span>
-                        <span className="text-[10px] text-gray-400 block mt-0.5">Ubicación: <strong className="uppercase text-slate-300">{alert.deposito}</strong></span>
+            {/* Panel de Alertas y Movimientos (Panel Derecho) */}
+            <div className="space-y-6">
+              
+              {/* Alertas de Stock Mínimo */}
+              <Card
+                title="Alertas de Stock"
+                subtitle="Insumos bajo el nivel mínimo establecido."
+              >
+                <div className="space-y-2">
+                  {getLowStockAlerts().length === 0 ? (
+                    <EmptyState message="Todos los productos operan por encima de su stock mínimo." />
+                  ) : (
+                    getLowStockAlerts().map((alert, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`p-3 rounded border flex flex-col gap-1 duration-100 hover:scale-[1.01] ${
+                          alert.prioridad === "ALTA" 
+                            ? "bg-error-container/5 border-error-container/30 text-error" 
+                            : "bg-amber-500/5 border-amber-500/20 text-amber-600"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <span className="font-bold text-xs uppercase tracking-wide truncate max-w-[150px]">{alert.producto}</span>
+                          <Badge variant={alert.prioridad === "ALTA" ? "danger" : "warning"}>
+                            {alert.prioridad}
+                          </Badge>
+                        </div>
+                        <div className="flex justify-between items-center text-[10px] text-on-surface-variant">
+                          <span>Depósito: <strong className="uppercase">{alert.deposito}</strong></span>
+                          <span className="font-bold text-mono">
+                            {alert.stock.toLocaleString()} / Mín: {alert.min}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex sm:flex-col items-end gap-2 sm:gap-0 font-mono">
-                        <span className="font-black text-sm">{alert.stock.toLocaleString()} u. <span className="text-[10px] font-sans text-gray-400">/ Mín: {alert.min} u.</span></span>
-                        <span className={`text-[9px] font-black px-1.5 py-0.5 rounded font-sans tracking-widest uppercase mt-0.5 ${
-                          alert.prioridad === "ALTA" ? "bg-red-900/40 text-red-200" : "bg-amber-900/40 text-amber-200"
-                        }`}>
-                          Prioridad {alert.prioridad}
+                    ))
+                  )}
+                </div>
+              </Card>
+
+              {/* Feed de Movimientos */}
+              <Card
+                title="Últimos Movimientos"
+                subtitle="Historial de movimientos importantes de hoy."
+              >
+                <div className="space-y-2 max-h-[350px] overflow-y-auto pr-1 no-scrollbar">
+                  {recentMovements.length === 0 ? (
+                    <EmptyState message="No se reportan movimientos recientes." />
+                  ) : (
+                    recentMovements.slice(0, 10).map((m) => (
+                      <div 
+                        key={m.id} 
+                        className="p-3 border border-outline-variant hover:border-outline rounded bg-surface-container-lowest transition duration-150"
+                      >
+                        <p className="text-xs text-on-surface font-semibold leading-normal">
+                          {formatHumanMovement(m, productMap, tallerMap, depositoMap)}
+                        </p>
+                        <span className="text-[9px] text-on-surface-variant font-bold text-mono uppercase block mt-1">
+                          {new Date(m.createdAt).toLocaleDateString()} {new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Ariel Recent movements */}
-          <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-            <h3 className="text-xs font-black uppercase tracking-widest text-slate-300 mb-3 border-b-2 border-slate-855 pb-2">
-              Últimos movimientos importantes
-            </h3>
-            <div className="space-y-2 max-h-[300px] overflow-y-auto border border-slate-800 p-2 bg-black/20 rounded no-scrollbar text-xs">
-              {recentMovements.slice(0, 15).map((m) => (
-                <div key={m.id} className="p-3 bg-slate-900/60 border border-slate-850 rounded flex justify-between items-center gap-3">
-                  <span className="text-gray-250 font-bold uppercase">
-                    {formatHumanMovement(m, productMap, tallerMap, depositoMap)}
-                  </span>
-                  <span className="text-[9px] text-gray-500 font-mono font-bold shrink-0">
-                    {new Date(m.createdAt).toLocaleDateString()} {new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
+                    ))
+                  )}
                 </div>
-              ))}
+              </Card>
             </div>
-          </div>
 
+          </div>
         </div>
       )}
 
@@ -618,272 +679,257 @@ export const DashboardPage: React.FC = () => {
       {/* ========================================================================= */}
       {isSupervisor && (
         <div className="space-y-6">
-          <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-            <h3 className="text-xs font-black uppercase tracking-widest text-slate-300 mb-4 border-b border-slate-800 pb-2">
-              Acciones Rápidas
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-center text-xs font-bold">
-              <a href="/app/taller" className="bg-blue-700 hover:bg-blue-650 border-2 border-blue-600 text-white py-4.5 rounded uppercase tracking-wider block">
-                ENTREGAR / RECIBIR DE TALLERES
-              </a>
-              <a href="/app/stock" className="bg-slate-800 hover:bg-slate-750 border-2 border-slate-700 text-gray-200 py-4.5 rounded uppercase tracking-wider block">
-                MONITOR DE STOCK DE DEPÓSITOS
-              </a>
-            </div>
-          </div>
+          <PageHeader
+            title="Centro de Supervisión"
+            description="Control operativo diario de cortes y envíos a talleres."
+            breadcrumbs={[{ label: "Tablero" }]}
+          />
 
-          <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-            <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 mb-3 border-b-2 border-slate-850 pb-2">
-              Resumen Operativo de Hoy
-            </h3>
-            <div className="grid grid-cols-2 gap-3 text-center">
-              <div className="bg-black/30 p-4 border border-slate-855 rounded">
-                <span className="text-[10px] text-gray-400 font-bold uppercase block">Piezas cortadas hoy</span>
-                <span className="text-xl font-black text-white font-mono mt-1 block">{recap.cuts.toLocaleString()} U.</span>
-              </div>
-              <div className="bg-black/30 p-4 border border-slate-850 rounded">
-                <span className="text-[10px] text-gray-400 font-bold uppercase block">Enviado a talleres hoy</span>
-                <span className="text-xl font-black text-yellow-500 font-mono mt-1 block">{recap.sent.toLocaleString()} U.</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Low Stock alerts */}
-          <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md space-y-3.5 animate-fadeIn">
-            <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 border-b border-slate-850 pb-2 flex items-center gap-1.5 text-yellow-500">
-              <AlertOctagon className="w-4 h-4 shrink-0 text-yellow-500" />
-              <span>Alertas de Stock Mínimo</span>
-            </h3>
-            <div className="space-y-2">
-              {getLowStockAlerts().length === 0 ? (
-                <p className="text-xs text-gray-500 font-bold uppercase italic py-2">Todos los productos operan por encima de su stock mínimo.</p>
-              ) : (
-                getLowStockAlerts().map((alert, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`border-2 p-3.5 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-xs ${
-                      alert.prioridad === "ALTA" 
-                        ? "bg-red-950/20 border-red-900/60 text-red-300" 
-                        : "bg-amber-950/20 border-amber-900/50 text-amber-300"
-                    }`}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Quick Actions (Panel Izquierdo) */}
+            <div className="md:col-span-1 space-y-6">
+              <Card
+                title="Acciones Rápidas"
+                subtitle="Atajos rápidos para operaciones en planta."
+              >
+                <div className="flex flex-col gap-3">
+                  <Button
+                    variant="primary"
+                    className="w-full text-xs"
+                    onClick={() => window.location.href = "/app/taller"}
+                    leftIcon={<span className="material-symbols-outlined text-xs">build</span>}
                   >
-                    <div>
-                      <span className="font-extrabold uppercase font-sans tracking-wide block text-[13px]">{alert.producto}</span>
-                      <span className="text-[10px] text-gray-400 block mt-0.5">Ubicación: <strong className="uppercase text-slate-300">{alert.deposito}</strong></span>
-                    </div>
-                    <div className="flex sm:flex-col items-end gap-2 sm:gap-0 font-mono">
-                      <span className="font-black text-sm">{alert.stock.toLocaleString()} u. <span className="text-[10px] font-sans text-gray-400">/ Mín: {alert.min} u.</span></span>
-                      <span className={`text-[9px] font-black px-1.5 py-0.5 rounded font-sans tracking-widest uppercase mt-0.5 ${
-                        alert.prioridad === "ALTA" ? "bg-red-900/40 text-red-200" : "bg-amber-900/40 text-amber-200"
-                      }`}>
-                        Prioridad {alert.prioridad}
-                      </span>
-                    </div>
+                    Entregar / Recibir Taller
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full text-xs"
+                    onClick={() => window.location.href = "/app/stock"}
+                    leftIcon={<span className="material-symbols-outlined text-xs">inventory_2</span>}
+                  >
+                    Monitor de Stock
+                  </Button>
+                </div>
+              </Card>
+
+              <Card
+                title="Resumen Operativo de Hoy"
+                subtitle="Recap de piezas procesadas hoy."
+              >
+                <div className="space-y-3">
+                  <div className="p-4 border border-outline-variant rounded bg-surface-container-low flex justify-between items-center text-xs font-bold text-on-surface">
+                    <span className="uppercase tracking-wider">Piezas Cortadas</span>
+                    <span className="text-base font-black text-mono">{recap.cuts.toLocaleString()} u.</span>
                   </div>
-                ))
-              )}
+                  <div className="p-4 border border-outline-variant rounded bg-surface-container-low flex justify-between items-center text-xs font-bold text-on-surface">
+                    <span className="uppercase tracking-wider">Enviado a Talleres</span>
+                    <span className="text-base font-black text-amber-600 text-mono">{recap.sent.toLocaleString()} u.</span>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* Alertas de Stock (Panel Derecho) */}
+            <div className="md:col-span-2 space-y-6">
+              <Card
+                title="Alertas Críticas de Stock"
+                subtitle="Falta de insumos físicos en depósitos."
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {getLowStockAlerts().length === 0 ? (
+                    <div className="col-span-2">
+                      <EmptyState message="Todos los productos operan por encima de su stock mínimo." />
+                    </div>
+                  ) : (
+                    getLowStockAlerts().map((alert, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`p-4 rounded border flex flex-col gap-2 ${
+                          alert.prioridad === "ALTA" 
+                            ? "bg-error-container/5 border-error-container/30 text-error" 
+                            : "bg-amber-500/5 border-amber-500/20 text-amber-600"
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-xs uppercase truncate">{alert.producto}</span>
+                          <Badge variant={alert.prioridad === "ALTA" ? "danger" : "warning"}>
+                            {alert.prioridad}
+                          </Badge>
+                        </div>
+                        <p className="text-[10px] text-on-surface-variant font-semibold">
+                          Ubicación: <strong className="uppercase">{alert.deposito}</strong>
+                        </p>
+                        <div className="flex justify-between items-end border-t border-outline-variant/30 pt-2 text-mono font-bold text-xs text-on-surface">
+                          <span>Stock: {alert.stock.toLocaleString()} u.</span>
+                          <span className="text-[10px] text-on-surface-variant">Mín: {alert.min} u.</span>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </Card>
             </div>
           </div>
         </div>
       )}
 
       {/* ========================================================================= */}
-      {/* 2B. OPERARIO (ROLANDO) DASHBOARD                                          */}
+      {/* 2B. OPERARIO DASHBOARD                                                    */}
       {/* ========================================================================= */}
       {isOperario && (
         <div className="space-y-6">
-          {/* Main Action */}
-          <div className="text-center text-xs font-bold bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-            <a
-              href="/app/corte"
-              className="bg-blue-700 hover:bg-blue-650 text-white font-black py-4.5 rounded uppercase tracking-wider block border-2 border-blue-600 shadow-md active:scale-[0.98] transition cursor-pointer"
-            >
-              REGISTRAR CORTADAS DE TELA
-            </a>
-          </div>
+          <PageHeader
+            title="Consola de Corte"
+            description="Registro rápido de piezas cortadas."
+            breadcrumbs={[{ label: "Tablero" }]}
+          />
 
-          {/* Lo Cortado Hoy */}
-          <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md space-y-4">
-            <div>
-              <span className="bg-slate-800 text-slate-350 border border-slate-700 px-2 py-0.5 rounded text-[9px] font-black tracking-widest font-mono">
-                LO CORTADO HOY
-              </span>
-              <h3 className="text-sm font-black uppercase tracking-widest text-white mt-1 border-b border-slate-800 pb-2">
-                Resumen de mi producción de hoy
-              </h3>
-            </div>
-            
-            {getDailyCutCount().length === 0 ? (
-              <p className="text-xs text-gray-500 font-bold uppercase italic py-2">
-                Aún no has registrado cortadas en el día de hoy.
-              </p>
-            ) : (
-              <div className="space-y-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {getDailyCutCount().map(([prodName, qty]) => (
-                    <div key={prodName} className="bg-black/30 border border-slate-850 p-4 rounded flex justify-between items-center font-mono">
-                      <span className="text-[10px] text-gray-400 font-black uppercase font-sans truncate mr-2">{prodName}</span>
-                      <span className="text-base font-black text-white shrink-0">{qty.toLocaleString()} u.</span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <Card
+              title="Acción Principal"
+              subtitle="Operación de corte de bobinas."
+              className="sm:col-span-1"
+            >
+              <Button
+                variant="primary"
+                onClick={() => window.location.href = "/app/corte"}
+                className="w-full text-xs h-14"
+                leftIcon={<span className="material-symbols-outlined text-lg">content_cut</span>}
+              >
+                REGISTRAR CORTADA
+              </Button>
+            </Card>
+
+            <Card
+              title="Producción de Hoy"
+              subtitle="Cortes informados hoy por producto."
+              className="sm:col-span-2"
+            >
+              {getDailyCutCount().length === 0 ? (
+                <EmptyState message="No se han registrado cortes durante la jornada de hoy." />
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {getDailyCutCount().map(([prodName, qty]: any) => (
+                    <div 
+                      key={prodName} 
+                      className="border border-outline-variant p-4 rounded flex justify-between items-center bg-surface-container-low text-xs text-on-surface font-bold"
+                    >
+                      <span className="uppercase truncate mr-2">{prodName}</span>
+                      <span className="text-mono text-primary font-bold">{qty.toLocaleString()} U.</span>
                     </div>
                   ))}
                 </div>
-                
-                <div className="bg-blue-950/20 border border-blue-900/40 p-4 rounded flex justify-between items-center text-xs">
-                  <span className="font-extrabold uppercase text-blue-300">Total Unidades Cortadas Hoy</span>
-                  <span className="text-lg font-black text-blue-400 font-mono">
-                    {getDailyCutCount().reduce((sum, [_, q]) => sum + q, 0).toLocaleString()} u.
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Estado de Sincronización */}
-          <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md space-y-4">
-            <div>
-              <span className="bg-slate-800 text-slate-350 border border-slate-700 px-2 py-0.5 rounded text-[9px] font-black tracking-widest font-mono">
-                ESTADO DE CONEXIÓN Y DATOS
-              </span>
-              <h3 className="text-sm font-black uppercase tracking-widest text-white mt-1 border-b border-slate-800 pb-2">
-                Sincronización con el Servidor
-              </h3>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="bg-black/30 border border-slate-850 p-3.5 rounded flex justify-between items-center">
-                <span className="font-bold text-gray-400 uppercase">Conexión de Red:</span>
-                <span className="flex items-center gap-1.5 font-bold uppercase">
-                  <span className={`w-2.5 h-2.5 rounded-full ${online ? "bg-green-500" : "bg-red-500 animate-pulse"}`} />
-                  {online ? "En Línea" : "Sin Conexión"}
-                </span>
-              </div>
-
-              <div className="bg-black/30 border border-slate-850 p-3.5 rounded flex justify-between items-center">
-                <span className="font-bold text-gray-400 uppercase">Envíos Pendientes:</span>
-                <span className={`font-mono font-black ${syncPending > 0 ? "text-orange-400" : "text-gray-300"}`}>
-                  {syncPending}
-                </span>
-              </div>
-
-              <div className="bg-black/30 border border-slate-850 p-3.5 rounded flex justify-between items-center">
-                <span className="font-bold text-gray-400 uppercase">Errores de Envío:</span>
-                <span className={`font-mono font-black ${failed > 0 ? "text-red-400" : "text-gray-300"}`}>
-                  {failed}
-                </span>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  syncEngine.triggerSync();
-                }}
-                disabled={syncing || !online}
-                className={`px-4 py-3 rounded text-[11px] font-black uppercase tracking-wider transition ${
-                  online && !syncing 
-                    ? "bg-slate-800 hover:bg-slate-750 text-blue-400 border border-slate-700 cursor-pointer" 
-                    : "bg-slate-950 text-gray-600 border border-slate-900 cursor-not-allowed"
-                }`}
-              >
-                {syncing ? "Sincronizando..." : "Sincronizar Ahora"}
-              </button>
-            </div>
+              )}
+            </Card>
           </div>
         </div>
       )}
 
       {/* ========================================================================= */}
-      {/* 3. TALLER (EVE, VANESA) READ-ONLY DASHBOARD SCREEN                       */}
+      {/* 2C. TALLERES INDIVIDUAL DASHBOARD                                         */}
       {/* ========================================================================= */}
-      {isTaller && online && (
+      {isTaller && (
         <div className="space-y-6">
+          <PageHeader
+            title={`Taller: ${currentUser?.nombre}`}
+            description="Resumen de producción valorizada y saldos pendientes."
+            breadcrumbs={[{ label: "Taller" }]}
+          />
+
           {financeSummary.map((t) => (
             <div key={t.tallerId} className="space-y-6">
               
-              {/* Financial Status Summary */}
+              {/* Resumen Financiero Taller */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md flex flex-col justify-between">
-                  <span className="text-[9px] uppercase font-black text-gray-450 tracking-wider block">TRABAJO ENTREGADO (MES)</span>
-                  <span className="text-2xl font-black text-green-400 mt-2 font-mono">
+                <Card>
+                  <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-wider block">Trabajo Entregado (Mes)</span>
+                  <span className="text-2xl font-black text-primary mt-2 block text-mono">
                     ${t.produccionValorizada.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </span>
-                </div>
+                  <span className="text-[9px] text-on-surface-variant mt-1 block uppercase font-bold">Producción confeccionada entregada</span>
+                </Card>
                 
-                <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md flex flex-col justify-between">
-                  <span className="text-[9px] uppercase font-black text-gray-455 tracking-wider block">PAGOS COBRADOS</span>
-                  <span className="text-2xl font-black text-blue-400 mt-2 font-mono">
+                <Card>
+                  <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-wider block">Pagos Cobrados</span>
+                  <span className="text-2xl font-black text-blue-600 mt-2 block text-mono">
                     ${t.totalPagado.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </span>
-                </div>
+                  <span className="text-[9px] text-on-surface-variant mt-1 block uppercase font-bold">Liquidaciones cobradas del taller</span>
+                </Card>
 
-                <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md flex flex-col justify-between">
-                  <span className="text-[9px] uppercase font-black text-gray-455 tracking-wider block">SALDO A COBRAR</span>
-                  <span className="text-2xl font-black text-red-500 mt-2 font-mono">
+                <Card>
+                  <span className="text-[9px] font-bold text-on-surface-variant uppercase tracking-wider block">Saldo a Cobrar</span>
+                  <span className="text-2xl font-black text-error mt-2 block text-mono">
                     ${t.deudaActual.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </span>
-                </div>
+                  <span className="text-[9px] text-on-surface-variant mt-1 block uppercase font-bold">Saldo pendiente de pago</span>
+                </Card>
               </div>
 
-              {/* Virtual Warehouse Stock (Only allowed to see their own deposit) */}
-              <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-                <h3 className="text-xs font-black uppercase tracking-widest text-slate-300 mb-3 border-b-2 border-slate-850 pb-2">
-                  Existencias en DEPÓSITO {t.tallerNombre.toUpperCase().replace("TALLER ", "")}
-                </h3>
-                
+              {/* Stock Virtual taller */}
+              <Card
+                title={`Existencias en Depósito ${t.tallerNombre.toUpperCase().replace("TALLER ", "")}`}
+                subtitle="Bobinas y piezas pendientes de confección asignadas a su taller."
+              >
                 {generalStock.filter(s => s.tallerId === t.tallerId).length === 0 ? (
-                  <p className="text-xs text-gray-500 font-bold uppercase py-2">
-                    No se reportan materiales o insumos almacenados en este depósito virtual.
-                  </p>
+                  <EmptyState message="No se reportan materiales o insumos almacenados en este depósito virtual." />
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {generalStock.filter(s => s.tallerId === t.tallerId).map((item) => (
-                      <div key={item.id} className="bg-black/30 border border-slate-850 p-4 rounded flex justify-between items-center font-mono">
-                        <span className="text-[10px] text-gray-400 font-black uppercase truncate font-sans mr-2">
+                      <div 
+                        key={item.id} 
+                        className="border border-outline-variant p-4 rounded flex justify-between items-center bg-surface-container-low text-xs text-on-surface font-bold"
+                      >
+                        <span className="uppercase truncate mr-2">
                           {item.producto?.nombre || productMap[item.productoId]}
                         </span>
-                        <span className="text-sm font-black text-white shrink-0">{item.cantidadUnidades.toLocaleString()} u.</span>
+                        <span className="text-mono text-blue-600 font-bold">{item.cantidadUnidades.toLocaleString()} u.</span>
                       </div>
                     ))}
                   </div>
                 )}
-              </div>
+              </Card>
 
-              {/* Total Confection returns */}
-              <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-                <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 mb-3 border-b-2 border-slate-850 pb-2">
-                  Total Producción Confeccionada Perfecta
-                </h3>
-                <div className="bg-black/30 border border-slate-850 rounded p-4 flex justify-between items-center text-xs font-mono">
-                  <span className="font-bold text-gray-300 font-sans uppercase">Total Confección Devuelta</span>
-                  <span className="text-base font-black text-green-400">{t.produccionPerfecta.toLocaleString()} u.</span>
-                </div>
-              </div>
-
-              {/* Pending Confection */}
-              <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-                <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 mb-3 border-b-2 border-slate-850 pb-2">
-                  Telas Cortadas Pendientes de Confección
-                </h3>
-                <div className="bg-black/30 border border-slate-855 rounded p-4 flex justify-between items-center text-xs font-mono">
-                  <span className="font-bold text-gray-300 font-sans uppercase">Telas cortadas pendientes de confección</span>
-                  <span className="text-base font-black text-red-500">{t.totalPendiente.toLocaleString()} u.</span>
-                </div>
-              </div>
-
-              {/* Taller rates */}
-              <div className="bg-slate-900 border-2 border-slate-800 p-5 rounded-md">
-                <h3 className="text-xs font-black uppercase tracking-widest text-slate-350 mb-3 border-b-2 border-slate-850 pb-2">
-                  Tarifas Pactadas por Fardo
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  <div className="bg-black/30 border border-slate-850 p-4 rounded flex justify-between items-center font-mono">
-                    <span className="text-[10px] text-gray-400 font-bold uppercase font-sans">Precio Fardo Trapos</span>
-                    <span className="text-base font-black text-green-450">${t.precioTrapoFardo?.toFixed(2)}</span>
+              {/* Detalle tarifas */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <Card
+                  title="Producción Confeccionada Perfecta"
+                  subtitle="Total de fardos devueltos aptos."
+                  className="sm:col-span-1"
+                >
+                  <div className="p-4 border border-outline-variant bg-surface-container-low rounded flex justify-between items-center text-xs font-bold text-on-surface">
+                    <span>Devoluciones Perfectas</span>
+                    <span className="text-mono text-primary font-bold">{t.produccionPerfecta.toLocaleString()} u.</span>
                   </div>
-                  <div className="bg-black/30 border border-slate-850 p-4 rounded flex justify-between items-center font-mono">
-                    <span className="text-[10px] text-gray-400 font-bold uppercase font-sans">Precio Fardo Rejillas</span>
-                    <span className="text-base font-black text-green-450">${t.precioRejillaFardo?.toFixed(2)}</span>
+                </Card>
+
+                <Card
+                  title="Cortes Pendientes de Confección"
+                  subtitle="Piezas entregadas a confeccionar."
+                  className="sm:col-span-1"
+                >
+                  <div className="p-4 border border-outline-variant bg-surface-container-low rounded flex justify-between items-center text-xs font-bold text-on-surface">
+                    <span>Pendientes</span>
+                    <span className="text-mono text-error font-bold">{t.totalPendiente.toLocaleString()} u.</span>
                   </div>
-                </div>
+                </Card>
+
+                <Card
+                  title="Tarifas Pactadas por Fardo"
+                  subtitle="Tarifas de liquidación vigentes."
+                  className="sm:col-span-1"
+                >
+                  <div className="space-y-2 text-xs font-bold text-on-surface">
+                    <div className="p-2.5 border border-outline-variant bg-surface-container-low rounded flex justify-between items-center">
+                      <span>Fardo Trapos</span>
+                      <span className="text-mono text-primary font-bold">${t.precioTrapoFardo?.toFixed(2)}</span>
+                    </div>
+                    <div className="p-2.5 border border-outline-variant bg-surface-container-low rounded flex justify-between items-center">
+                      <span>Fardo Rejillas</span>
+                      <span className="text-mono text-primary font-bold">${t.precioRejillaFardo?.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </Card>
               </div>
 
             </div>
@@ -895,248 +941,225 @@ export const DashboardPage: React.FC = () => {
       {/* MODAL WINDOWS (ARIEL ONLY)                                                */}
       {/* ========================================================================= */}
       
-      {/* 1. Register Payment Modal with Period parameters and auto calculation */}
-      {showPaymentModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-slate-900 border-2 border-slate-700 rounded-md max-w-sm w-full p-6 space-y-4 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <h3 className="text-sm font-black uppercase tracking-widest text-blue-450 border-b border-slate-800 pb-2">Registrar Pago a Taller</h3>
-            
-            <form onSubmit={handleRegisterPayment} className="space-y-4 text-xs">
-              <div>
-                <label className="block text-[10px] font-black text-gray-300 uppercase tracking-wider mb-1">Taller *</label>
-                <select
-                  value={selectedTallerId}
-                  onChange={(e) => setSelectedTallerId(e.target.value)}
+      {/* 1. Register Payment Modal */}
+      <Modal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        title="Registrar Pago a Taller"
+        size="md"
+      >
+        <Form onSubmit={handleRegisterPayment}>
+          <FormSection>
+            <FormRow>
+              <FormSelect
+                label="Taller *"
+                required
+                value={selectedTallerId}
+                onChange={(e) => setSelectedTallerId(e.target.value)}
+                placeholder="-- Seleccionar Taller --"
+                options={talleres.map(t => ({ value: t.id, label: t.nombre }))}
+              />
+            </FormRow>
+
+            <div className="border border-outline-variant p-4 rounded bg-surface-container-low space-y-3">
+              <span className="block text-[10px] font-black text-on-surface-variant uppercase tracking-widest border-b border-outline-variant pb-2">Periodo de Liquidación</span>
+              
+              <FormRow columns={1}>
+                <FormInput
+                  label="Nombre Periodo *"
                   required
-                  className="w-full bg-slate-950 border-2 border-slate-800 px-3 py-2.5 text-xs text-white rounded focus:border-blue-600 outline-none uppercase font-bold"
-                >
-                  <option value="">-- Seleccionar Taller --</option>
-                  {talleres.map(t => (
-                    <option key={t.id} value={t.id}>{t.nombre}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="border border-slate-800 p-3 rounded bg-slate-950 space-y-3">
-                <span className="block text-[9px] font-black text-gray-400 uppercase tracking-widest border-b border-slate-900 pb-1">Periodo de Liquidación</span>
-                
-                <div>
-                  <label className="block text-[9px] font-bold text-gray-400 uppercase mb-1">Nombre Periodo (ej: Semana 26) *</label>
-                  <input
-                    type="text"
-                    required
-                    value={paymentPeriodName}
-                    onChange={(e) => setPaymentPeriodName(e.target.value)}
-                    placeholder="Ej. Semana 26..."
-                    className="w-full bg-slate-900 border border-slate-800 px-2.5 py-2 text-xs text-white rounded font-bold"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-[8px] font-bold text-gray-400 uppercase mb-1">Fecha Inicio *</label>
-                    <input
-                      type="date"
-                      required
-                      value={paymentPeriodInicio}
-                      onChange={(e) => setPaymentPeriodInicio(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-800 px-2 py-2 text-[10px] text-white rounded font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[8px] font-bold text-gray-400 uppercase mb-1">Fecha Fin *</label>
-                    <input
-                      type="date"
-                      required
-                      value={paymentPeriodFin}
-                      onChange={(e) => setPaymentPeriodFin(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-800 px-2 py-2 text-[10px] text-white rounded font-bold"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Dynamic Breakdown calculation details */}
-              {calculating && (
-                <div className="text-center py-2 text-blue-450 animate-pulse font-bold text-[10px] uppercase">
-                  Calculando importes de producción...
-                </div>
-              )}
-
-              {!calculating && calculatedPayment && (
-                <div className="bg-slate-950/80 border-2 border-slate-850 p-3.5 rounded text-[11px] font-mono space-y-2 text-slate-350">
-                  <div className="border-b border-slate-900 pb-1.5 flex justify-between font-sans text-[10px] font-black uppercase text-slate-400">
-                    <span>Producción Computada</span>
-                    <span className="text-blue-400">{calculatedPayment.tallerNombre}</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <span>Fardos Trapo:</span>
-                    <span className="font-bold text-gray-150">
-                      {calculatedPayment.trapoFardos.toFixed(2)} F ({calculatedPayment.trapoUnits.toLocaleString()} u.)
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center text-[10px] text-gray-500 pl-2">
-                    <span>Tarifa Trapo / Fardo:</span>
-                    <span>${calculatedPayment.precioTrapo.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between items-center font-bold text-green-400 pl-2">
-                    <span>Subtotal Trapos:</span>
-                    <span>${calculatedPayment.subtotalTrapo.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-1 border-t border-slate-900">
-                    <span>Fardos Rejilla:</span>
-                    <span className="font-bold text-gray-150">
-                      {calculatedPayment.rejillaFardos.toFixed(2)} F ({calculatedPayment.rejillaUnits.toLocaleString()} u.)
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center text-[10px] text-gray-500 pl-2">
-                    <span>Tarifa Rejilla / Fardo:</span>
-                    <span>${calculatedPayment.precioRejilla.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between items-center font-bold text-green-400 pl-2">
-                    <span>Subtotal Rejillas:</span>
-                    <span>${calculatedPayment.subtotalRejilla.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-850 flex justify-between items-center text-xs font-sans font-black uppercase text-white bg-blue-950/20 px-2 py-1.5 rounded">
-                    <span>Importe Liquidación</span>
-                    <span className="font-mono text-green-455 text-sm font-black">
-                      ${calculatedPayment.total.toLocaleString(undefined, {minimumFractionDigits: 2})}
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-[10px] font-black text-gray-300 uppercase tracking-wider mb-1">Monto ($ ARS) *</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  required
-                  readOnly
-                  value={paymentAmount}
-                  placeholder="Monto calculado..."
-                  className="w-full bg-slate-955 border-2 border-slate-800 px-3 py-2.5 text-xs text-green-400 rounded focus:outline-none font-bold font-mono"
+                  value={paymentPeriodName}
+                  onChange={(e) => setPaymentPeriodName(e.target.value)}
+                  placeholder="Ej. Semana 26..."
                 />
-              </div>
+              </FormRow>
 
-              <div>
-                <label className="block text-[10px] font-black text-gray-300 uppercase tracking-wider mb-1">Fecha del Pago *</label>
-                <input
+              <FormRow columns={2}>
+                <FormInput
+                  label="Fecha Inicio *"
                   type="date"
                   required
-                  value={paymentDate}
-                  onChange={(e) => setPaymentDate(e.target.value)}
-                  className="w-full bg-slate-955 border-2 border-slate-800 px-3 py-2.5 text-xs text-white rounded focus:border-blue-600 outline-none font-bold"
+                  value={paymentPeriodInicio}
+                  onChange={(e) => setPaymentPeriodInicio(e.target.value)}
                 />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-black text-gray-300 uppercase tracking-wider mb-1">Observaciones</label>
-                <textarea
-                  value={paymentObs}
-                  onChange={(e) => setPaymentObs(e.target.value)}
-                  placeholder="Detalles sobre el pago..."
-                  className="w-full bg-slate-955 border-2 border-slate-800 px-3 py-2 text-xs text-white rounded focus:border-blue-600 outline-none h-16 resize-none font-semibold"
+                <FormInput
+                  label="Fecha Fin *"
+                  type="date"
+                  required
+                  value={paymentPeriodFin}
+                  onChange={(e) => setPaymentPeriodFin(e.target.value)}
                 />
-              </div>
+              </FormRow>
+            </div>
 
-              <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowPaymentModal(false)}
-                  className="flex-1 bg-slate-800 hover:bg-slate-750 text-gray-300 font-bold py-3.5 rounded text-xs uppercase tracking-wider border border-slate-700 transition cursor-pointer"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  disabled={!paymentAmount || parseFloat(paymentAmount) <= 0}
-                  className={`flex-1 font-black py-3.5 rounded text-xs uppercase tracking-wider transition ${
-                    paymentAmount && parseFloat(paymentAmount) > 0 
-                      ? "bg-blue-700 hover:bg-blue-600 text-white cursor-pointer" 
-                      : "bg-slate-950 text-gray-600 border border-slate-900 cursor-not-allowed"
-                  }`}
-                >
-                  Guardar
-                </button>
+            {/* Dynamic Breakdown calculation details */}
+            {calculating && (
+              <div className="text-center py-4 text-blue-600 animate-pulse font-bold text-xs uppercase tracking-wide">
+                Calculando importes de producción...
               </div>
-            </form>
+            )}
+
+            {!calculating && calculatedPayment && (
+              <div className="bg-surface-container-lowest border border-outline-variant p-4 rounded text-xs font-mono space-y-2 text-on-surface-variant">
+                <div className="border-b border-outline-variant pb-2 flex justify-between font-sans text-[10px] font-black uppercase text-on-surface-variant">
+                  <span>Producción Computada</span>
+                  <span className="text-blue-600 font-bold">{calculatedPayment.tallerNombre}</span>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span>Fardos Trapo:</span>
+                  <span className="font-bold text-on-surface">
+                    {calculatedPayment.trapoFardos.toFixed(2)} F ({calculatedPayment.trapoUnits.toLocaleString()} u.)
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-[10px] text-on-surface-variant pl-2">
+                  <span>Tarifa Trapo:</span>
+                  <span>${calculatedPayment.precioTrapo.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center font-bold text-primary pl-2">
+                  <span>Subtotal Trapos:</span>
+                  <span>${calculatedPayment.subtotalTrapo.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+                </div>
+
+                <div className="pt-2 border-t border-outline-variant flex justify-between items-center">
+                  <span>Fardos Rejilla:</span>
+                  <span className="font-bold text-on-surface">
+                    {calculatedPayment.rejillaFardos.toFixed(2)} F ({calculatedPayment.rejillaUnits.toLocaleString()} u.)
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-[10px] text-on-surface-variant pl-2">
+                  <span>Tarifa Rejilla:</span>
+                  <span>${calculatedPayment.precioRejilla.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center font-bold text-primary pl-2">
+                  <span>Subtotal Rejillas:</span>
+                  <span>${calculatedPayment.subtotalRejilla.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+                </div>
+
+                <div className="pt-3 border-t border-outline-variant flex justify-between items-center text-xs font-sans font-black uppercase text-on-surface bg-surface-container-low p-2.5 rounded">
+                  <span>Monto Liquidación</span>
+                  <span className="font-mono text-primary text-sm font-black">
+                    ${calculatedPayment.total.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <FormRow>
+              <FormInput
+                label="Monto ($ ARS) *"
+                type="number"
+                step="0.01"
+                required
+                readOnly
+                value={paymentAmount}
+                placeholder="Monto calculado..."
+                className="text-mono text-primary font-bold"
+              />
+            </FormRow>
+
+            <FormRow columns={2}>
+              <FormInput
+                label="Fecha de Pago *"
+                type="date"
+                required
+                value={paymentDate}
+                onChange={(e) => setPaymentDate(e.target.value)}
+              />
+            </FormRow>
+
+            <FormRow>
+              <FormInput
+                label="Observaciones"
+                value={paymentObs}
+                onChange={(e) => setPaymentObs(e.target.value)}
+                placeholder="Detalles sobre el pago..."
+              />
+            </FormRow>
+          </FormSection>
+
+          <div className="flex gap-3 justify-end pt-2 border-t border-outline-variant">
+            <Button
+              variant="outline"
+              onClick={() => setShowPaymentModal(false)}
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={!paymentAmount || parseFloat(paymentAmount) <= 0}
+            >
+              Guardar Pago
+            </Button>
           </div>
-        </div>
-      )}
+        </Form>
+      </Modal>
 
-      {/* 2. Configure Rates Modal (Bale-based only) */}
-      {showRatesModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-slate-900 border-2 border-slate-700 rounded-md max-w-sm w-full p-6 space-y-4 shadow-2xl">
-            <h3 className="text-sm font-black uppercase tracking-widest text-blue-455 border-b border-slate-800 pb-2">Configurar Tarifas por Fardo</h3>
-            
-            <form onSubmit={handleSaveRates} className="space-y-4 text-xs font-bold">
-              <div>
-                <label className="block text-[10px] font-black text-gray-300 uppercase tracking-wider mb-1.5">Taller *</label>
-                <select
-                  value={selectedTallerId}
-                  onChange={(e) => setSelectedTallerId(e.target.value)}
-                  required
-                  className="w-full bg-slate-955 border-2 border-slate-800 px-3 py-2.5 text-xs text-white rounded focus:border-blue-600 outline-none uppercase font-bold cursor-pointer"
-                >
-                  <option value="">-- Seleccionar Taller --</option>
-                  {talleres.map(t => (
-                    <option key={t.id} value={t.id}>{t.nombre}</option>
-                  ))}
-                </select>
-              </div>
+      {/* 2. Configure Rates Modal */}
+      <Modal
+        isOpen={showRatesModal}
+        onClose={() => setShowRatesModal(false)}
+        title="Configurar Tarifas por Fardo"
+        size="sm"
+      >
+        <Form onSubmit={handleSaveRates}>
+          <FormSection>
+            <FormRow>
+              <FormSelect
+                label="Taller *"
+                required
+                value={selectedTallerId}
+                onChange={(e) => setSelectedTallerId(e.target.value)}
+                placeholder="-- Seleccionar Taller --"
+                options={talleres.map(t => ({ value: t.id, label: t.nombre }))}
+              />
+            </FormRow>
 
-              <div>
-                <label className="block text-[10px] font-black text-gray-350 uppercase mb-1">Precio por fardo de Trapos ($) *</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  required
-                  value={tallerPrecioTrapo}
-                  onChange={(e) => setTallerPrecioTrapo(e.target.value)}
-                  className="w-full bg-slate-955 border-2 border-slate-800 px-3 py-2.5 text-xs text-green-400 rounded focus:border-blue-600 outline-none font-mono font-bold"
-                />
-              </div>
+            <FormRow>
+              <FormInput
+                label="Tarifa Fardo Trapos ($) *"
+                type="number"
+                step="0.01"
+                required
+                value={tallerPrecioTrapo}
+                onChange={(e) => setTallerPrecioTrapo(e.target.value)}
+                className="text-mono text-primary font-bold"
+              />
+            </FormRow>
 
-              <div>
-                <label className="block text-[10px] font-black text-gray-355 uppercase mb-1">Precio por fardo de Rejillas ($) *</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  required
-                  value={tallerPrecioRejilla}
-                  onChange={(e) => setTallerPrecioRejilla(e.target.value)}
-                  className="w-full bg-slate-955 border-2 border-slate-800 px-3 py-2.5 text-xs text-green-400 rounded focus:border-blue-600 outline-none font-mono font-bold"
-                />
-              </div>
+            <FormRow>
+              <FormInput
+                label="Tarifa Fardo Rejillas ($) *"
+                type="number"
+                step="0.01"
+                required
+                value={tallerPrecioRejilla}
+                onChange={(e) => setTallerPrecioRejilla(e.target.value)}
+                className="text-mono text-primary font-bold"
+              />
+            </FormRow>
+          </FormSection>
 
-              <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowRatesModal(false)}
-                  className="flex-1 bg-slate-800 hover:bg-slate-750 text-gray-300 font-bold py-3 rounded text-xs uppercase tracking-wider border border-slate-700 transition cursor-pointer"
-                  style={{ minHeight: "40px" }}
-                >
-                  Cerrar
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 bg-blue-700 hover:bg-blue-650 text-white font-black py-3 rounded text-xs uppercase tracking-wider transition cursor-pointer"
-                  style={{ minHeight: "40px" }}
-                >
-                  Guardar Tarifas
-                </button>
-              </div>
-            </form>
+          <div className="flex gap-3 justify-end pt-2 border-t border-outline-variant">
+            <Button
+              variant="outline"
+              onClick={() => setShowRatesModal(false)}
+            >
+              Cerrar
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+            >
+              Guardar Tarifas
+            </Button>
           </div>
-        </div>
-      )}
+        </Form>
+      </Modal>
 
     </div>
   );
 };
+
 export default DashboardPage;

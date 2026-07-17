@@ -1,12 +1,11 @@
 import { prisma } from "../db/prisma";
-import { CalidadProducto, PresentacionProducto, CanalStock } from "../../generated/prisma/client";
+import { CalidadProducto, CanalStock } from "../../generated/prisma/client";
 
 export interface StockFilter {
   productoId?: string;
   depositoId?: string;
   tallerId?: string;
   calidad?: CalidadProducto;
-  presentacion?: PresentacionProducto;
   canal?: CanalStock;
 }
 
@@ -21,7 +20,6 @@ export const StockRepository = {
       depositoId: string | null;
       tallerId: string | null;
       calidad: CalidadProducto;
-      presentacion: PresentacionProducto;
       canal: CanalStock;
     },
     tx?: any
@@ -33,7 +31,6 @@ export const StockRepository = {
         depositoId: params.depositoId,
         tallerId: params.tallerId,
         calidad: params.calidad,
-        presentacion: params.presentacion,
         canal: params.canal,
       },
     });
@@ -49,7 +46,6 @@ export const StockRepository = {
       depositoId: string | null;
       tallerId: string | null;
       calidad: CalidadProducto;
-      presentacion: PresentacionProducto;
       canal: CanalStock;
       cantidadUnidades: number;
     },
@@ -79,7 +75,6 @@ export const StockRepository = {
           depositoId: params.depositoId,
           tallerId: params.tallerId,
           calidad: params.calidad,
-          presentacion: params.presentacion,
           canal: params.canal,
           cantidadUnidades: params.cantidadUnidades,
           version: 1,
@@ -100,7 +95,6 @@ export const StockRepository = {
     depositoId?: string;
     tallerId?: string;
     calidad?: CalidadProducto;
-    presentacion?: PresentacionProducto;
     canal?: CanalStock;
     compact?: boolean;
   }) {
@@ -114,7 +108,6 @@ export const StockRepository = {
     if (params.depositoId) whereConditions.depositoId = params.depositoId;
     if (params.tallerId) whereConditions.tallerId = params.tallerId;
     if (params.calidad) whereConditions.calidad = params.calidad;
-    if (params.presentacion) whereConditions.presentacion = params.presentacion;
     if (params.canal) whereConditions.canal = params.canal;
 
     if (params.search) {
@@ -133,7 +126,6 @@ export const StockRepository = {
           depositoId: true,
           tallerId: true,
           calidad: true,
-          presentacion: true,
           canal: true,
           cantidadUnidades: true,
           version: true,
@@ -144,7 +136,6 @@ export const StockRepository = {
           depositoId: true,
           tallerId: true,
           calidad: true,
-          presentacion: true,
           canal: true,
           cantidadUnidades: true,
           version: true,

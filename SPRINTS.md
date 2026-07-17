@@ -12,7 +12,7 @@ Estado: ✅ Finalizado
 
 Sprint 4
 Etiquetado
-Estado: Pendiente de Aprobación
+Estado: ✅ Finalizado
 
 Sprint 5
 Registrar Venta

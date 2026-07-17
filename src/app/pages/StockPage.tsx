@@ -8,7 +8,6 @@ interface StockItem {
   depositoId: string | null;
   tallerId: string | null;
   calidad: "PERFECTO" | "FALLADO";
-  presentacion: "ETIQUETADO" | "SIN_ETIQUETA";
   canal: "MAYORISTA" | "MINORISTA";
   cantidadUnidades: number;
   producto?: {

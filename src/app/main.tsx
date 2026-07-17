@@ -1,6 +1,7 @@
 import React, { Component, Suspense, lazy, useState, useEffect, type ErrorInfo, type ReactNode } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom";
+import "../css/input.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { initChaosFromUrl, isChaosEnabled } from "./chaos/chaos.flags";
@@ -25,8 +26,6 @@ import { useShallow } from "zustand/react/shallow";
 import { runtimeLifecycle } from "./runtime/runtime.lifecycle";
 import { selectHeaderStatus } from "./runtime/selectors";
 import { useRuntimeStore } from "./runtime/runtime.store";
-import { useLocation } from "react-router-dom";
-import { LayoutDashboard, History, Wrench, Warehouse, Scissors, Settings, Menu, X, Tag } from "lucide-react";
 import { RouteErrorBoundary } from "./components/runtime/RouteErrorBoundary";
 import { DegradedScreen } from "./components/runtime/DegradedScreen";
 import { AuthRecoveryScreen } from "./components/runtime/AuthRecoveryScreen";
@@ -37,6 +36,9 @@ import { runtimeTelemetry } from "./telemetry/runtime.telemetry";
 import { disposeRuntimeSubsystems } from "./runtime/runtime.dispose";
 import { syncCircuitBreaker } from "./sync/sync.circuit";
 import { authService } from "./services/auth.service";
+import { AppLayout } from "./components/layout/AppLayout";
+import { ToastProvider } from "./components/feedback/Toast";
+
 
 const IncrementalTimeline = lazy(() =>
   import("./components/ui/IncrementalTimeline").then((m) => ({ default: m.IncrementalTimeline }))
@@ -180,11 +182,6 @@ function AppShell() {
   const location = useLocation();
 
   const [isCircuitOpen, setIsCircuitOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  useEffect(() => {
-    setSidebarOpen(false);
-  }, [location.pathname]);
 
   useEffect(() => {
     const checkCircuit = () => {
@@ -224,20 +221,22 @@ function AppShell() {
   const userPerms = currentUser?.permisos || [];
   const isAdmin = userPerms.includes("ADMIN_SISTEMA") || currentUser?.nombre === "Ariel" || currentUser?.nombre === "Leo";
   const isSupervisor = userPerms.includes("MOVIMIENTOS_VER") && userPerms.includes("MOVIMIENTOS_CREAR") && !isAdmin;
-  const isOperario = userPerms.includes("MOVIMIENTOS_CREAR") && !userPerms.includes("MOVIMIENTOS_VER");
-  const hasStockVer = userPerms.includes("STOCK_VER") || isAdmin;
-  const hasMovimientosVer = userPerms.includes("MOVIMIENTOS_VER") || isAdmin;
 
-  if (!currentUser) {
+  const isLoggedAndValid = currentUser && !showAuthRecovery;
+
+  if (!isLoggedAndValid) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-950 text-gray-100 selection:bg-blue-600 selection:text-white p-4">
-        <div className="w-full max-w-sm space-y-6">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-background text-on-surface p-4">
+        <div className="w-full max-w-sm space-y-6 bg-surface-container-lowest p-8 rounded border border-outline-variant shadow-sm select-none">
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-black uppercase tracking-wider text-blue-500">Textil María Luisa</h1>
-            <p className="text-xs text-gray-400 uppercase tracking-widest font-semibold">Sistema Industrial ERP</p>
+            <div className="w-12 h-12 rounded bg-primary flex items-center justify-center mx-auto mb-2">
+              <span className="text-white text-base font-black">TML</span>
+            </div>
+            <h1 className="text-xl font-bold text-on-surface tracking-tight uppercase">Textil María Luisa</h1>
+            <p className="text-[10px] text-on-surface-variant uppercase tracking-widest font-extrabold">Sistema Industrial ERP</p>
           </div>
           <AuthRecoveryScreen />
-          <footer className="text-center text-[10px] text-gray-650 space-y-1">
+          <footer className="text-center text-[10px] text-on-surface-variant space-y-1 pt-4 border-t border-outline-variant">
             <p className="font-bold">Textil María Luisa SRL</p>
             <p className="leading-relaxed">Planta Industrial - Registro y Sincronización Resiliente Offline-First</p>
           </footer>
@@ -246,134 +245,24 @@ function AppShell() {
     );
   }
 
-  const allowedTabs: { to: string; label: string; icon: any }[] = [];
-  if (currentUser) {
-    allowedTabs.push({ to: "/app/", label: "INICIO", icon: LayoutDashboard });
-    if (isOperario || isSupervisor || isAdmin) {
-      allowedTabs.push({ to: "/app/corte", label: "CORTE", icon: Scissors });
-    }
-    if (hasStockVer && !isOperario) {
-      allowedTabs.push({ to: "/app/stock", label: "STOCK", icon: Warehouse });
-    }
-    if (hasMovimientosVer) {
-      allowedTabs.push({ to: "/app/timeline", label: "HISTORIAL", icon: History });
-    }
-    if (isSupervisor || isAdmin) {
-      allowedTabs.push({ to: "/app/taller", label: "TALLERES", icon: Wrench });
-    }
-    if (isSupervisor || isAdmin) {
-      allowedTabs.push({ to: "/app/etiquetado", label: "ETIQUETADO", icon: Tag });
-    }
-    if (isSupervisor || isAdmin) {
-      allowedTabs.push({ to: "/app/admin", label: "ADMIN", icon: Settings });
-    }
-  }
-
   return (
-    <div className="min-h-screen flex flex-col bg-gray-950 text-gray-100 pb-12 select-none">
-      <header className="bg-black border-b-2 border-gray-800 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={() => setSidebarOpen(true)}
-            className="p-2 hover:bg-slate-900 rounded text-slate-350 hover:text-white transition active:scale-95 cursor-pointer"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <span className="font-extrabold text-sm md:text-base tracking-widest text-white uppercase">
-            TEXTIL MARÍA LUISA SRL
-          </span>
-          {currentUser.nombre === "Leo" && (
-            <span className="bg-red-950/60 text-red-400 border border-red-900/60 px-2 py-0.5 rounded font-black text-[9px] font-mono">
-              SYSTEM
-            </span>
-          )}
-        </div>
-
-        <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-2 font-bold text-gray-300 uppercase">
-            <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${online && !isCircuitOpen ? "bg-green-500" : "bg-red-500 animate-pulse"}`} />
-            <span>{currentUser.nombre}</span>
-          </div>
-        </div>
-      </header>
-
-      {/* Hamburger Sidebar Drawer */}
-      {sidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/70 z-50 backdrop-blur-xs transition-opacity duration-200 animate-fadeIn"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-      
-      <div 
-        className={`fixed inset-y-0 left-0 w-64 bg-slate-900 border-r-2 border-slate-800 z-50 p-5 transform transition-transform duration-200 ease-in-out flex flex-col justify-between ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="space-y-6">
-          <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-            <span className="font-black text-xs tracking-wider text-gray-400 uppercase">Menú Operativo</span>
-            <button 
-              onClick={() => setSidebarOpen(false)}
-              className="p-1.5 hover:bg-slate-850 rounded text-slate-400 hover:text-white transition cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-          
-          <nav className="flex flex-col gap-1.5">
-            {allowedTabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive =
-                location.pathname === tab.to ||
-                (tab.to !== "/app/" && location.pathname.startsWith(tab.to.replace(/\/$/, "")));
-              return (
-                <Link
-                  key={tab.to}
-                  to={tab.to}
-                  className={`flex items-center gap-3 px-4 py-3 rounded text-xs font-black uppercase tracking-wider transition ${
-                    isActive 
-                      ? "bg-blue-700 text-white border-l-4 border-blue-500 shadow-md" 
-                      : "text-slate-350 hover:bg-slate-850 hover:text-white"
-                  }`}
-                >
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span>{tab.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
-        <div className="border-t border-slate-800 pt-4 text-center">
-          <button
-            onClick={() => {
-              if (confirm("¿Está seguro de que desea cerrar sesión?")) {
-                void authService.logout();
-                navigate("/app/");
-              }
-            }}
-            className="w-full bg-red-955/20 border-2 border-red-900/40 text-red-400 hover:bg-red-955/40 font-black py-3 rounded text-xs uppercase tracking-wider transition cursor-pointer active:scale-95"
-          >
-            Cerrar Sesión
-          </button>
-        </div>
-      </div>
-
+    <AppLayout
+      currentUser={currentUser}
+      online={online}
+      isCircuitOpen={isCircuitOpen}
+      activePath={location.pathname}
+      onLogout={() => {
+        void authService.logout();
+        navigate("/app/");
+      }}
+    >
       {showFullscreenDegraded && (
         <DegradedScreen mode="fullscreen" tier={runtimeTier} />
       )}
 
       {!showFullscreenDegraded && (
-        <main className="flex-1 p-4 flex flex-col gap-4">
-          {isCircuitOpen && (
-            <div className="bg-red-950/20 border border-red-900/35 p-3.5 rounded-xl text-xs text-red-300 font-semibold flex items-center gap-2.5 animate-fadeIn">
-              <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse shrink-0" />
-              <span>Sincronización pausada debido a fallos de red persistentes. El terminal opera localmente con total normalidad.</span>
-            </div>
-          )}
+        <div className="flex flex-col gap-4">
           {showDegradedPanel && <DegradedScreen mode="panel" tier="DEGRADED" />}
-          {showAuthRecovery && <AuthRecoveryScreen />}
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route
@@ -468,11 +357,10 @@ function AppShell() {
               />
             </Routes>
           </Suspense>
-        </main>
+        </div>
       )}
-
       <SyncDrawer />
-    </div>
+    </AppLayout>
   );
 }
 
@@ -500,9 +388,11 @@ if (isDev) {
   root.render(
     <GlobalErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AppShell />
-        </BrowserRouter>
+        <ToastProvider>
+          <BrowserRouter>
+            <AppShell />
+          </BrowserRouter>
+        </ToastProvider>
       </QueryClientProvider>
     </GlobalErrorBoundary>
   );
@@ -511,9 +401,11 @@ if (isDev) {
     <React.StrictMode>
       <GlobalErrorBoundary>
         <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <AppShell />
-          </BrowserRouter>
+          <ToastProvider>
+            <BrowserRouter>
+              <AppShell />
+            </BrowserRouter>
+          </ToastProvider>
         </QueryClientProvider>
       </GlobalErrorBoundary>
     </React.StrictMode>

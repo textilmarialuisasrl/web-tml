@@ -5,7 +5,7 @@ import { TallerRepository } from "../repositories/taller.repository";
 import { AppError } from "../utils/errors";
 import { logger } from "../utils/logger";
 import { prisma } from "../db/prisma";
-import { CalidadProducto, PresentacionProducto, CanalStock } from "../../generated/prisma/client";
+import { CalidadProducto, CanalStock } from "../../generated/prisma/client";
 import { eventBus, DOMAIN_EVENTS } from "../events/domain.events";
 import { metricsRegistry } from "../utils/metrics";
 
@@ -14,7 +14,6 @@ export interface StockParams {
   depositoId: string | null;
   tallerId: string | null;
   calidad: CalidadProducto;
-  presentacion: PresentacionProducto;
   canal: CanalStock;
 }
 
@@ -224,7 +223,6 @@ export const StockService = {
             depositoId: params.depositoId,
             tallerId: params.tallerId,
             calidad: params.calidad,
-            presentacion: params.presentacion,
             canal: params.canal,
           },
         },
@@ -263,7 +261,6 @@ export const StockService = {
       productoId: string;
       cantidadUnidades: number;
       calidad: CalidadProducto;
-      presentacion: PresentacionProducto;
       canal: CanalStock;
       depositoOrigenId: string | null;
       tallerOrigenId: string | null;
@@ -279,7 +276,6 @@ export const StockService = {
         depositoId: params.depositoOrigenId,
         tallerId: params.tallerOrigenId,
         calidad: params.calidad,
-        presentacion: params.presentacion,
         canal: params.canal,
         cantidadUnidades: params.cantidadUnidades,
       },
@@ -293,7 +289,6 @@ export const StockService = {
         depositoId: params.depositoDestinoId,
         tallerId: params.tallerDestinoId,
         calidad: params.calidad,
-        presentacion: params.presentacion,
         canal: params.canal,
         cantidadUnidades: params.cantidadUnidades,
       },
@@ -346,7 +341,6 @@ export const StockService = {
     const compact = query.compact === "true";
     const productoId = (query.productoId as string) || undefined;
     const calidad = (query.calidad as CalidadProducto) || undefined;
-    const presentacion = (query.presentacion as PresentacionProducto) || undefined;
     const canal = (query.canal as CanalStock) || undefined;
 
     let depositoId = (query.depositoId as string) || undefined;
@@ -369,7 +363,6 @@ export const StockService = {
       depositoId,
       tallerId,
       calidad,
-      presentacion,
       canal,
       compact,
     });

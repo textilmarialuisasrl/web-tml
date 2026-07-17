@@ -1,4 +1,4 @@
-import { CalidadProducto, PresentacionProducto, CanalStock } from "../../../generated/prisma";
+import { CalidadProducto, CanalStock } from "../../../generated/prisma";
 import { ProductoDTO } from "./product.dto";
 
 export interface StockDTO {
@@ -8,7 +8,6 @@ export interface StockDTO {
   depositoId: string | null;
   tallerId: string | null;
   calidad: CalidadProducto;
-  presentacion: PresentacionProducto;
   canal: CanalStock;
   cantidadUnidades: number;
   version: number;
@@ -20,7 +19,6 @@ export interface CompactStockDTO {
   depositoId: string | null;
   tallerId: string | null;
   calidad: CalidadProducto;
-  presentacion: PresentacionProducto;
   canal: CanalStock;
   cantidadUnidades: number;
   version: number;

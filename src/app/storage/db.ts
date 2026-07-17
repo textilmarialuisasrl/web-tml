@@ -11,7 +11,7 @@ export interface OfflineMovementItem {
   depositoDestinoId?: string | null;
   tallerDestinoId?: string | null;
   calidad: "PERFECTO" | "FALLADO";
-  presentacion: "UNIDAD" | "DOCENA" | "FARDO" | "SIN_ETIQUETA";
+  presentacion: "UNIDAD" | "DOCENA" | "FARDO";
   canal: "MAYORISTA" | "MINORISTA";
   direccion: "ENTRADA" | "SALIDA" | "INTERNO";
   observaciones?: string | null;
@@ -44,14 +44,13 @@ export interface CatalogoItem {
 }
 
 export interface StockCacheItem {
-  id: string; // key: productoId_depositoId or productoId_tallerId
+  id: string; // key: productoId_depositoId_tallerId_calidad_canal
   productoId: string;
   productoNombre: string;
   depositoId?: string | null;
   tallerId?: string | null;
   cantidadUnidades: number;
   calidad: string;
-  presentacion: string;
   canal: string;
   actualizadoAt: string;
 }

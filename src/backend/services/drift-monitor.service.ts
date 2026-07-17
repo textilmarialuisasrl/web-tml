@@ -6,7 +6,6 @@ export interface StockDriftDetail {
   depositoId: string | null;
   tallerId: string | null;
   calidad: string;
-  presentacion: string;
   canal: string;
   expected: number;
   actual: number;
@@ -40,7 +39,7 @@ export const DriftMonitorService = {
           if (item.depositoOrigenId || item.tallerOrigenId) {
             const depId = item.depositoOrigenId || "";
             const talId = item.tallerOrigenId || "";
-            const key = `${item.productoId}|${depId}|${talId}|${item.calidad}|${item.presentacion}|${item.canal}`;
+            const key = `${item.productoId}|${depId}|${talId}|${item.calidad}|${item.canal}`;
             expectedMap[key] = (expectedMap[key] || 0) - item.cantidadUnidades;
           }
 
@@ -48,7 +47,7 @@ export const DriftMonitorService = {
           if (item.depositoDestinoId || item.tallerDestinoId) {
             const depId = item.depositoDestinoId || "";
             const talId = item.tallerDestinoId || "";
-            const key = `${item.productoId}|${depId}|${talId}|${item.calidad}|${item.presentacion}|${item.canal}`;
+            const key = `${item.productoId}|${depId}|${talId}|${item.calidad}|${item.canal}`;
             expectedMap[key] = (expectedMap[key] || 0) + item.cantidadUnidades;
           }
         }
@@ -65,7 +64,7 @@ export const DriftMonitorService = {
       for (const stock of actualStocks) {
         const depId = stock.depositoId || "";
         const talId = stock.tallerId || "";
-        const key = `${stock.productoId}|${depId}|${talId}|${stock.calidad}|${stock.presentacion}|${stock.canal}`;
+        const key = `${stock.productoId}|${depId}|${talId}|${stock.calidad}|${stock.canal}`;
         actualMap[key] = stock.cantidadUnidades;
       }
 
@@ -78,13 +77,12 @@ export const DriftMonitorService = {
         const actual = actualMap[key] || 0;
 
         if (expected !== actual) {
-          const [productoId, depId, talId, calidad, presentacion, canal] = key.split("|");
+          const [productoId, depId, talId, calidad, canal] = key.split("|");
           drifts.push({
             productoId,
             depositoId: depId || null,
             tallerId: talId || null,
             calidad,
-            presentacion,
             canal,
             expected,
             actual,

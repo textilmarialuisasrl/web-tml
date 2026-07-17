@@ -30,6 +30,7 @@ model Producto {
   medida                String?              // base, commercial, fallado
   color                 String?              // base
   marca                 String?              // commercial (e.g. TML, MILLENIAN, etc.)
+  linea                 String?              // commercial & base (e.g. Americana, Pabilo, etc.)
   unidadesPorFardo      Int?                 // commercial (e.g. 60, 120, etc.)
   vendeUnidad           Boolean              @default(false) // commercial
   vendeDocena           Boolean              @default(false) // commercial
@@ -46,10 +47,6 @@ model Producto {
   createdAt             DateTime             @default(now())
   updatedAt             DateTime             @default(now()) @updatedAt
   deletedAt             DateTime?
-
-  productoBaseId        String?
-  productoBase          Producto?            @relation("ProductoBase", fields: [productoBaseId], references: [id])
-  productosDerivados    Producto[]           @relation("ProductoBase")
 
   // Relations
   familia               Familia?             @relation(fields: [familiaId], references: [id])
@@ -181,7 +178,6 @@ model StockActual {
   depositoId       String?
   tallerId         String?
   calidad          CalidadProducto
-  presentacion     PresentacionProducto
   canal            CanalStock
   cantidadUnidades Int                  @default(0)
   version          Int                  @default(1)
@@ -191,7 +187,7 @@ model StockActual {
   producto         Producto             @relation(fields: [productoId], references: [id])
   taller           Taller?              @relation(fields: [tallerId], references: [id])
 
-  @@unique([productoId, depositoId, tallerId, calidad, presentacion, canal])
+  @@unique([productoId, depositoId, tallerId, calidad, canal])
   @@index([productoId, deletedAt])
   @@index([depositoId, deletedAt])
   @@index([tallerId, deletedAt])
@@ -339,7 +335,6 @@ enum PresentacionProducto {
   UNIDAD
   DOCENA
   FARDO
-  SIN_ETIQUETA
 }
 
 enum CanalStock {

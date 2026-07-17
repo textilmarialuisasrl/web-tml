@@ -87,32 +87,30 @@ class QueueService {
       
       // Perform optimistic offline stock cache update to reflect in UI instantly!
       for (const item of items) {
-        const locationId = item.depositoOrigenId || item.tallerOrigenId || item.depositoDestinoId || item.tallerDestinoId;
-        if (locationId) {
-          const cacheId = `${item.productoId}_${locationId}`;
-          const currentStock = await db.stockCache.get(cacheId);
-          const currentQty = currentStock ? currentStock.cantidadUnidades : 0;
-          
-          let nextQty = currentQty;
-          if (item.direccion === "ENTRADA") {
-            nextQty += item.cantidadUnidades;
-          } else if (item.direccion === "SALIDA") {
-            nextQty -= item.cantidadUnidades;
-          }
-
-          await db.stockCache.put({
-            id: cacheId,
-            productoId: item.productoId,
-            productoNombre: currentStock ? currentStock.productoNombre : "Producto Caché",
-            depositoId: item.depositoOrigenId || item.depositoDestinoId || null,
-            tallerId: item.tallerOrigenId || item.tallerDestinoId || null,
-            cantidadUnidades: Math.max(0, nextQty),
-            calidad: item.calidad,
-            presentacion: item.presentacion,
-            canal: item.canal,
-            actualizadoAt: new Date().toISOString()
-          });
+        const depId = item.depositoOrigenId || item.depositoDestinoId || "";
+        const talId = item.tallerOrigenId || item.tallerDestinoId || "";
+        const cacheId = `${item.productoId}_${depId}_${talId}_${item.calidad}_${item.canal}`;
+        const currentStock = await db.stockCache.get(cacheId);
+        const currentQty = currentStock ? currentStock.cantidadUnidades : 0;
+        
+        let nextQty = currentQty;
+        if (item.direccion === "ENTRADA") {
+          nextQty += item.cantidadUnidades;
+        } else if (item.direccion === "SALIDA") {
+          nextQty -= item.cantidadUnidades;
         }
+
+        await db.stockCache.put({
+          id: cacheId,
+          productoId: item.productoId,
+          productoNombre: currentStock ? currentStock.productoNombre : "Producto Caché",
+          depositoId: item.depositoOrigenId || item.depositoDestinoId || null,
+          tallerId: item.tallerOrigenId || item.tallerDestinoId || null,
+          cantidadUnidades: Math.max(0, nextQty),
+          calidad: item.calidad,
+          canal: item.canal,
+          actualizadoAt: new Date().toISOString()
+        });
       }
     });
 

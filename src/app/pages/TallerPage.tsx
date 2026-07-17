@@ -49,10 +49,27 @@ export const TallerPage: React.FC = () => {
 
   // Temp fields for adding to return list
   const [tempProductId, setTempProductId] = useState("");
+  const [tempBaseProductId, setTempBaseProductId] = useState("");
   const [tempPerfectQty, setTempPerfectQty] = useState("");
   const [tempPerfectUnit, setTempPerfectUnit] = useState<"UNIDAD" | "DOCENA" | "FARDO">("UNIDAD");
   const [tempFalladoQty, setTempFalladoQty] = useState("");
   const [tempFalladoUnit, setTempFalladoUnit] = useState<"UNIDAD" | "DOCENA" | "FARDO">("UNIDAD");
+
+  const selectedProd = productos.find(p => p.id === tempProductId);
+  const filteredBaseProducts = selectedProd
+    ? productos.filter(p => 
+        p.tipoProducto === "BASE" && 
+        p.familiaId === selectedProd.familiaId
+      )
+    : [];
+
+  useEffect(() => {
+    if (filteredBaseProducts.length === 1) {
+      setTempBaseProductId(filteredBaseProducts[0].id);
+    } else {
+      setTempBaseProductId("");
+    }
+  }, [tempProductId, filteredBaseProducts.length]);
 
   const lastMovement = useLiveQuery(
     async () => {
@@ -282,12 +299,11 @@ export const TallerPage: React.FC = () => {
     const prod = productos.find(p => p.id === tempProductId);
     if (!prod) return;
 
-    const baseProdId = prod.productoBaseId;
-    if (!baseProdId) {
-      alert("El producto seleccionado no posee un producto base registrado en el catálogo.");
+    if (!tempBaseProductId) {
+      alert("Seleccione el producto base consumido del stock de taller.");
       return;
     }
-    const baseProd = productos.find(p => p.id === baseProdId);
+    const baseProd = productos.find(p => p.id === tempBaseProductId);
     if (!baseProd) {
       alert("No se pudo encontrar el producto base asociado en el catálogo.");
       return;
@@ -298,12 +314,12 @@ export const TallerPage: React.FC = () => {
     const fallUnits = convertToUnits(rawFall, tempFalladoUnit, uPorFardo);
 
     // Validate that the total requested (perfects + fallados) does not exceed raw material stock in workshop
-    const baseStock = stockItems.find(item => item.productoId === baseProdId && item.tallerId === selectedTallerId);
+    const baseStock = stockItems.find(item => item.productoId === tempBaseProductId && item.tallerId === selectedTallerId);
     const availableBaseQty = baseStock ? baseStock.cantidadUnidades : 0;
 
     let alreadyAddedBaseQty = 0;
     devolucionesProductos.forEach(item => {
-      if (item.productoBaseId === baseProdId) {
+      if (item.productoBaseId === tempBaseProductId) {
         alreadyAddedBaseQty += item.cantidadUnidades + item.cantidadFallados;
       }
     });
@@ -317,13 +333,12 @@ export const TallerPage: React.FC = () => {
     const labelPerf = formatUnitText(tempPerfectQty, tempPerfectUnit);
     const labelFall = formatUnitText(tempFalladoQty, tempFalladoUnit);
 
-    const exists = devolucionesProductos.find(item => item.productoId === tempProductId);
+    const exists = devolucionesProductos.find(item => item.productoId === tempProductId && item.productoBaseId === tempBaseProductId);
     if (exists) {
       setDevolucionesProductos(devolucionesProductos.map(item => 
-        item.productoId === tempProductId 
+        (item.productoId === tempProductId && item.productoBaseId === tempBaseProductId)
           ? { 
               ...item, 
-              productoBaseId: baseProdId,
               cantidadUnidades: item.cantidadUnidades + perfUnits, 
               cantidadFallados: item.cantidadFallados + fallUnits,
               displayPerfect: item.displayPerfect ? `${item.displayPerfect} + ${labelPerf}` : labelPerf,
@@ -334,8 +349,8 @@ export const TallerPage: React.FC = () => {
     } else {
       setDevolucionesProductos([...devolucionesProductos, {
         productoId: tempProductId,
-        productoBaseId: baseProdId,
-        nombre: prod.nombre,
+        productoBaseId: tempBaseProductId,
+        nombre: `${prod.nombre} (desde ${baseProd.codigo})`,
         cantidadUnidades: perfUnits,
         cantidadFallados: fallUnits,
         displayPerfect: labelPerf,
@@ -343,6 +358,7 @@ export const TallerPage: React.FC = () => {
       }]);
     }
     setTempProductId("");
+    setTempBaseProductId("");
     setTempPerfectQty("");
     setTempFalladoQty("");
     setTempPerfectUnit("UNIDAD");
@@ -487,7 +503,7 @@ export const TallerPage: React.FC = () => {
             tallerOrigenId: selectedTallerId,
             tallerDestinoId: null,
             calidad: "PERFECTO" as const,
-            presentacion: "SIN_ETIQUETA" as const,
+            presentacion: "UNIDAD" as const,
             canal: "MAYORISTA" as const,
             direccion: "SALIDA" as const
           });
@@ -883,6 +899,28 @@ export const TallerPage: React.FC = () => {
                     ))}
                   </select>
                 </div>
+
+                {tempProductId && (
+                  <div>
+                    <label className="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Materia Prima Consumida *</label>
+                    <select
+                      value={tempBaseProductId}
+                      onChange={(e) => setTempBaseProductId(e.target.value)}
+                      className="w-full bg-slate-950 border-2 border-slate-800 rounded px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-blue-600 font-bold uppercase cursor-pointer"
+                    >
+                      <option value="">-- Seleccionar Materia Prima Consumida --</option>
+                      {filteredBaseProducts.map((p) => {
+                        const stockItem = stockItems.find(s => s.productoId === p.id && s.tallerId === selectedTallerId);
+                        const qty = stockItem ? stockItem.cantidadUnidades : 0;
+                        return (
+                          <option key={p.id} value={p.id}>
+                            {p.codigo} - {p.nombre} (Disponibles: {qty} u.)
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                )}
                 
                 {/* Quantity + Unit selectors */}
                 <div className="grid grid-cols-2 gap-3.5">

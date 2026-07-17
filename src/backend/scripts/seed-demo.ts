@@ -234,7 +234,6 @@ async function seed() {
       productoId: dbProductos[0].id,
       depositoId: dbDepositos[0].id,
       calidad: "PERFECTO",
-      presentacion: "SIN_ETIQUETA",
       canal: "MAYORISTA",
       cantidadUnidades: 240,
       version: 1
@@ -247,7 +246,6 @@ async function seed() {
       productoId: dbProductos[1].id,
       depositoId: dbDepositos[0].id,
       calidad: "PERFECTO",
-      presentacion: "SIN_ETIQUETA",
       canal: "MAYORISTA",
       cantidadUnidades: 120,
       version: 1
@@ -260,7 +258,6 @@ async function seed() {
       productoId: dbProductos[12].id,
       depositoId: dbDepositos[3].id,
       calidad: "PERFECTO",
-      presentacion: "ETIQUETADO",
       canal: "MINORISTA",
       cantidadUnidades: 200,
       version: 1
@@ -273,7 +270,6 @@ async function seed() {
       productoId: dbProductos[11].id,
       tallerId: dbTalleres[0].id,
       calidad: "PERFECTO",
-      presentacion: "SIN_ETIQUETA",
       canal: "MAYORISTA",
       cantidadUnidades: 300,
       version: 1

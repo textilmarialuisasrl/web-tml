@@ -68,14 +68,14 @@ const PRODUCTOS_BASE = [
   { codigo: "PB024", nombre: "Rejilla Doble Pesada Rollo", familiaId: "FAM002", medida: "-", color: "Crudo", estadoActual: "En Rollo", procesoSiguiente: "Taller Rejillas", origen: "Compra", unidadMedida: "Kg" },
   { codigo: "PB025", nombre: "Rejilla Doble Liviana Rollo", familiaId: "FAM002", medida: "-", color: "Crudo", estadoActual: "En Rollo", procesoSiguiente: "Taller Rejillas", origen: "Compra", unidadMedida: "Kg" },
   { codigo: "PB026", nombre: "Rejilla Profesional Rollo", familiaId: "FAM002", medida: "-", color: "Crudo", estadoActual: "En Rollo", procesoSiguiente: "Taller Rejillas", origen: "Compra", unidadMedida: "Kg" },
-  { codigo: "PB027", nombre: "Rejilla Americana S/Etiqueta", familiaId: "FAM002", medida: "38x40", color: "Crudo", estadoActual: "Sin Etiqueta", procesoSiguiente: "Producto terminado", origen: "Compra" },
-  { codigo: "PB028", nombre: "Rejilla Pabilo S/Etiqueta", familiaId: "FAM002", medida: "38x40", color: "Crudo", estadoActual: "Sin Etiqueta", procesoSiguiente: "Producto terminado", origen: "Compra" },
-  { codigo: "PB029", nombre: "Rejilla Tubular S/Etiqueta", familiaId: "FAM002", medida: "40x45", color: "Crudo", estadoActual: "Sin Etiqueta", procesoSiguiente: "Producto terminado", origen: "Compra" },
-  { codigo: "PB030", nombre: "Franela 45x60 S/Etiqueta", familiaId: "FAM003", medida: "45x60", color: "Naranja", estadoActual: "Sin Etiqueta", procesoSiguiente: "Producto terminado", origen: "Compra" },
-  { codigo: "PB031", nombre: "Franela 50x50 S/Etiqueta", familiaId: "FAM003", medida: "50x50", color: "Naranja", estadoActual: "Sin Etiqueta", procesoSiguiente: "Producto terminado", origen: "Compra" },
-  { codigo: "PB032", nombre: "Repasador Sarga S/Etiqueta", familiaId: "FAM004", medida: "40x60", color: "Varios", estadoActual: "Sin Etiqueta", procesoSiguiente: "Producto terminado", origen: "Compra" },
-  { codigo: "PB033", nombre: "Repasador Toalla S/Etiqueta", familiaId: "FAM004", medida: "42x60", color: "Varios", estadoActual: "Recepcionado", procesoSiguiente: "Producto terminado", origen: "Compra" },
-  { codigo: "PB034", nombre: "Paño Absorvente S/Etiqueta", familiaId: "FAM005", medida: "38x40", color: "Varios", estadoActual: "Sin Etiqueta", procesoSiguiente: "Producto terminado", origen: "Compra" }
+  { codigo: "PB027", nombre: "Rejilla Americana S/Etiqueta", familiaId: "FAM002", medida: "38x40", color: "Crudo", estadoActual: "Sin Etiqueta", procesoSiguiente: "Etiquetado", origen: "Compra" },
+  { codigo: "PB028", nombre: "Rejilla Pabilo S/Etiqueta", familiaId: "FAM002", medida: "38x40", color: "Crudo", estadoActual: "Sin Etiqueta", procesoSiguiente: "Etiquetado", origen: "Compra" },
+  { codigo: "PB029", nombre: "Rejilla Tubular S/Etiqueta", familiaId: "FAM002", medida: "40x45", color: "Crudo", estadoActual: "Sin Etiqueta", procesoSiguiente: "Etiquetado", origen: "Compra" },
+  { codigo: "PB030", nombre: "Franela 45x60 S/Etiqueta", familiaId: "FAM003", medida: "45x60", color: "Naranja", estadoActual: "Sin Etiqueta", procesoSiguiente: "Etiquetado", origen: "Compra" },
+  { codigo: "PB031", nombre: "Franela 50x50 S/Etiqueta", familiaId: "FAM003", medida: "50x50", color: "Naranja", estadoActual: "Sin Etiqueta", procesoSiguiente: "Etiquetado", origen: "Compra" },
+  { codigo: "PB032", nombre: "Repasador Sarga S/Etiqueta", familiaId: "FAM004", medida: "40x60", color: "Varios", estadoActual: "Sin Etiqueta", procesoSiguiente: "Etiquetado", origen: "Compra" },
+  { codigo: "PB033", nombre: "Repasador Toalla S/Etiqueta", familiaId: "FAM004", medida: "42x60", color: "Varios", estadoActual: "Recepcionado", procesoSiguiente: "Etiquetado", origen: "Compra" },
+  { codigo: "PB034", nombre: "Paño Absorvente S/Etiqueta", familiaId: "FAM005", medida: "38x40", color: "Varios", estadoActual: "Sin Etiqueta", procesoSiguiente: "Etiquetado", origen: "Compra" }
 ];
 
 const PRODUCTOS_COMERCIALES = [
@@ -191,18 +191,18 @@ const RETAZOS = [
 ];
 
 const USUARIOS = [
-  { id: "US001", nombre: "Leonel", email: "LeonelTML", passwordRaw: "Leonelalejandro5", rol: RolUsuario.ADMINISTRADOR, area: "Administración", accesoStock: true, tallerId: null },
-  { id: "US002", nombre: "Ariel", email: "ArielTML", passwordRaw: "TML2026", rol: RolUsuario.DUENO, area: "Administración", accesoStock: true, tallerId: null },
-  { id: "US003", nombre: "Diego", email: "DiegoTML", passwordRaw: "TML2026", rol: RolUsuario.DUENO, area: "Administración", accesoStock: true, tallerId: null },
-  { id: "US004", nombre: "Nacho", email: "NachoTML", passwordRaw: "TMLSUP2026", rol: RolUsuario.SUPERVISOR, area: "Producción", accesoStock: true, tallerId: null },
-  { id: "US005", nombre: "Daniel", email: "DanielTML", passwordRaw: "TMLSUP2026", rol: RolUsuario.SUPERVISOR, area: "Producción", accesoStock: true, tallerId: null },
-  { id: "US006", nombre: "Rolando", email: "RolandoTML", passwordRaw: "TMLOP2026", rol: RolUsuario.OPERARIO, area: "Corte", accesoStock: false, tallerId: null },
-  { id: "US007", nombre: "Walter", email: "WalterTML", passwordRaw: "TMLOP2026", rol: RolUsuario.OPERARIO, area: "Corte", accesoStock: false, tallerId: null },
-  { id: "US008", nombre: "Evelina", email: "EvelinaTML", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL001" },
-  { id: "US009", nombre: "Vanesa", email: "VanesaTML", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL002" },
-  { id: "US010", nombre: "Mary", email: "MaryTML", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL003" },
-  { id: "US011", nombre: "Fernanda", email: "FernandaTML", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL004" },
-  { id: "US012", nombre: "Silvia", email: "SilviaTML", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL005" }
+  { id: "US001", nombre: "Leonel", email: "leoneltml", passwordRaw: "Leonelalejandro5", rol: RolUsuario.ADMINISTRADOR, area: "Administración", accesoStock: true, tallerId: null },
+  { id: "US002", nombre: "Ariel", email: "arieltml", passwordRaw: "TML2026", rol: RolUsuario.DUENO, area: "Administración", accesoStock: true, tallerId: null },
+  { id: "US003", nombre: "Diego", email: "diegotml", passwordRaw: "TML2026", rol: RolUsuario.DUENO, area: "Administración", accesoStock: true, tallerId: null },
+  { id: "US004", nombre: "Nacho", email: "nachotml", passwordRaw: "TMLSUP2026", rol: RolUsuario.SUPERVISOR, area: "Producción", accesoStock: true, tallerId: null },
+  { id: "US005", nombre: "Daniel", email: "danieltml", passwordRaw: "TMLSUP2026", rol: RolUsuario.SUPERVISOR, area: "Producción", accesoStock: true, tallerId: null },
+  { id: "US006", nombre: "Rolando", email: "rolandotml", passwordRaw: "TMLOP2026", rol: RolUsuario.OPERARIO, area: "Corte", accesoStock: false, tallerId: null },
+  { id: "US007", nombre: "Walter", email: "waltertml", passwordRaw: "TMLOP2026", rol: RolUsuario.OPERARIO, area: "Corte", accesoStock: false, tallerId: null },
+  { id: "US008", nombre: "Evelina", email: "evelinatml", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL001" },
+  { id: "US009", nombre: "Vanesa", email: "vanesatml", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL002" },
+  { id: "US010", nombre: "Mary", email: "marytml", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL003" },
+  { id: "US011", nombre: "Fernanda", email: "fernandatml", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL004" },
+  { id: "US012", nombre: "Silvia", email: "silviatml", passwordRaw: "TMLTALLER2026", rol: RolUsuario.TALLER, area: "Taller", accesoStock: false, tallerId: "TAL005" }
 ];
 
 async function seed() {
@@ -237,6 +237,66 @@ async function seed() {
   console.log("🏪 Insertando Depósitos...");
   for (const d of DEPOSITOS) {
     await prisma.deposito.create({ data: d });
+  }
+
+  function deriveLinea(codigo: string, nombre: string): string | null {
+    const nameUpper = nombre.toUpperCase();
+    const codeNum = parseInt(codigo.substring(2), 10);
+    
+    if (codigo.startsWith("PB")) {
+      if (codeNum >= 1 && codeNum <= 22) {
+        if (nameUpper.includes("BLANCO")) return "Blanco";
+        if (nameUpper.includes("GRIS")) return "Gris";
+        if (nameUpper.includes("RAYADO TRADICIONAL")) return "Rayado Tradicional";
+        if (nameUpper.includes("RAYADO COLOR")) return "Rayado Color";
+        if (nameUpper.includes("COLOR")) return "Color";
+        if (nameUpper.includes("NIDO")) return "Nido";
+        if (nameUpper.includes("DURA MÁS BLANCO")) return "Dura Más Blanco";
+        if (nameUpper.includes("DURA MÁS GRIS")) return "Dura Más Gris";
+        if (nameUpper.includes("DURA MÁS RAYADO TRADICIONAL")) return "Dura Más Rayado";
+        if (nameUpper.includes("DURA MÁS RAYADO COLOR")) return "Dura Más Rayado";
+        return "Blanco";
+      }
+      if (codigo === "PB023") return "Triple";
+      if (codigo === "PB024") return "Doble Pesada";
+      if (codigo === "PB025") return "Doble Liviana";
+      if (codigo === "PB026") return "Profesional";
+      if (codigo === "PB027") return "Americana";
+      if (codigo === "PB028") return "Pabilo";
+      if (codigo === "PB029") return "Tubular";
+      if (codigo === "PB030") return "Franela 45x60";
+      if (codigo === "PB031") return "Franela 50x50";
+      if (codigo === "PB032") return "Repasador Sarga";
+      if (codigo === "PB033") return "Repasador Toalla";
+      if (codigo === "PB034") return "Paño Absorbente";
+    } else if (codigo.startsWith("PF")) {
+      if (codeNum >= 1 && codeNum <= 39) {
+        if (nameUpper.includes("SURTIDO")) return "Surtido";
+        if (nameUpper.includes("BLANCO")) return "Blanco";
+        if (nameUpper.includes("GRIS")) return "Gris";
+        if (nameUpper.includes("RAYADO TURQUESA")) return "Dura Más Rayado";
+        if (nameUpper.includes("RAYADO GRIS")) return "Dura Más Rayado";
+        if (nameUpper.includes("RAYADO COLOR")) return "Color";
+        if (nameUpper.includes("RAYADO")) return "Rayado Tradicional";
+        if (nameUpper.includes("NIDO")) return "Nido";
+        if (nameUpper.includes("PORTERO")) return "Gris";
+        return "Blanco";
+      }
+      if (codigo === "PF040") return "Triple";
+      if (codigo === "PF041") return "Doble Pesada";
+      if (codigo === "PF042") return "Doble Liviana";
+      if (codigo === "PF043") return "Profesional";
+      if (codigo === "PF044") return "Americana";
+      if (codigo === "PF045") return "Pabilo";
+      if (codigo === "PF046") return "Tubular";
+      if (codigo === "PF047") return "Franela 45x60";
+      if (codigo === "PF048") return "Franela 50x50";
+      if (codigo === "PF049") return "Repasador Sarga";
+      if (codigo === "PF050") return "Repasador Toalla";
+      if (codigo === "PF051") return "Paño Absorbente";
+      if (codigo === "PF052") return "Alfombra";
+    }
+    return null;
   }
 
   // 4. Insertar Talleres
@@ -279,7 +339,8 @@ async function seed() {
         estadoActual: pb.estadoActual,
         procesoSiguiente: pb.procesoSiguiente,
         origen: pb.origen,
-        unidadMedida: pb.unidadMedida || "Unidad"
+        unidadMedida: pb.unidadMedida || "Unidad",
+        linea: deriveLinea(pb.codigo, pb.nombre)
       }
     });
     productosMap.set(pb.codigo, created.id);
@@ -303,7 +364,8 @@ async function seed() {
         requiereTaller: pf.requiereTaller,
         requiereEtiqueta: pf.requiereEtiqueta,
         tipoTrabajo: pf.tipoTrabajo,
-        unidadMedida: "Unidad"
+        unidadMedida: "Unidad",
+        linea: deriveLinea(pf.codigo, pf.nombre)
       }
     });
     productosMap.set(pf.codigo, created.id);
@@ -382,7 +444,7 @@ async function seed() {
         id: u.id,
         codigo: u.id,
         nombre: u.nombre,
-        email: u.email,
+        email: u.email.toLowerCase().trim(),
         passwordHash,
         rol: u.rol,
         area: u.area,
@@ -450,7 +512,6 @@ async function seed() {
         productoId: prodId,
         depositoId: "DEP001",
         calidad: CalidadProducto.PERFECTO,
-        presentacion: PresentacionProducto.SIN_ETIQUETA,
         canal: CanalStock.MAYORISTA,
         cantidadUnidades: 400
       }
@@ -466,7 +527,6 @@ async function seed() {
         productoId: prodId,
         depositoId: "DEP001",
         calidad: CalidadProducto.PERFECTO,
-        presentacion: PresentacionProducto.SIN_ETIQUETA,
         canal: CanalStock.MAYORISTA,
         cantidadUnidades: 120 // 120 kg de rejilla en rollos
       }
@@ -491,7 +551,6 @@ async function seed() {
         productoId: prodId,
         depositoId: "DEP002",
         calidad: CalidadProducto.PERFECTO,
-        presentacion: PresentacionProducto.FARDO,
         canal: CanalStock.MAYORISTA,
         cantidadUnidades: cs.fardosCentral * unitsPerFardo
       }
@@ -503,7 +562,6 @@ async function seed() {
         productoId: prodId,
         depositoId: "DEP003",
         calidad: CalidadProducto.PERFECTO,
-        presentacion: PresentacionProducto.UNIDAD,
         canal: CanalStock.MINORISTA,
         cantidadUnidades: cs.fardosCasa * unitsPerFardo
       }
@@ -523,7 +581,6 @@ async function seed() {
         productoId: prodId,
         depositoId: "DEP003",
         calidad: CalidadProducto.PERFECTO,
-        presentacion: PresentacionProducto.UNIDAD,
         canal: CanalStock.MAYORISTA,
         cantidadUnidades: is.qty
       }

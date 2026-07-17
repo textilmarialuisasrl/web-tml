@@ -101,7 +101,7 @@ export const MovementService = {
       const talDest = item.tallerDestinoId || null;
       const obs = item.observaciones || null;
       const calidad = item.calidad || "PERFECTO";
-      const presentacion = item.presentacion || "SIN_ETIQUETA";
+      const presentacion = item.presentacion || "UNIDAD";
       const canal = item.canal || "MAYORISTA";
 
       // Infer direction if not supplied
@@ -362,7 +362,6 @@ export const MovementService = {
               tallerId: data.tallerId,
               depositoId: null,
               calidad: CalidadProducto.PERFECTO,
-              presentacion: PresentacionProducto.SIN_ETIQUETA,
               canal: CanalStock.MAYORISTA,
             },
           });
@@ -443,27 +442,7 @@ export const MovementService = {
         }
 
 
-        // ETIQUETADO validation
-        if (data.tipo === "ETIQUETADO") {
-          if (item.depositoOrigenId || item.tallerOrigenId) {
-            if (item.presentacion !== "SIN_ETIQUETA") {
-              throw new AppError({
-                message: "El stock de origen a etiquetar debe ser SIN_ETIQUETA",
-                statusCode: 400,
-                code: "INVALID_PRESENTATION",
-              });
-            }
-          }
-          if (item.depositoDestinoId || item.tallerDestinoId) {
-            if (item.presentacion !== "UNIDAD") {
-              throw new AppError({
-                message: "El stock de destino resultante del etiquetado debe ser UNIDAD",
-                statusCode: 400,
-                code: "INVALID_PRESENTATION",
-              });
-            }
-          }
-        }
+
 
         itemsWithSnapshots.push({
           ...item,
@@ -560,7 +539,6 @@ export const MovementService = {
               depositoId: item.depositoOrigenId || null,
               tallerId: item.tallerOrigenId || null,
               calidad: item.calidad,
-              presentacion: item.presentacion,
               canal: item.canal,
               cantidadUnidades: item.cantidadUnidades,
             },
@@ -575,7 +553,6 @@ export const MovementService = {
               depositoId: item.depositoDestinoId || null,
               tallerId: item.tallerDestinoId || null,
               calidad: item.calidad,
-              presentacion: item.presentacion,
               canal: item.canal,
               cantidadUnidades: item.cantidadUnidades,
             },
@@ -615,7 +592,6 @@ export const MovementService = {
                 depositoId: depCorte.id,
                 tallerId: null,
                 calidad: "PERFECTO",
-                presentacion: "SIN_ETIQUETA",
                 canal: "MAYORISTA",
                 cantidadUnidades: Math.round(ins.cantidad),
               },
@@ -775,7 +751,7 @@ export const MovementService = {
           tallerOrigenId: null,
           tallerDestinoId: data.tallerId,
           calidad: CalidadProducto.PERFECTO,
-          presentacion: PresentacionProducto.SIN_ETIQUETA,
+          presentacion: PresentacionProducto.UNIDAD,
           canal: CanalStock.MAYORISTA,
           direccion: "SALIDA" as const,
         });
@@ -860,7 +836,7 @@ export const MovementService = {
         });
       }
 
-      // Check catalog mapping validity
+      // Check catalog mapping validity (family check)
       const pfProduct = await prisma.producto.findUnique({
         where: { id: item.productoId },
       });
@@ -871,9 +847,19 @@ export const MovementService = {
           code: "PRODUCT_NOT_FOUND",
         });
       }
-      if (pfProduct.productoBaseId !== item.productoBaseId) {
+      const baseProduct = await prisma.producto.findUnique({
+        where: { id: item.productoBaseId },
+      });
+      if (!baseProduct) {
         throw new AppError({
-          message: `El producto base especificado para ${pfProduct.nombre} no corresponde al registrado en el catálogo`,
+          message: `El producto base con ID ${item.productoBaseId} no existe`,
+          statusCode: 400,
+          code: "PRODUCT_NOT_FOUND",
+        });
+      }
+      if (pfProduct.familiaId !== baseProduct.familiaId) {
+        throw new AppError({
+          message: `La familia del producto base (${baseProduct.nombre}) no coincide con la del producto comercial devuelto (${pfProduct.nombre})`,
           statusCode: 400,
           code: "INVALID_PRODUCT_BASE_MAPPING",
         });
@@ -889,7 +875,7 @@ export const MovementService = {
           tallerOrigenId: null,
           tallerDestinoId: null,
           calidad: CalidadProducto.PERFECTO,
-          presentacion: PresentacionProducto.SIN_ETIQUETA,
+          presentacion: PresentacionProducto.UNIDAD,
           canal: CanalStock.MAYORISTA,
           direccion: "ENTRADA" as const,
         });
@@ -905,7 +891,7 @@ export const MovementService = {
           tallerOrigenId: null,
           tallerDestinoId: null,
           calidad: CalidadProducto.FALLADO,
-          presentacion: PresentacionProducto.SIN_ETIQUETA,
+          presentacion: PresentacionProducto.UNIDAD,
           canal: CanalStock.MAYORISTA,
           direccion: "ENTRADA" as const,
         });
@@ -921,7 +907,7 @@ export const MovementService = {
         tallerOrigenId: data.tallerId,
         tallerDestinoId: null,
         calidad: CalidadProducto.PERFECTO,
-        presentacion: PresentacionProducto.SIN_ETIQUETA,
+        presentacion: PresentacionProducto.UNIDAD,
         canal: CanalStock.MAYORISTA,
         direccion: "SALIDA" as const,
       });
@@ -998,7 +984,8 @@ export const MovementService = {
   async createEtiquetado(
     data: {
       usuarioId: string;
-      productoId: string;
+      productoOrigenId: string;
+      productoDestinoId: string;
       depositoId: string;
       cantidadUnidades: number;
       canal: CanalStock;
@@ -1018,42 +1005,70 @@ export const MovementService = {
       });
     }
 
-    const prod = await prisma.producto.findUnique({
-      where: { id: data.productoId },
+    const prodOrigen = await prisma.producto.findUnique({
+      where: { id: data.productoOrigenId },
     });
-    if (!prod) {
+    if (!prodOrigen) {
       throw new AppError({
-        message: "El producto comercial no existe",
+        message: "El producto origen no existe",
         statusCode: 400,
         code: "PRODUCT_NOT_FOUND",
       });
     }
-    if (!prod.requiereEtiqueta) {
+    if (prodOrigen.tipoProducto !== "BASE" || prodOrigen.origen !== "Compra") {
       throw new AppError({
-        message: `El producto ${prod.nombre} no requiere etiquetado según la ficha técnica`,
+        message: `El producto de origen ${prodOrigen.nombre} no es un producto base comprado habilitado para etiquetado`,
         statusCode: 400,
-        code: "ETIQUETADO_NOT_REQUIRED",
+        code: "INVALID_ORIGIN_PRODUCT",
+      });
+    }
+
+    const prodDestino = await prisma.producto.findUnique({
+      where: { id: data.productoDestinoId },
+    });
+    if (!prodDestino) {
+      throw new AppError({
+        message: "El producto destino no existe",
+        statusCode: 400,
+        code: "PRODUCT_NOT_FOUND",
+      });
+    }
+    if (prodDestino.tipoProducto !== "COMERCIAL") {
+      throw new AppError({
+        message: `El producto de destino ${prodDestino.nombre} debe ser de tipo comercial`,
+        statusCode: 400,
+        code: "INVALID_DESTINATION_PRODUCT",
+      });
+    }
+
+    if (prodOrigen.familiaId !== prodDestino.familiaId || prodOrigen.linea !== prodDestino.linea) {
+      throw new AppError({
+        message: `Inconsistencia: El producto origen (${prodOrigen.nombre}) y destino (${prodDestino.nombre}) deben pertenecer a la misma familia y línea física`,
+        statusCode: 400,
+        code: "PRODUCT_MISMATCH",
       });
     }
 
     const items: MovementItemInput[] = [
       {
-        productoId: data.productoId,
+        productoId: data.productoOrigenId,
         cantidadUnidades: data.cantidadUnidades,
         depositoOrigenId: data.depositoId,
         depositoDestinoId: null,
-        calidad: CalidadProducto.PERFECTO,
-        presentacion: PresentacionProducto.SIN_ETIQUETA,
+        calidad: data.calidad,
+        presentacion: PresentacionProducto.UNIDAD,
         canal: data.canal,
+        direccion: "SALIDA",
       },
       {
-        productoId: data.productoId,
+        productoId: data.productoDestinoId,
         cantidadUnidades: data.cantidadUnidades,
         depositoOrigenId: null,
         depositoDestinoId: data.depositoId,
-        calidad: CalidadProducto.PERFECTO,
+        calidad: data.calidad,
         presentacion: PresentacionProducto.UNIDAD,
         canal: data.canal,
+        direccion: "ENTRADA",
       },
     ];
 
@@ -1061,10 +1076,10 @@ export const MovementService = {
       {
         tipo: TipoMovimiento.ETIQUETADO,
         usuarioId: data.usuarioId,
-        observaciones: data.observaciones || `Etiquetado de ${data.cantidadUnidades} unidades de ${prod.nombre}`,
-        deviceId: data.deviceId,
-        offlineCreatedAt: data.offlineCreatedAt,
-        syncBatchId: data.syncBatchId,
+        observaciones: data.observaciones || `Etiquetado de ${data.cantidadUnidades} unidades de ${prodOrigen.nombre} -> ${prodDestino.nombre}`,
+        deviceId: data.deviceId || undefined,
+        offlineCreatedAt: data.offlineCreatedAt || undefined,
+        syncBatchId: data.syncBatchId || undefined,
         items,
       },
       meta

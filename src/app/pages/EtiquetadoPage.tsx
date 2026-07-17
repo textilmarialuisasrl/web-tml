@@ -36,8 +36,11 @@ export const EtiquetadoPage: React.FC = () => {
     codigo: string;
     canal: "MAYORISTA" | "MINORISTA";
     stockDisponible: number;
+    familiaId: string | null;
+    linea: string | null;
   } | null>(null);
 
+  const [selectedDestinoId, setSelectedDestinoId] = useState("");
   const [cantidadLabel, setCantidadLabel] = useState("");
   const [observaciones, setObservaciones] = useState("");
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -99,18 +102,17 @@ export const EtiquetadoPage: React.FC = () => {
   const getAvailableStockRows = () => {
     if (!selectedDepositoId) return [];
 
-    // Filter products requiring labeling
-    const reqLabelProds = productos.filter(p => p.activo && p.requiereEtiqueta);
+    // Filter base products purchased from supplier
+    const baseProds = productos.filter(p => p.activo && p.tipoProducto === "BASE" && p.origen === "Compra");
 
     const rows: typeof selectedStockRow[] = [];
 
-    reqLabelProds.forEach(prod => {
-      // Find matching stock cache entries: same product, selected deposit, PERFECTO, SIN_ETIQUETA
+    baseProds.forEach(prod => {
+      // Find matching stock cache entries: same product, selected deposit, PERFECTO, units
       const matchingStocks = stockItems.filter(
         item => item.productoId === prod.id &&
                 item.depositoId === selectedDepositoId &&
                 item.calidad === "PERFECTO" &&
-                item.presentacion === "SIN_ETIQUETA" &&
                 item.cantidadUnidades > 0
       );
 
@@ -120,7 +122,9 @@ export const EtiquetadoPage: React.FC = () => {
           nombre: prod.nombre,
           codigo: prod.codigo,
           canal: stock.canal,
-          stockDisponible: stock.cantidadUnidades
+          stockDisponible: stock.cantidadUnidades,
+          familiaId: prod.familiaId,
+          linea: prod.linea
         });
       });
     });
@@ -130,6 +134,7 @@ export const EtiquetadoPage: React.FC = () => {
 
   const handleSelectRow = (row: any) => {
     setSelectedStockRow(row);
+    setSelectedDestinoId("");
     setCantidadLabel("");
     setSubmitError(null);
   };
@@ -145,7 +150,10 @@ export const EtiquetadoPage: React.FC = () => {
     e.preventDefault();
     setSubmitError(null);
 
-    if (!selectedDepositoId || !selectedStockRow) return;
+    if (!selectedDepositoId || !selectedStockRow || !selectedDestinoId) {
+      alert("Complete todos los campos obligatorios antes de continuar.");
+      return;
+    }
 
     const qty = parseInt(cantidadLabel, 10);
     if (isNaN(qty) || qty <= 0) {
@@ -158,9 +166,12 @@ export const EtiquetadoPage: React.FC = () => {
       return;
     }
 
+    const destProduct = productos.find(p => p.id === selectedDestinoId);
+    if (!destProduct) return;
+
     try {
       const items = [
-        // 1. Decrement SIN_ETIQUETA of the commercial product
+        // 1. Decrement base product (SALIDA)
         {
           productoId: selectedStockRow.productoId,
           cantidadUnidades: qty,
@@ -169,13 +180,13 @@ export const EtiquetadoPage: React.FC = () => {
           tallerOrigenId: null,
           tallerDestinoId: null,
           calidad: "PERFECTO" as const,
-          presentacion: "SIN_ETIQUETA" as const,
+          presentacion: "UNIDAD" as const,
           canal: selectedStockRow.canal,
           direccion: "SALIDA" as const
         },
-        // 2. Increment UNIDAD (labeled) of the commercial product
+        // 2. Increment commercial finished product (ENTRADA)
         {
-          productoId: selectedStockRow.productoId,
+          productoId: selectedDestinoId,
           cantidadUnidades: qty,
           depositoOrigenId: null,
           depositoDestinoId: selectedDepositoId,
@@ -192,13 +203,14 @@ export const EtiquetadoPage: React.FC = () => {
         "ETIQUETADO",
         items,
         null,
-        observaciones.trim() || undefined,
+        observaciones.trim() || `Etiquetado: ${selectedStockRow.codigo} -> ${destProduct.codigo} (${qty} u.)`,
         "HIGH"
       );
 
       triggerHaptic("success");
       setLastCreatedId(movement.clientGeneratedId);
       setSelectedStockRow(null);
+      setSelectedDestinoId("");
       setCantidadLabel("");
       setObservaciones("");
       
@@ -222,7 +234,7 @@ export const EtiquetadoPage: React.FC = () => {
             Etiquetado de Productos
           </h1>
           <p className="text-xs text-slate-400 font-medium">
-            Transformación física de productos comerciales en stock `SIN_ETIQUETA` a presentación `UNIDAD` etiquetada.
+            Transformación física de productos base a productos comerciales etiquetados del mismo modelo físico.
           </p>
         </div>
         <button
@@ -297,22 +309,22 @@ export const EtiquetadoPage: React.FC = () => {
           {selectedDepositoId && (
             <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
               <h2 className="text-[11px] font-black text-slate-400 uppercase tracking-wider">
-                2. Productos Sin Etiqueta Disponibles
+                2. Materias Primas Disponibles
               </h2>
               {loading ? (
                 <div className="text-center text-xs text-gray-500 py-4 uppercase">Cargando inventario...</div>
               ) : availableRows.length === 0 ? (
                 <div className="bg-slate-950/50 border border-dashed border-slate-800 p-6 rounded-xl text-center text-xs text-gray-500 uppercase tracking-wide">
-                  No hay productos comerciales `SIN_ETIQUETA` en este depósito.
+                  No hay productos base en este depósito.
                 </div>
               ) : (
                 <div className="border border-slate-800 rounded-xl overflow-hidden">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
                       <tr className="bg-slate-950 text-slate-400 uppercase text-[9px] tracking-wider border-b border-slate-800">
-                        <th className="p-3">Producto</th>
+                        <th className="p-3">Producto Base</th>
                         <th className="p-3">Canal</th>
-                        <th className="p-3 text-right">Stock S/Etq.</th>
+                        <th className="p-3 text-right">Stock Disp.</th>
                         <th className="p-3"></th>
                       </tr>
                     </thead>
@@ -385,13 +397,41 @@ export const EtiquetadoPage: React.FC = () => {
               {/* Stock Indicator */}
               <div className="bg-slate-950/70 border border-slate-800 p-4 rounded-xl flex justify-between items-center">
                 <div className="space-y-0.5">
-                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Disponible S/Etiqueta</div>
+                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Disponible Origen</div>
                   <div className="text-xs text-gray-500 font-medium">Calidad PERFECTO</div>
                 </div>
                 <div className="text-right">
                   <span className="text-lg font-black font-mono text-white">{selectedStockRow.stockDisponible}</span>
                   <span className="text-[10px] text-gray-500 font-bold ml-1">UNIDADES</span>
                 </div>
+              </div>
+
+              {/* Destination Product Select (Filtered by Family and Line) */}
+              <div className="space-y-2">
+                <label className="block text-[11px] font-black text-slate-400 uppercase tracking-wider">
+                  Seleccionar Producto Comercial Destino *
+                </label>
+                <select
+                  required
+                  value={selectedDestinoId}
+                  onChange={(e) => setSelectedDestinoId(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-3 text-xs text-white focus:outline-none focus:border-blue-500 font-bold cursor-pointer"
+                >
+                  <option value="">-- SELECCIONE PRODUCTO COMERCIAL --</option>
+                  {productos
+                    .filter(
+                      (p) =>
+                        p.activo &&
+                        p.tipoProducto === "COMERCIAL" &&
+                        p.familiaId === selectedStockRow.familiaId &&
+                        p.linea === selectedStockRow.linea
+                    )
+                    .map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.codigo} - {p.nombre}
+                      </option>
+                    ))}
+                </select>
               </div>
 
               {/* Quantity Input */}

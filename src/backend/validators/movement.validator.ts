@@ -2,7 +2,7 @@ import { z } from "zod";
 import { cuidSchema } from "./common";
 
 const calidadEnum = z.enum(["PERFECTO", "FALLADO"]);
-const presentacionEnum = z.enum(["ETIQUETADO", "SIN_ETIQUETA"]);
+const presentacionEnum = z.enum(["UNIDAD", "DOCENA", "FARDO"]);
 const canalEnum = z.enum(["MAYORISTA", "MINORISTA"]);
 const direccionEnum = z.enum(["ENTRADA", "SALIDA"]);
 const tipoMovimientoEnum = z.enum([
@@ -82,7 +82,8 @@ export const createMovimientoInternoSchema = createMovimientoSchema.omit({ tipo:
 export const createReconversionSchema = createMovimientoSchema.omit({ tipo: true, tallerId: true });
 
 export const etiquetadoSchema = z.object({
-  productoId: cuidSchema,
+  productoOrigenId: cuidSchema,
+  productoDestinoId: cuidSchema,
   depositoId: cuidSchema,
   cantidadUnidades: z.number().int().positive("La cantidad de unidades debe ser mayor a cero"),
   canal: canalEnum,
